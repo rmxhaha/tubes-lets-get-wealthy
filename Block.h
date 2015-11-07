@@ -34,8 +34,30 @@ typedef struct  {
 	Block *map_next;
 } Block;
 
-#define loop_()
+#define iterate_group(P,Begin, End, todo)\
+	P = Begin\
+	do {\
+		todo;\
+	} while( P -> group_next != End )\
 
+#define iterate_line(P,Begin, End, todo)\
+	P = Begin\
+	do {\
+		todo;\
+	} while( P -> line_next != End )\
+
+#define find_first_in_group(P,Current)\
+	P = Current\
+	while( P->group_prev != NULL ) P = P->group_prev;
+	
+
+#define find_first_in_line(P,Current)\
+	P = Current\
+	while( P->line_prev != NULL ) P = P->line_prev;
+	
+
+	
+	
 void block_init( BlockAddress );
 
 Block block_load_from_bin( char * );
