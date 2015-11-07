@@ -13,6 +13,7 @@ typedef enum {
 	KELILING_DUNIA
 } BlockType;
 
+typedef struct TBlock *BlockAddress;
 typedef struct  {
 	char name[255];
 	int tab_harga[5];
@@ -24,17 +25,18 @@ typedef struct  {
 	int id;
 	int multiplier;
 	int revolution_count;
-	Block *group_next;
-	Block *group_prev;
+	BlockAddress group_next;
+	BlockAddress group_prev;
 
-	Block *line_prev;
-	Block *line_next;
+	BlockAddress line_prev;
+	BlockAddress line_next;
 
 	Block *map_next;
 } Block;
 
+#define loop_()
 
-void block_init( Block* );
+void block_init( BlockAddress );
 
 Block block_load_from_bin( char * );
 
