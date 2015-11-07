@@ -23,16 +23,23 @@ typedef struct  {
 	BlockType type;
 	int id;
 	int multiplier;
+	int revolution_count;
 	Block *group_next;
+	Block *group_prev;
+
+	Block *line_prev;
 	Block *line_next;
+
 	Block *map_next;
 } Block;
+
 
 void block_init( Block* );
 
 Block block_load_from_bin( char * );
 
 char* block_convert_to_bin( Block );
+
 
 
 
