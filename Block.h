@@ -18,11 +18,11 @@ typedef struct  {
 	char name[255];
 	int tab_harga[5];
 	int tab_denda[5];
-	boolean tab_own[5];
 	Player *owner;
 	List list_player;
 	BlockType type;
 	int id;
+	int level;
 	int multiplier;
 	int revolution_count;
 	BlockAddress group_next;
@@ -54,9 +54,6 @@ typedef struct  {
 #define find_first_in_line(P,Current)\
 	P = Current\
 	while( P->line_prev != NULL ) P = P->line_prev;
-	
-
-	
 	
 void block_init( BlockAddress );
 
