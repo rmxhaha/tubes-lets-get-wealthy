@@ -6,6 +6,7 @@
 typedef struct TPlayer *PlayerAddress;
 typedef struct TPlayer {
 	char name[5];
+	int money;
 	int revolution_count;
 	BlockAddress cblock;
 	PlayerAddress next;
