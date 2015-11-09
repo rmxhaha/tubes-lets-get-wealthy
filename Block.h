@@ -33,7 +33,7 @@ typedef struct TBlock{
 	BlockAddress line_prev;
 	BlockAddress line_next;
 
-	Block *map_next;
+	BlockAddress map_next;
 } Block;
 
 #define iterate_group(P,Begin, End, todo)\
