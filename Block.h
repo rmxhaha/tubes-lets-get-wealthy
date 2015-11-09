@@ -59,7 +59,7 @@ typedef struct TBlock{
 	
 void block_init( BlockAddress );
 
-void block_load_from_bin( FILE*, Block* );
+void block_load_from_bin( FILE*, BlockAddress );
 
 
 
