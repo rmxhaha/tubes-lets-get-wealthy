@@ -17,7 +17,7 @@ typedef enum {
 } BlockType;
 
 typedef struct TBlock *BlockAddress;
-typedef struct  {
+typedef struct TBlock{
 	char name[255];
 	int tab_harga[5];
 	int tab_denda[5];
