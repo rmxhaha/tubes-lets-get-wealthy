@@ -4,6 +4,9 @@
 #include "Player.h"
 #include "List.h"
 #include "boolean.h"
+#include "stdio.h"
+#include "stdlib.h"
+
 
 typedef enum {
 	TANAH,
@@ -24,7 +27,6 @@ typedef struct  {
 	int id;
 	int level;
 	int multiplier;
-	int revolution_count;
 	BlockAddress group_next;
 	BlockAddress group_prev;
 
@@ -57,10 +59,7 @@ typedef struct  {
 	
 void block_init( BlockAddress );
 
-Block block_load_from_bin( char * );
-
-char* block_convert_to_bin( Block );
-
+void block_load_from_bin( FILE*, Block* );
 
 
 
