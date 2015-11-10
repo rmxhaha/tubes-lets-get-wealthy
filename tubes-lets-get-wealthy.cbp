@@ -31,8 +31,23 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="Block.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="Block.h" />
+		<Unit filename="MonopolyMap.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="MonopolyMap.h" />
+		<Unit filename="Player.h" />
 		<Unit filename="boolean.h" />
+		<Unit filename="game.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="listlinier.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="listlinier.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

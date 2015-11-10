@@ -2,18 +2,21 @@
 #define BLOCK_H
 
 #include "Player.h"
-#include "List.h"
+#include "listlinier.h"
 #include "boolean.h"
 #include "stdio.h"
 #include "stdlib.h"
 
 
 typedef enum {
-	TANAH,
-	KESEMPATAN,
-	PAJAK,
-	START,
-	KELILING_DUNIA
+	TANAH, //0
+	KESEMPATAN,//1
+	PAJAK, //2
+	START, //3
+	KELILING_DUNIA,//4
+	BONUS, // 5
+	PARIWISATA, //6
+	DESERTED_ISLAND //7
 } BlockType;
 
 typedef struct TBlock *BlockAddress;
@@ -21,7 +24,7 @@ typedef struct TBlock{
 	char name[255];
 	int tab_harga[5];
 	int tab_denda[5];
-	Player *owner;
+	struct Player* owner;
 	List list_player;
 	BlockType type;
 	int id;
@@ -51,12 +54,12 @@ typedef struct TBlock{
 #define find_first_in_group(P,Current)\
 	P = Current\
 	while( P->group_prev != NULL ) P = P->group_prev;
-	
+
 
 #define find_first_in_line(P,Current)\
 	P = Current\
 	while( P->line_prev != NULL ) P = P->line_prev;
-	
+
 void block_init( BlockAddress );
 
 void block_load_from_bin( FILE*, BlockAddress );

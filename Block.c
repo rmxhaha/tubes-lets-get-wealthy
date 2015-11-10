@@ -1,10 +1,13 @@
 #include "Block.h"
+#include "string.h"
 
-void block_init( BlockAddress P ){
-	P->name = "";
-	memset(&P->tab_harga, 0, sizeof(P->tab_harga));
-	memset(&P->tab_denda, 0, sizeof(P->tab_denda));
-	
+void block_init( Block* P ){
+    int i;
+    P->name[0] = '\0';
+
+    memset(P->tab_harga,0,sizeof(P->tab_harga));
+    memset(P->tab_denda,0,sizeof(P->tab_denda));
+
 	P->owner = NULL;
 	P->type = TANAH;
 	P->id = -1;
@@ -22,14 +25,20 @@ void block_init( BlockAddress P ){
 void block_load_from_bin( FILE* stream, BlockAddress block ){
 	int i = 0;
 	fscanf(stream, "%d", block->type);
-	
+
 	if( block->type == TANAH ){
 		fscanf(stream, "%s", block->name );
-		for( i = 0; i < 5; ++ i ) 
+		for( i = 0; i < 5; ++ i )
 			fscanf(stream, "%d", block->tab_harga + i);
 
-		for( i = 0; i < 5; ++ i ) 
+		for( i = 0; i < 5; ++ i )
 			fscanf(stream, "%d", block->tab_denda + i);
+	}
+	if( block->type == PARIWISATA ){
+		fscanf(stream, "%s", block->name );
+        fscanf(stream, "%d", block->tab_harga + 0);
+        fscanf(stream, "%d", block->tab_denda + 0);
+
 	}
 }
 
