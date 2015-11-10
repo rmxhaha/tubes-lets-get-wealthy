@@ -7,7 +7,7 @@ typedef struct {
 	BlockAddress first;
 } MonopolyMap;
 
-void loadMap(FILE*);
+MonopolyMap load_map(FILE*);
 
 
 #endif
