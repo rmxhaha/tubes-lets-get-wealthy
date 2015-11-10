@@ -8,6 +8,8 @@
 #include "stdlib.h"
 
 
+
+
 typedef enum {
 	TANAH, //0
 	KESEMPATAN,//1
@@ -17,6 +19,7 @@ typedef enum {
 	BONUS, // 5
 	PARIWISATA, //6
 	DESERTED_ISLAND //7
+	WORLD_CUP//8
 } BlockType;
 
 typedef struct TBlock *BlockAddress;
