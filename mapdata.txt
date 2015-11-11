@@ -38,4 +38,4 @@
 2 denmark berlin
 3 geneva moscow rome
 2 london paris
-new_york bangkok
+2 new_york bangkok
