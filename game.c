@@ -13,11 +13,14 @@ int main(){
     map = load_map(f);
 
     BlockAddress addr = map.first;
+    addr = map.first->map_next;
+
+
     do {
 //        printf("%d\n", addr->id );
-        printf("ad : %d\n", addr->type);
-        addr = addr->map_next;
-    }while( addr != map.first );
+        printf("ad : %s\n", addr->name);
+        addr = addr->group_next;
+    }while( addr != NULL );
 
     fclose(f);
 

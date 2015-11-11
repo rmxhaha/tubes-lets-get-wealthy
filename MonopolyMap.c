@@ -1,9 +1,10 @@
 #include "MonopolyMap.h"
 
 MonopolyMap load_map(FILE* stream){
-	int i,k,N;
-	BlockAddress P,T,A;
+	int i,k,N,M;
+	BlockAddress P,Q,T,A;
 	MonopolyMap map;
+	char nama_kota[255];
 
 	N = 32;
 
@@ -46,6 +47,35 @@ MonopolyMap load_map(FILE* stream){
 	}
 
 	/**load group data*/
+
+	fscanf(stream,"%d",&N);
+	for( i = 0; i < N; ++ i ){
+
+		Q = NULL;
+		fscanf(stream,"%d",&M);
+		for( k = 0; k < M; ++ k ){
+
+			fscanf(stream,"%s",nama_kota);
+
+			P = map.first;
+			do {
+				if( strcmp( P->name, nama_kota ) == 0 ){
+					if( Q == NULL ){
+						Q = P;
+					}
+					else {
+						Q->group_next = P;
+						P->group_prev = Q;
+					}
+
+					break;
+				}
+				P = P->map_next;
+			} while( P != map.first );
+			
+		}
+	}
+
 
     return map;
 }
