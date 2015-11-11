@@ -63,6 +63,11 @@ typedef struct TBlock{
 	P = Current\
 	while( P->line_prev != NULL ) P = P->line_prev;
 
+
+#define find_last_in_line(P,Current)\
+	P = Current\
+	while( P->line_next != NULL ) P = P->line_next;
+
 void block_init( BlockAddress );
 
 void block_load_from_bin( FILE*, BlockAddress );
