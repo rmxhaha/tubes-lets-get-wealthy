@@ -8,7 +8,18 @@
 int main(){
 	MonopolyMap map;
 	Block block;
-    block_init(&block);
+	FILE *f = fopen("mapdata.txt","r");
+
+    map = load_map(f);
+
+    BlockAddress addr = map.first;
+    do {
+//        printf("%d\n", addr->id );
+        printf("ad : %d\n", addr->type);
+        addr = addr->map_next;
+    }while( addr != map.first );
+
+    fclose(f);
 
 //	save( cplayer, map );
 
