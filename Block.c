@@ -24,21 +24,20 @@ void block_init( Block* P ){
 
 void block_load_from_bin( FILE* stream, BlockAddress block ){
 	int i = 0;
-	fscanf(stream, "%d", block->type);
+	fscanf(stream, "%d", &block->type);
 
 	if( block->type == TANAH ){
-		fscanf(stream, "%s", block->name );
+		fscanf(stream, "%s", &block->name );
 		for( i = 0; i < 5; ++ i )
-			fscanf(stream, "%d", block->tab_harga + i);
+			fscanf(stream, "%d", &block->tab_harga + i);
 
 		for( i = 0; i < 5; ++ i )
-			fscanf(stream, "%d", block->tab_denda + i);
+			fscanf(stream, "%d", &block->tab_denda + i);
 	}
 	if( block->type == PARIWISATA ){
-		fscanf(stream, "%s", block->name );
-        fscanf(stream, "%d", block->tab_harga + 0);
-        fscanf(stream, "%d", block->tab_denda + 0);
-
+		fscanf(stream, "%s", &block->name );
+        fscanf(stream, "%d", &block->tab_harga + 0);
+        fscanf(stream, "%d", &block->tab_denda + 0);
 	}
 }
 

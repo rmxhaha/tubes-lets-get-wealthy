@@ -18,7 +18,7 @@ typedef enum {
 	KELILING_DUNIA,//4
 	BONUS, // 5
 	PARIWISATA, //6
-	DESERTED_ISLAND //7
+	DESERTED_ISLAND, //7
 	WORLD_CUP//8
 } BlockType;
 
