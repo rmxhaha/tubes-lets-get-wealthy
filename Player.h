@@ -22,7 +22,6 @@ typedef struct TPlayer {
 	int revolution_count;
 	struct Block* cblock;
 	Chance save_chance;
-	BlockAddress cblock;
 	PlayerAddress next;
 } Player;
 
