@@ -72,7 +72,7 @@ MonopolyMap load_map(FILE* stream){
 				}
 				P = P->map_next;
 			} while( P != map.first );
-			
+
 		}
 	}
 
@@ -80,3 +80,84 @@ MonopolyMap load_map(FILE* stream){
     return map;
 }
 
+void print_map(MonopolyMap map ){
+	BlockAddress tpeta[9][9];
+
+	memset(tpeta,0,sizeof(tpeta)); // fill with NULL
+	int i,k;
+	char tmpstr[100];
+
+	BlockAddress
+		P,T,
+		L1,L2,L3,L4;
+
+	L1 = map.first;
+	find_last_in_line(P,L1);
+	L2 = P->map_next;
+	find_last_in_line(P,L2);
+	L3 = P->map_next;
+	find_last_in_line(P,L3);
+	L4 = P->map_next;
+
+	i = 0;
+	iterate_line(P,L1,NULL,tpeta[0][i++] = P;);
+	i = 0;
+	iterate_line(P,L2,NULL,tpeta[i++][8] = P;);
+	i = 8;
+	iterate_line(P,L3,NULL,tpeta[8][i--] = P;);
+	i = 8;
+	iterate_line(P,L4,NULL,tpeta[i--][0] = P;);
+
+	for( i = 0; i < 9; ++ i ){
+		for( k = 0; k < 9; ++ k ){
+			P = tpeta[i][k];
+			if( P == NULL )
+				printf("          ");
+			else
+				printf("%10s", P->name );
+		}
+		printf("\n");
+
+		for( k = 0; k < 9; ++ k ){
+			P = tpeta[i][k];
+			if( P == NULL )
+				printf("          ");
+			else{
+                switch(P->type){
+                case TANAH:
+                case PARIWISATA:
+                    printf("%10d", P->tab_harga[P->level] );
+                    break;
+                default:
+                    printf("          ");
+                }
+			}
+		}
+		printf("\n");
+
+		for( k = 0; k < 9; ++ k ){
+			P = tpeta[i][k];
+			if( P == NULL || P->owner == NULL )
+				printf("          ");
+			else{
+				printf("%10s", P->owner->name );
+
+			}
+		}
+
+		printf("\n");
+
+		for( k = 0; k < 9; ++ k ){
+			P = tpeta[i][k];
+			if( P == NULL )
+				printf("          ");
+			else{
+				printf("          ");
+//				tmpstr[0] = '\0';
+//				strcat(tmpstr,);
+//				printf("%2s",)
+			}
+		}
+		printf("\n");
+	}
+}
