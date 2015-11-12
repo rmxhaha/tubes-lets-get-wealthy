@@ -5,6 +5,12 @@
 #include "Player.h"
 #include "MonopolyMap.h"
 
+
+/**
+	cari lokasi player pada peta
+*/
+BlockAddress searchPlayer(MonopolyMap,PlayerAddress);
+
 /**
 	Spec :
 		kalau di nyampe ujung map 
@@ -22,4 +28,9 @@ void pindahPlayer(MonopolyMap, PlayerAddress, int d );
 */
 void pickJumlahPlayer(MonopolyMap* map);
 
+/**
+	Spec : 
+		process buy 
+*/
+	
 #endif
