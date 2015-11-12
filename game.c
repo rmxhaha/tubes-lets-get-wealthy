@@ -18,8 +18,8 @@ int main(){
     do {
 //        printf("%d\n", addr->id );
         printf("ad : %s\n", addr->name);
-        addr = addr->group_next;
-    }while( addr != NULL );
+        addr = addr->map_next;
+    }while( addr != map.first );
 
     fclose(f);
 
