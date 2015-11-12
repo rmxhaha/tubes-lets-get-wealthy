@@ -1,9 +1,7 @@
 #include "Player.h"
 #include "Block.h"
 #include "MonopolyMap.h"
-#include "stdio.h"
-
-
+#include "infopetak.h"
 
 int main(){
 	MonopolyMap map;
@@ -24,7 +22,7 @@ int main(){
     fclose(f);
 
     print_map(map);
-
+    // Infp petak : block_info_petak(map);
 //	save( cplayer, map );
 
 
