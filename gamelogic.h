@@ -9,7 +9,7 @@
 /**
 	cari lokasi player pada peta
 */
-BlockAddress searchPlayer(MonopolyMap,PlayerAddress);
+BlockAddress search_player(MonopolyMap,PlayerAddress);
 
 /**
 	Spec :
@@ -19,18 +19,24 @@ BlockAddress searchPlayer(MonopolyMap,PlayerAddress);
 		- revolution_count di tambah
 		- jika revolution_count != 1 maka duit di tambah 150k
 */
-void pindahPlayer(MonopolyMap, PlayerAddress, int d );
+void pindah_player(MonopolyMap, PlayerAddress, int d );
 
 /**
 	Spec :
 		input jumlah player kalau lebih dr 4 atau kurang dari 2 maka input ulang
 		inisialisasi MapPlayer dengan jumlah player sesuai input
 */
-void pickJumlahPlayer(MonopolyMap* map);
+void pick_jumlah_player(MonopolyMap* map);
 
 /**
 	Spec : 
-		process buy 
+		pada putaran pertama hanya bisa membeli hingga level 2 
+		pada putaran selanjutnya bisa membeli hingga level 3 
+		landmark bisa di beli jika gedung sudah level 3 dan di putaran setelah pembelian gedung level 3
+	Note :
+		putaran player selesai setelah buy process
 */
+
+void process_buy(MonopolyMap,PlayerAddress);
 	
 #endif
