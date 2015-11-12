@@ -1,11 +1,11 @@
 #ifndef BLOCK_H
 #define BLOCK_H
 
-#include "Player.h"
 #include "listlinier.h"
 #include "boolean.h"
 #include "stdio.h"
 #include "stdlib.h"
+#include "Player.h"
 
 
 
@@ -22,12 +22,13 @@ typedef enum {
 	WORLD_CUP//8
 } BlockType;
 
+
 typedef struct TBlock *BlockAddress;
 typedef struct TBlock{
 	char name[255];
 	int tab_harga[5];
 	int tab_denda[5];
-	struct Player* owner;
+	Player* owner;
 	List list_player;
 	BlockType type;
 	int id;
@@ -43,35 +44,35 @@ typedef struct TBlock{
 } Block;
 
 #define iterate_group(P,Begin, End, todo)\
-	P = Begin\
+	P = Begin;\
 	do {\
 		todo;\
+		P = P->group_next;\
 	} while( P -> group_next != End )\
 
 #define iterate_line(P,Begin, End, todo)\
-	P = Begin\
+	P = Begin;\
 	do {\
 		todo;\
+		P = P->line_next;\
 	} while( P -> line_next != End )\
 
 #define find_first_in_group(P,Current)\
-	P = Current\
+	P = Current;\
 	while( P->group_prev != NULL ) P = P->group_prev;
 
 
 #define find_first_in_line(P,Current)\
-	P = Current\
+	P = Current;\
 	while( P->line_prev != NULL ) P = P->line_prev;
 
 
 #define find_last_in_line(P,Current)\
-	P = Current\
+	P = Current;\
 	while( P->line_next != NULL ) P = P->line_next;
 
 void block_init( BlockAddress );
 
 void block_load_from_bin( FILE*, BlockAddress );
-
-
 
 #endif

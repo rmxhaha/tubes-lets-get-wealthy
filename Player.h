@@ -1,7 +1,6 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "Block.h"
 // jika bank maka Player *player adalah NULL
 typedef enum {
 	GOTO_PAJAK,
@@ -15,12 +14,12 @@ typedef enum {
 	BEBAS_SEWA
 } Chance;
 
+
 typedef struct TPlayer *PlayerAddress;
 typedef struct TPlayer {
 	char name[5];
 	int money;
 	int revolution_count;
-	struct Block* cblock;
 	Chance save_chance;
 	PlayerAddress next;
 } Player;
