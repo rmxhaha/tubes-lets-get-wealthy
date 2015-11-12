@@ -1,4 +1,4 @@
-#include<time.h>
+#include "dadu.h"
 
 
 //dipanggil sekali aja di awal, jangan berulang.
@@ -20,22 +20,21 @@ int d6()
 
 // [masil blom ada yang buat pindah petak]
 // menghasilkan 2 angka hasil lemparan dadu
-void lempar_Dadu(int *n1, *n2)
+void lempar_Dadu(int *n1, int *n2)
 {
     char s;
     boolean redo;
-    *n = 0; // *n adalah akumulasi jumlah dadu.
 
     do
     {
         redo = false;
-        *n1 = dadu();
-        *n2 = dadu();
+        *n1 = d6();
+        *n2 = d6();
 
-        printf("%d + %d = %d\n", d1, d2, d1+d2);
+        printf("%d + %d = %d\n", *n1,*n2,*n1+*n2);
 
         //kalo snake eyes
-         if(d1==d2)
+         if(*n1==*n2)
         {
             printf("Snake Eyes   ");
             printf("Re-Roll? (y/n");
@@ -43,7 +42,7 @@ void lempar_Dadu(int *n1, *n2)
             do//diulang ampe input bener
             {
                 scanf(" %c", &s);
-            }while((s != y) && (s != n))
+            }while((s != 'y') && (s != 'n'));
 
             if(s == 'y')
             {
@@ -51,5 +50,5 @@ void lempar_Dadu(int *n1, *n2)
             }
 
         }
-    }
+    } while( redo );
 }
