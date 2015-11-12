@@ -15,7 +15,6 @@ int main(){
     BlockAddress addr = map.first;
     addr = map.first->map_next;
 
-
     do {
 //        printf("%d\n", addr->id );
         printf("ad : %s\n", addr->name);
@@ -23,6 +22,8 @@ int main(){
     }while( addr != NULL );
 
     fclose(f);
+
+    print_map(map);
 
 //	save( cplayer, map );
 
