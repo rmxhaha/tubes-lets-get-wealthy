@@ -14,7 +14,7 @@
 //Konstanta
 #define Nil NULL
  
-typedef int Infotype;
+typedef void* Infotype;
 typedef struct TElmtList *Address;
 
 typedef struct TElmtList {
