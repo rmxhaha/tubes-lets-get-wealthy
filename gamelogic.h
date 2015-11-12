@@ -13,7 +13,13 @@
 		- revolution_count di tambah
 		- jika revolution_count != 1 maka duit di tambah 150k
 */
-void pindahPlayer(MonopolyMap, Player*, int d );
+void pindahPlayer(MonopolyMap, PlayerAddress, int d );
 
+/**
+	Spec :
+		input jumlah player kalau lebih dr 4 atau kurang dari 2 maka input ulang
+		inisialisasi MapPlayer dengan jumlah player sesuai input
+*/
+void pickJumlahPlayer(MonopolyMap* map);
 
 #endif
