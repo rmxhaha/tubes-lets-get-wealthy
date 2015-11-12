@@ -11,7 +11,6 @@ typedef struct TPlayer {
 	int money;
 	int revolution_count;
 	Chance save_chance;
-	PlayerAddress next;
 } Player;
 
 void player_init( PlayerAddress );
