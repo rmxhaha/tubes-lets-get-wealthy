@@ -1,5 +1,4 @@
 #include "Block.h"
-#include "string.h"
 
 void block_init( Block* P ){
     int i;
@@ -20,6 +19,7 @@ void block_init( Block* P ){
 	P->line_prev = NULL;
 
 	P->map_next = NULL;
+	CreateList(&P->list_player);
 }
 
 void block_load_from_bin( FILE* stream, BlockAddress block ){
