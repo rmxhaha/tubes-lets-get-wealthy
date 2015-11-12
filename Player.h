@@ -14,8 +14,8 @@ typedef struct TPlayer {
 	PlayerAddress next;
 } Player;
 
-void player_init();
+void player_init( PlayerAddress );
 
-void player_alokasi();
+void player_alokasi( PlayerAddress );
 
 #endif
