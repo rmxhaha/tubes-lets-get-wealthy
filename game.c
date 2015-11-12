@@ -22,7 +22,7 @@ int main(){
     fclose(f);
 
     print_map(map);
-    // Infp petak : block_info_petak(map);
+    // print info petak: block_info_petak(map);
 //	save( cplayer, map );
 
 

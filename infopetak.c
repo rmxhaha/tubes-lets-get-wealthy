@@ -8,12 +8,11 @@ void block_info_petak(MonopolyMap map)
     boolean found;
     int i = 0;
     int a = 0 ;
-    //printf("masuk");
+    //terima input
     scanf("%c",&c);
     while(c!='>')
     {
         nameinput[i]=c;
-        //printf("%c",nameinput[i]);
         i++;
         scanf("%c",&c);
     }
@@ -29,7 +28,7 @@ void block_info_petak(MonopolyMap map)
         }
     }
     nametemp[a]='\0';
-    //printf("tess %s\n",nametemp);
+    //mencari nama kota
     found = false;
     b = map.first;
     do
