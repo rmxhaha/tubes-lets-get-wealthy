@@ -29,4 +29,18 @@ void pindah_player1(MonopolyMap map, void *Player );
 
 //majuin player sesuai lemparan dadu
 void pindah_player(MonopolyMap map, void *Player, int d );
+
+void pick_jumlah_player(MonopolyMap* map);
+
+/**
+	Spec : 
+		pada putaran pertama hanya bisa membeli hingga level 2 
+		pada putaran selanjutnya bisa membeli hingga level 3 
+		landmark bisa di beli jika gedung sudah level 3 dan di putaran setelah pembelian gedung level 3
+	Note :
+		putaran player selesai setelah buy process
+*/
+
+void process_buy(MonopolyMap,PlayerAddress);
+
 #endif
