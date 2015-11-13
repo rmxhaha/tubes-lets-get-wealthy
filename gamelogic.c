@@ -60,6 +60,7 @@ BlockAddress last_block(MonopolyMap map)
 //=====================================================================================
 
 //majuin player 1 petak
+//masih belom bisa, last masih salah
 void pindahPlayer1(MonopolyMap map, void *Player )
 {
     BlockAddress here;
@@ -95,13 +96,10 @@ void pindahPlayer1(MonopolyMap map, void *Player )
 void pindahPlayer(MonopolyMap map, void *Player, int d )
 {
     int i;
-    BlockAddress pencarian;
 
     for(i=1; i<=d; i++)
     {
         pindahPlayer1(map, Player );
-        pencarian = search_player(map, Player);
-        printf("kalo dicari A ada di: %s\n", pencarian->name);
     }
 }
 
