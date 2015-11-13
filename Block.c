@@ -24,6 +24,9 @@ void block_init( Block* P ){
 
 void block_load_from_bin( FILE* stream, BlockAddress block ){
 	int i = 0;
+
+	block_init(block);
+
 	fscanf(stream, "%d", &block->type);
 
     switch( block->type ){
