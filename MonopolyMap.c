@@ -3,6 +3,7 @@
 MonopolyMap load_map(FILE* stream){
 	int i,k,N,M;
 	BlockAddress P,Q,T,A;
+	PlayerAddress PA;
 	MonopolyMap map;
 	char nama_kota[255];
 
@@ -75,6 +76,12 @@ MonopolyMap load_map(FILE* stream){
 
 		}
 	}
+
+	/*List Player */
+	CreateList(&map.ListTurn);
+
+	/*List offered*/
+	CreateList(&map.ListOffered);
 
 
     return map;

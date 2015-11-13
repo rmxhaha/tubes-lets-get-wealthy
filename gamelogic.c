@@ -52,13 +52,6 @@ void place_player(BlockAddress *B, void *Player)
 
 //=====================================================================================
 
-BlockAddress last_block(MonopolyMap map)
-{
-
-}
-
-//=====================================================================================
-
 //majuin player 1 petak
 void pindahPlayer1(MonopolyMap map, void *Player )
 {
@@ -67,8 +60,12 @@ void pindahPlayer1(MonopolyMap map, void *Player )
 
     here = search_player(map, Player);//hasilsearch
 
-
-        last = last_block(map);
+    //kotak terakhir
+    find_last_in_line(last,map.first);
+    while(last->map_next != NULL)
+    {
+        last= last->map_next;
+    }
 
 
 
