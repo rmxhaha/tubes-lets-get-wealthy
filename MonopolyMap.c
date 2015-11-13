@@ -161,11 +161,11 @@ void print_map(MonopolyMap map ){
 				printf("          ");
 			else{
 
-				printf("          ");
+//				printf("          ");
 
 				tmpstr[0] = '\0';
 				loop_list(P->list_player,PP,
-					strcat(tmpstr,((Player*)PP)->name);
+					strcat(tmpstr,((Player*)Info(PP))->name);
 				);
 				printf("%10s",tmpstr);
 			}
