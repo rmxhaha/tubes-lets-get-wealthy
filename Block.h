@@ -49,14 +49,15 @@ typedef struct TBlock{
 	do {\
 		todo;\
 		P = P->group_next;\
-	} while( P -> group_next != End )\
+	} while( P != End )\
+
 
 #define iterate_line(P,Begin, End, todo)\
 	P = Begin;\
 	do {\
 		todo;\
 		P = P->line_next;\
-	} while( P -> line_next != End )\
+	} while( P != End )\
 
 #define find_first_in_group(P,Current)\
 	P = Current;\
