@@ -8,7 +8,12 @@ int main(){
 	Block block;
 	FILE *f = fopen("mapdata.txt","r");
 
+
     map = load_map(f);
+
+    pick_jumlah_player(&map);
+
+    printf("%s\n", ((Player*)Info(First(map.first->list_player)))->name);
 
     BlockAddress addr = map.first;
     addr = map.first->map_next;
@@ -17,7 +22,7 @@ int main(){
 //        printf("%d\n", addr->id );
         printf("ad : %s\n", addr->name);
         addr = addr->map_next;
-    }while( addr != map.first );
+    }while( addr != NULL );
 
     fclose(f);
 

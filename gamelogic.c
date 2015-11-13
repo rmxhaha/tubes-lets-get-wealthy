@@ -99,18 +99,43 @@ void pindah_player(MonopolyMap map, void *Player, int d )
 
     for(i=1; i<=d; i++)
     {
-        pindahPlayer1(map, Player );
+        pindah_player1(map, Player );
     }
 }
 
 //=====================================================================================
 
-void pick_jumlah_player(MonopolyMap* map);
+
+void pick_jumlah_player(MonopolyMap* map){
+	int N,i;
+	PlayerAddress PA;
+
+
+	do{
+		printf("Jumlah player = ");scanf("%d",&N);
+		if( N < 2 || 4 < N ){
+			printf("Jumlah player tidak wajar (tolong pilih dari 2-4 player)\n");
+		}
+	} while( N < 2 || 4 < N );
+
+    CreateList(&map->first->list_player);
+
+	for( i = 0; i < N; ++ i ){
+		player_alokasi(&PA);
+		player_init(&PA);
+
+		PA->name[0] = 'A' + (char)i; // a b c d
+		PA->name[1] = '\0';
+
+		InsVLast(&map->first->list_player,PA);
+	}
+
+}
 
 /**
-	Spec : 
-		pada putaran pertama hanya bisa membeli hingga level 2 
-		pada putaran selanjutnya bisa membeli hingga level 3 
+	Spec :
+		pada putaran pertama hanya bisa membeli hingga level 2
+		pada putaran selanjutnya bisa membeli hingga level 3
 		landmark bisa di beli jika gedung sudah level 3 dan di putaran setelah pembelian gedung level 3
 	Note :
 		putaran player selesai setelah buy process
