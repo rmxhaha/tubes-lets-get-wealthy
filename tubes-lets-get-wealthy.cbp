@@ -35,12 +35,17 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Block.h" />
+		<Unit filename="Chance.h" />
 		<Unit filename="MonopolyMap.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="MonopolyMap.h" />
 		<Unit filename="Player.h" />
 		<Unit filename="boolean.h" />
+		<Unit filename="dadu.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="dadu.h" />
 		<Unit filename="game.c">
 			<Option compilerVar="CC" />
 		</Unit>
