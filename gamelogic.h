@@ -25,8 +25,8 @@ BlockAddress search_player(MonopolyMap map,void* player);
 void place_player(BlockAddress *B, void *Player);
 
 //majuin player 1 petak
-void pindahPlayer1(MonopolyMap map, void *Player );
+void pindah_player1(MonopolyMap map, void *Player );
 
 //majuin player sesuai lemparan dadu
-void pindahPlayer(MonopolyMap map, void *Player, int d );
+void pindah_player(MonopolyMap map, void *Player, int d );
 #endif

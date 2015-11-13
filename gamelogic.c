@@ -61,7 +61,7 @@ BlockAddress last_block(MonopolyMap map)
 
 //majuin player 1 petak
 //masih belom bisa, last masih salah
-void pindahPlayer1(MonopolyMap map, void *Player )
+void pindah_player1(MonopolyMap map, void *Player )
 {
     BlockAddress here;
     BlockAddress last;
@@ -93,7 +93,7 @@ void pindahPlayer1(MonopolyMap map, void *Player )
 
 //=====================================================================================
 
-void pindahPlayer(MonopolyMap map, void *Player, int d )
+void pindah_player(MonopolyMap map, void *Player, int d )
 {
     int i;
 
@@ -105,9 +105,23 @@ void pindahPlayer(MonopolyMap map, void *Player, int d )
 
 //=====================================================================================
 
+void pick_jumlah_player(MonopolyMap* map);
+
+/**
+	Spec : 
+		pada putaran pertama hanya bisa membeli hingga level 2 
+		pada putaran selanjutnya bisa membeli hingga level 3 
+		landmark bisa di beli jika gedung sudah level 3 dan di putaran setelah pembelian gedung level 3
+	Note :
+		putaran player selesai setelah buy process
+*/
+
+//=====================================================================================
+
+void process_buy(MonopolyMap,PlayerAddress);
 
 
-
+//=====================================================================================
 
 
 
