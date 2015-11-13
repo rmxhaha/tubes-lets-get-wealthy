@@ -34,7 +34,7 @@ MonopolyMap load_map(FILE* stream){
 
 			// last
 			if( i == N-1 ){
-				T->map_next = map.first;
+				T->map_next = NULL;
 			}
 		}
 
@@ -72,7 +72,7 @@ MonopolyMap load_map(FILE* stream){
 					break;
 				}
 				P = P->map_next;
-			} while( P != map.first );
+			} while( P != NULL );
 
 		}
 	}
