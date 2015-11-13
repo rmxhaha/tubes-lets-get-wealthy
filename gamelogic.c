@@ -23,7 +23,7 @@ BlockAddress search_player(MonopolyMap map,void* player)
         //nyari block mana yang ada playernya
         while((!is_player_on(B)) && (B!=NULL))
         {
-            B = B->line_next;
+            B = B->map_next;
         }
 
         //nentuin apakah player yang ada di block player yang dicari apa bukan
@@ -38,7 +38,7 @@ BlockAddress search_player(MonopolyMap map,void* player)
             return B;
         }
 
-        B = B->line_next;
+        B = B->map_next;
     }
 }
 
@@ -52,6 +52,13 @@ void place_player(BlockAddress *B, void *Player)
 
 //=====================================================================================
 
+BlockAddress last_block(MonopolyMap map)
+{
+
+}
+
+//=====================================================================================
+
 //majuin player 1 petak
 void pindahPlayer1(MonopolyMap map, void *Player )
 {
@@ -60,12 +67,8 @@ void pindahPlayer1(MonopolyMap map, void *Player )
 
     here = search_player(map, Player);//hasilsearch
 
-    //kotak terakhir
-    find_last_in_line(last,map.first);
-    while(last->map_next != NULL)
-    {
-        last= last->map_next;
-    }
+
+        last = last_block(map);
 
 
 
