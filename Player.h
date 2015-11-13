@@ -11,11 +11,10 @@ typedef struct TPlayer {
 	int money;
 	int revolution_count;
 	Chance save_chance;
-	PlayerAddress next;
-} Player;
+}Player;
 
-void player_init( PlayerAddress );
+void player_init(PlayerAddress *Padd);
 
-void player_alokasi( PlayerAddress );
+void player_alokasi(PlayerAddress *Padd);
 
 #endif
