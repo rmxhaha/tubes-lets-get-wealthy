@@ -89,6 +89,7 @@ MonopolyMap load_map(FILE* stream){
 
 void print_map(MonopolyMap map ){
 	BlockAddress tpeta[9][9];
+	Address PP; // Player
 
 	memset(tpeta,0,sizeof(tpeta)); // fill with NULL
 	int i,k;
@@ -159,10 +160,14 @@ void print_map(MonopolyMap map ){
 			if( P == NULL )
 				printf("          ");
 			else{
+
 				printf("          ");
-//				tmpstr[0] = '\0';
-//				strcat(tmpstr,);
-//				printf("%2s",)
+
+				tmpstr[0] = '\0';
+				loop_list(P->list_player,PP,
+					strcat(tmpstr,((Player*)PP)->name);
+				);
+				printf("%10s",tmpstr);
 			}
 		}
 		printf("\n");
