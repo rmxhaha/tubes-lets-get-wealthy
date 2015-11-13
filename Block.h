@@ -44,6 +44,13 @@ typedef struct TBlock{
 	BlockAddress map_next;
 } Block;
 
+#define iterate_map(P,Begin,End,todo)\
+	P = Begin;\
+	do {\
+		todo;\
+		P = P->map_next;\
+	} while( P != End );\
+
 #define iterate_group(P,Begin, End, todo)\
 	P = Begin;\
 	do {\
