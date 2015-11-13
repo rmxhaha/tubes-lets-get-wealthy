@@ -28,28 +28,6 @@
 	2. Bila terdapat perbedaan versi header asisten dengan modul, ikuti versi asisten. Informasi perbedaan ada pada tiap fungsi/prosedur
 */
 
-#define return_boolean(cond)\
-	if(cond) return true; else return false;
-
-#define iterate_list( L, P )\
-	P = First( L ); \
-	while( P != Nil ){\
-		P = P->next; \
-	}
-
-#define find_list( L, P, cond )\
-	P = First( L ); \
-	while( P != Nil && !(cond) ){\
-		P = P->next; \
-	}
-
-#define loop_list( L, P, todo )\
-	P = First( L ); \
-	while( P != Nil ){\
-		todo; \
-		P = P->next; \
-	}
-
 
 
 boolean IsListEmpty (List L){

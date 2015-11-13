@@ -30,6 +30,26 @@ typedef struct {
 #define Next(P) (P)->next
 #define Info(P) (P)->info
 
+
+#define iterate_list( L, P )\
+	P = First( L ); \
+	while( P != Nil ){\
+		P = P->next; \
+	}
+
+#define find_list( L, P, cond )\
+	P = First( L ); \
+	while( P != Nil && !(cond) ){\
+		P = P->next; \
+	}
+
+#define loop_list( L, P, todo )\
+	P = First( L ); \
+	while( P != Nil ){\
+		todo; \
+		P = P->next; \
+	}
+
 /*
 	LIST INI MERUPAKAN VARIASI 1 - FISIK POINTER DENGAN FIRST EKSPLISIT
 
