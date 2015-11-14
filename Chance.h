@@ -15,4 +15,5 @@ typedef enum {
 	BEBAS_SEWA
 } Chance;
 
+Chance get_chance();
 #endif
