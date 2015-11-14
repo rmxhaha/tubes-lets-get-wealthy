@@ -50,6 +50,7 @@ void process_upgrade(MonopolyMap,PlayerAddress);
 
 void pindah_player_ke(MonopolyMap,PlayerAddress, BlockAddress);
 
+void do_chance (MonopolyMap *map, PlayerAddress *P);
 
 //True wajib
 //-jika terdapat 1 atau kurang pemain di map, dengan asumsi
