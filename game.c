@@ -6,25 +6,24 @@
 int main(){
 	MonopolyMap map;
 	Block block;
+	Address cplayer; // current player
+
 	FILE *f = fopen("mapdata.txt","r");
-
-
     map = load_map(f);
+    fclose(f);
 
     pick_jumlah_player(&map);
-
-    printf("%s\n", ((Player*)Info(First(map.first->list_player)))->name);
-
+	cplayer = First(map.ListTurn);
+	
     BlockAddress addr = map.first;
     addr = map.first->map_next;
 
-    do {
+    do	 {
 //        printf("%d\n", addr->id );
         printf("ad : %s\n", addr->name);
         addr = addr->map_next;
     }while( addr != NULL );
 
-    fclose(f);
 
     print_map(map);
     // print info petak: block_info_petak(map);
