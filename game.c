@@ -2,6 +2,7 @@
 #include "Block.h"
 #include "MonopolyMap.h"
 #include "infopetak.h"
+#include "gamelogic.h"
 
 #define ifCommand(cmd)\
 	if( strcmp( command, cmd) == 0 )

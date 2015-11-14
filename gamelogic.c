@@ -54,7 +54,13 @@ void place_player(BlockAddress *B, void *Player)
 
 BlockAddress last_block(MonopolyMap map)
 {
+    BlockAddress last;
+    last = map.first;
 
+    while(last != NULL)
+    {
+        last = last->map_next;
+    }
 }
 
 //=====================================================================================

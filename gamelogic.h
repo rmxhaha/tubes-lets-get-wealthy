@@ -32,14 +32,16 @@ void pindah_player(MonopolyMap map, void *Player, int d );
 
 void pick_jumlah_player(MonopolyMap map);
 
+
+
 /**
-	Spec : 
-		pada putaran pertama hanya bisa membeli hingga level 2 
-		pada putaran selanjutnya bisa membeli hingga level 3 
+	Spec :
+		pada putaran pertama hanya bisa membeli hingga level 2
+		pada putaran selanjutnya bisa membeli hingga level 3
 		landmark bisa di beli jika gedung sudah level 3 dan di putaran setelah pembelian gedung level 3
 		<Spec di atas tidak di temukan di file tugas>
-		
-	
+
+
 */
 
 void process_buy(MonopolyMap,PlayerAddress);
@@ -47,5 +49,15 @@ void process_buy(MonopolyMap,PlayerAddress);
 void process_upgrade(MonopolyMap,PlayerAddress);
 
 void pindah_player_ke(MonopolyMap,PlayerAddress, BlockAddress);
+
+
+//True wajib
+//-jika terdapat 1 atau kurang pemain di map, dengan asumsi
+// pemain yang uangnya habis di-remove dari map.
+//
+//True Opsional
+//-apabila terdapat pemain yang memiliki semua petak rekreasi
+//-apabila terdapat pemain yang memiliki seluruh petak di tiga blok
+boolean is_game_finished(MonopolyMap);
 
 #endif
