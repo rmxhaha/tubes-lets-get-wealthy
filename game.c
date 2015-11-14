@@ -18,7 +18,7 @@ int main(){
     fclose(f);
 
     pick_jumlah_player(map);
-	cplayer = First(map.ListTurn);
+	cplayer = First(map.ListPlayer);
 
 	// repeat until game is won
 	do {

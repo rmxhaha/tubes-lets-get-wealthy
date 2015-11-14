@@ -78,7 +78,7 @@ MonopolyMap load_map(FILE* stream){
 	}
 
 	/*List Player */
-	CreateList(&map.ListTurn);
+	CreateList(&map.ListPlayer);
 
 	/*List offered*/
 	CreateList(&map.ListOffered);
@@ -173,3 +173,4 @@ void print_map(MonopolyMap map ){
 		printf("\n");
 	}
 }
+
