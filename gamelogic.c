@@ -161,7 +161,34 @@ void pindah_player_ke(MonopolyMap,PlayerAddress, BlockAddress);
 
 //=====================================================================================
 
-
+void do_chance (MonopolyMap *map, PlayerAddress *P)
+{
+/*	Player menerima kartu kesempatan secara random, melakukan aksi berdasarkan kartu 
+	yang diterima.*/
+	//BELUM SELESAI...
+	//KAMUS
+	Chance c;
+	char input[10];
+	
+	//ALGORITMA
+	c = get_chance();
+	printf("Kartu kesempatan : %d\n", c);
+	if (c==6 || c==7 || c==8 || c==9 || c==10) {
+		printf("Ingin simpan kartu?");
+		scanf("%s", input);
+		if (strcmp(input, "simpan")== 0) {
+			printf("Simpan kartu.");
+			(*P)->save_chance = c;
+		}
+		else {
+			printf("Buang kartu.");
+		}
+	}
+	else { /* 1, 2, 3, 4, 5 (GOTO_PAJAK, GOTO_PENJARA, 
+		GOTO_START, GOTO_KELILING_DUNIA, MATI_LAMPU,) */
+		
+	}
+}
 
 
 
