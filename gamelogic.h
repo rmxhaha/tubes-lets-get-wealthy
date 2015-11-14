@@ -37,10 +37,13 @@ void pick_jumlah_player(MonopolyMap* map);
 		pada putaran pertama hanya bisa membeli hingga level 2 
 		pada putaran selanjutnya bisa membeli hingga level 3 
 		landmark bisa di beli jika gedung sudah level 3 dan di putaran setelah pembelian gedung level 3
-	Note :
-		putaran player selesai setelah buy process
+		<Spec di atas tidak di temukan di file tugas>
+		
+	
 */
 
-void process_buy(MonopolyMap,PlayerAddress);
+void process_buy(MonopolyMap*,PlayerAddress);
+
+void process_upgrade(MonopolyMap*,PlayerAddress);
 
 #endif

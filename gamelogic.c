@@ -143,8 +143,11 @@ void pick_jumlah_player(MonopolyMap* map){
 
 //=====================================================================================
 
-void process_buy(MonopolyMap,PlayerAddress);
+void process_buy(MonopolyMap*,PlayerAddress);
 
+//=====================================================================================
+
+void process_upgrade(MonopolyMap*,PlayerAddress);
 
 //=====================================================================================
 
