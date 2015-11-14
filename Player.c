@@ -5,7 +5,7 @@ void player_alokasi(PlayerAddress *Padd)
     *Padd = (Player*)malloc(sizeof(Player));
 }
 
-void player_alokasi(PlayerAddress *Padd)
+void player_dealokasi(PlayerAddress *Padd)
 {
 	free(*Padd);
     *Padd = NULL;
