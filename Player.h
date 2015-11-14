@@ -17,4 +17,6 @@ void player_init(PlayerAddress *Padd);
 
 void player_alokasi(PlayerAddress *Padd);
 
+void player_dealokasi(PlayerAddress *Padd);
+
 #endif
