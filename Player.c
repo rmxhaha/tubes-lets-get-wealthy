@@ -5,6 +5,12 @@ void player_alokasi(PlayerAddress *Padd)
     *Padd = (Player*)malloc(sizeof(Player));
 }
 
+void player_alokasi(PlayerAddress *Padd)
+{
+	free(*Padd);
+    *Padd = NULL;
+}
+
 void player_init(PlayerAddress *Padd)
 {
     *Padd = (Player*)malloc(sizeof(Player));
@@ -14,5 +20,6 @@ void player_init(PlayerAddress *Padd)
     (*Padd)->revolution_count = 0;
     (*Padd)->save_chance = 0;
 }
+
 
 
