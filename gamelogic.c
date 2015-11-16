@@ -12,7 +12,7 @@ boolean is_player_on(BlockAddress B)
 //=====================================================================================
 
 //mengembalikan BlockAddress di mana player berada, atau NULL
-BlockAddress search_player(MonopolyMap map,void* player)
+BlockAddress search_player(MonopolyMap map,PlayerAddress player)
 {
     BlockAddress B;
     B = map.first;
@@ -45,9 +45,9 @@ BlockAddress search_player(MonopolyMap map,void* player)
 //=====================================================================================
 
 //masukin player ke block
-void place_player(BlockAddress *B, void *Player)
+void place_player(BlockAddress *B, PlayerAddress player)
 {
-    InsVFirst(&(*B)->list_player, Player);
+    InsVFirst(&(*B)->list_player, player);
 }
 
 //=====================================================================================
@@ -67,12 +67,12 @@ BlockAddress last_block(MonopolyMap map)
 
 //majuin player 1 petak
 //masih belom bisa, last masih salah
-void pindah_player1(MonopolyMap map, void *Player )
+void pindah_player1(MonopolyMap map, PlayerAddress player )
 {
     BlockAddress here;
     BlockAddress last;
 
-    here = search_player(map, Player);//hasilsearch
+    here = search_player(map, player);//hasilsearch
 
 
         last = last_block(map);
@@ -80,32 +80,32 @@ void pindah_player1(MonopolyMap map, void *Player )
 
 
     //menghilangkan keberadaan player di petak
-    DeleteP(&here->list_player, Player);
+    DeleteP(&here->list_player, player);
 
 
     //ngubah posisi
     if(here == last)
     {
         here = map.first;//startblock;
-        InsVFirst(&here->list_player, Player);
+        InsVFirst(&here->list_player, player);
     }
     else
     {
         here = here->map_next;
-        InsVFirst(&here->list_player, Player);
+        InsVFirst(&here->list_player, player);
     }
 
 }
 
 //=====================================================================================
 
-void pindah_player(MonopolyMap map, void *Player, int d )
+void pindah_player(MonopolyMap map, PlayerAddress player, int d )
 {
     int i;
 
     for(i=1; i<=d; i++)
     {
-        pindah_player1(map, Player );
+        pindah_player1(map, player );
     }
 }
 
