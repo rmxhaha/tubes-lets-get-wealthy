@@ -19,16 +19,16 @@
 boolean is_player_on(BlockAddress B);
 
 //mengembalikan BlockAddress di mana player berada, atau NULL
-BlockAddress search_player(MonopolyMap map,void* player);
+BlockAddress search_player(MonopolyMap map,PlayerAddress player);
 
 //masukin player ke block
-void place_player(BlockAddress *B, void *Player);
+void place_player(BlockAddress B, PlayerAddress player);
 
 //majuin player 1 petak
-void pindah_player1(MonopolyMap map, void *Player );
+void pindah_player1(MonopolyMap map, PlayerAddress player );
 
 //majuin player sesuai lemparan dadu
-void pindah_player(MonopolyMap map, void *Player, int d );
+void pindah_player(MonopolyMap map, PlayerAddress player, int d );
 
 void pick_jumlah_player(MonopolyMap* map);
 

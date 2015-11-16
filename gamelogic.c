@@ -12,11 +12,12 @@ boolean is_player_on(BlockAddress B)
 //=====================================================================================
 
 //mengembalikan BlockAddress di mana player berada, atau NULL
-BlockAddress search_player(MonopolyMap map,void* player)
+BlockAddress search_player(MonopolyMap map,PlayerAddress player)
 {
     BlockAddress B;
+    void *PP;
+
     B = map.first;
-    boolean found=false;
 
     while(B!=NULL)
     {
@@ -29,13 +30,11 @@ BlockAddress search_player(MonopolyMap map,void* player)
         //nentuin apakah player yang ada di block player yang dicari apa bukan
         if(B != NULL)
         {
-            found = FSearch(B->list_player, Search(B->list_player, player));
-        }
+            PP = Search(B->list_player, player);
 
-        //ngecek ketemu apa kaga?
-        if(found)
-        {
-            return B;
+            //ngecek ketemu apa kaga?
+            if( PP != Nil )
+                return B;
         }
 
         B = B->map_next;
@@ -45,9 +44,9 @@ BlockAddress search_player(MonopolyMap map,void* player)
 //=====================================================================================
 
 //masukin player ke block
-void place_player(BlockAddress *B, void *Player)
+void place_player(BlockAddress B, PlayerAddress player)
 {
-    InsVFirst(&(*B)->list_player, Player);
+    InsVFirst(&B->list_player, player);
 }
 
 //=====================================================================================
@@ -57,55 +56,51 @@ BlockAddress last_block(MonopolyMap map)
     BlockAddress last;
     last = map.first;
 
-    while(last != NULL)
+    while(last->map_next != NULL)
     {
         last = last->map_next;
     }
+
+    return last;
 }
 
 //=====================================================================================
 
 //majuin player 1 petak
 //masih belom bisa, last masih salah
-void pindah_player1(MonopolyMap map, void *Player )
+void pindah_player1(MonopolyMap map, PlayerAddress player )
 {
     BlockAddress here;
-    BlockAddress last;
 
-    here = search_player(map, Player);//hasilsearch
-
-
-        last = last_block(map);
-
-
+    here = search_player(map, player);//hasilsearch
 
     //menghilangkan keberadaan player di petak
-    DeleteP(&here->list_player, Player);
+    DeleteP(&here->list_player, player);
 
 
     //ngubah posisi
-    if(here == last)
+    if(here->map_next == NULL) // last block
     {
         here = map.first;//startblock;
-        InsVFirst(&here->list_player, Player);
+        place_player(here,player);
     }
     else
     {
         here = here->map_next;
-        InsVFirst(&here->list_player, Player);
+        place_player(here,player);
     }
 
 }
 
 //=====================================================================================
 
-void pindah_player(MonopolyMap map, void *Player, int d )
+void pindah_player(MonopolyMap map, PlayerAddress player, int d )
 {
     int i;
 
     for(i=1; i<=d; i++)
     {
-        pindah_player1(map, Player );
+        pindah_player1(map, player );
     }
 }
 
