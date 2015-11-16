@@ -15,8 +15,9 @@ boolean is_player_on(BlockAddress B)
 BlockAddress search_player(MonopolyMap map,PlayerAddress player)
 {
     BlockAddress B;
+    void *PP;
+
     B = map.first;
-    boolean found=false;
 
     while(B!=NULL)
     {
@@ -29,13 +30,11 @@ BlockAddress search_player(MonopolyMap map,PlayerAddress player)
         //nentuin apakah player yang ada di block player yang dicari apa bukan
         if(B != NULL)
         {
-            found = FSearch(B->list_player, Search(B->list_player, player));
-        }
+            PP = Search(B->list_player, player);
 
-        //ngecek ketemu apa kaga?
-        if(found)
-        {
-            return B;
+            //ngecek ketemu apa kaga?
+            if( PP != Nil )
+                return B;
         }
 
         B = B->map_next;
