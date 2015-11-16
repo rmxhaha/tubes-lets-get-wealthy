@@ -61,4 +61,13 @@ void do_chance (MonopolyMap *map, PlayerAddress *P);
 //-apabila terdapat pemain yang memiliki seluruh petak di tiga blok
 boolean is_game_finished(MonopolyMap);
 
+void print_money( int money );
+
+void sell(MonopolyMap*,Block*);
+void buyoffered(MonopolyMap*,char* nama_petak);
+void showoffered(MonopolyMap*);
+
+
+
+
 #endif
