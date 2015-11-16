@@ -17,7 +17,7 @@ int main(){
     map = load_map(f);
     fclose(f);
 
-    pick_jumlah_player(map);
+    pick_jumlah_player(&map);
 	cplayer = First(map.ListPlayer);
 
 	// repeat until game is won
@@ -48,7 +48,7 @@ int main(){
 
 		}
 		else ifCommand("leaderboard"){
-
+			print_leaderboard( map );
 		}
 		else {
 			printf("perintah tidak diketahui\n");
