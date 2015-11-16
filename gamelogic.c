@@ -162,13 +162,13 @@ void pindah_player_ke(MonopolyMap,PlayerAddress, BlockAddress);
 
 void do_chance (MonopolyMap *map, PlayerAddress *P)
 {
-/*	Player menerima kartu kesempatan secara random, melakukan aksi berdasarkan kartu 
+/*	Player menerima kartu kesempatan secara random, melakukan aksi berdasarkan kartu
 	yang diterima.*/
 	//BELUM SELESAI...
 	//KAMUS
 	Chance c;
 	char input[10];
-	
+
 	//ALGORITMA
 	c = get_chance();
 	printf("Kartu kesempatan : %d\n", c);
@@ -183,25 +183,29 @@ void do_chance (MonopolyMap *map, PlayerAddress *P)
 			printf("Buang kartu.");
 		}
 	}
-	else { /* 1, 2, 3, 4, 5 (GOTO_PAJAK, GOTO_PENJARA, 
+	else { /* 1, 2, 3, 4, 5 (GOTO_PAJAK, GOTO_PENJARA,
 		GOTO_START, GOTO_KELILING_DUNIA, MATI_LAMPU,) */
-		
+
 	}
 }
 
 
 
 void print_money( int money ){
-	int b = money / 1000000000;
-	int m = money / 1000000;
-	int k = money / 1000;
+	int b = money / 1000000000 % 1000;
+	int m = money / 1000000 % 1000;
+	int k = money / 1000 % 1000;
 	int r = money % 1000;
-	
-	if( b != 0 ) printf("%dB ", b);
-	if( m != 0 ) printf("%dM ", m);
-	if( k != 0 ) printf("%dK ", k);
-	if( r != 0 ) printf("%d", r);
-	
+
+	if( b != 0 )
+        printf("%dB%d", b,m);
+	else if( m != 0 )
+        printf("%dM%d", m,k);
+	else if( k != 0 )
+        printf("%dK%d", k,r);
+	else
+        printf("%d", r);
+
 	printf("\n");
 }
 
