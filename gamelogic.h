@@ -63,6 +63,8 @@ boolean is_game_finished(MonopolyMap);
 
 void print_money( int money );
 
+void print_leaderboard(MonopolyMap);
+
 void sell(MonopolyMap*,Block*);
 void buyoffered(MonopolyMap*,char* nama_petak);
 void showoffered(MonopolyMap*);

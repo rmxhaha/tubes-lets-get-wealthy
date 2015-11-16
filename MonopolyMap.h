@@ -18,6 +18,4 @@ MonopolyMap load_map(FILE*);
 
 void print_map(MonopolyMap);
 
-void print_leaderboard(MonopolyMap);
-
 #endif
