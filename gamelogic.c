@@ -197,18 +197,47 @@ void print_money( int money ){
 	int k = money / 1000 % 1000;
 	int r = money % 1000;
 
-	if( b != 0 )
-        printf("%dB%d", b,m);
-	else if( m != 0 )
-        printf("%dM%d", m,k);
-	else if( k != 0 )
-        printf("%dK%d", k,r);
+	if( b != 0 ){
+        if( m != 0 )
+            printf("%dB%d", b,m);
+        else
+            printf("%dB", b);
+	}
+	else if( m != 0 ){
+        if( k != 0 )
+            printf("%dM%d", m,k);
+        else
+            printf("%dM", m);
+	}
+	else if( k != 0 ){
+        if( r != 0 )
+            printf("%dK%d", k,r);
+        else
+            printf("%dK", k);
+	}
 	else
         printf("%d", r);
-
-	printf("\n");
 }
 
+void print_leaderboard(MonopolyMap map){
+	Address PP;
+	PlayerAddress PA;
+	boolean first = true;
+
+	loop_list( map.ListPlayer,PP,
+		if( first ){
+			printf("> ");
+			first = false;
+		}
+		else
+			printf("  ");
+
+		PA = Info(PP);
+		printf("Player %s ", PA->name );
+		print_money(PA->money);
+		printf("\n");
+	);
+}
 
 
 
