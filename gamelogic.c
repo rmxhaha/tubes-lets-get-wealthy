@@ -112,7 +112,7 @@ void pindah_player(MonopolyMap map, void *Player, int d )
 //=====================================================================================
 
 
-void pick_jumlah_player(MonopolyMap map){
+void pick_jumlah_player(MonopolyMap *map){
 	int N,i;
 	PlayerAddress PA;
 
@@ -124,8 +124,6 @@ void pick_jumlah_player(MonopolyMap map){
 		}
 	} while( N < 2 || 4 < N );
 
-    CreateList(&map.first->list_player);
-
 	for( i = 0; i < N; ++ i ){
 		player_alokasi(&PA);
 		player_init(&PA);
@@ -133,7 +131,8 @@ void pick_jumlah_player(MonopolyMap map){
 		PA->name[0] = 'A' + (char)i; // a b c d
 		PA->name[1] = '\0';
 
-		InsVLast(&map.first->list_player,PA);
+		InsVLast(&(map->first->list_player),PA);
+		InsVLast(&(map->ListPlayer), PA);
 	}
 
 }

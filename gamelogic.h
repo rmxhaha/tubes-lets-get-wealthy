@@ -30,7 +30,7 @@ void pindah_player1(MonopolyMap map, void *Player );
 //majuin player sesuai lemparan dadu
 void pindah_player(MonopolyMap map, void *Player, int d );
 
-void pick_jumlah_player(MonopolyMap map);
+void pick_jumlah_player(MonopolyMap* map);
 
 
 
