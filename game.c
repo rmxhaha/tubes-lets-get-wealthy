@@ -22,6 +22,7 @@ int main(){
 
 	// repeat until game is won
 	do {
+        printf("> ");
 		scanf("%s", command );
 		ifCommand("rolldice"){
 
