@@ -44,9 +44,9 @@ BlockAddress search_player(MonopolyMap map,PlayerAddress player)
 //=====================================================================================
 
 //masukin player ke block
-void place_player(BlockAddress *B, PlayerAddress player)
+void place_player(BlockAddress B, PlayerAddress player)
 {
-    InsVFirst(&(*B)->list_player, player);
+    InsVFirst(&B->list_player, player);
 }
 
 //=====================================================================================
