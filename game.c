@@ -13,6 +13,9 @@ int main(){
 	Address cplayer; // current player
 	char command[100];
 
+	int dadu1, dadu2;
+	set_Random(); // init random
+
 	FILE *f = fopen("mapdata.txt","r");
     map = load_map(f);
     fclose(f);
@@ -25,7 +28,7 @@ int main(){
         printf("> ");
 		scanf("%s", command );
 		ifCommand("rolldice"){
-
+            lempar_Dadu(&dadu1,&dadu2);
 		}
 		else ifCommand("info"){
 
