@@ -12,6 +12,7 @@ int main(){
 	Block block;
 	Address cplayer; // current player
 	char command[100];
+	char tmp[100];
 
 	int dadu1, dadu2;
 	set_Random(); // init random
@@ -31,7 +32,8 @@ int main(){
             lempar_Dadu(&dadu1,&dadu2);
 		}
 		else ifCommand("info"){
-
+            scanf("%s", tmp);
+            block_info_petak(map,tmp);
 		}
 		else ifCommand("buy"){
 
