@@ -71,29 +71,23 @@ BlockAddress last_block(MonopolyMap map)
 void pindah_player1(MonopolyMap map, PlayerAddress player )
 {
     BlockAddress here;
-    BlockAddress last;
 
     here = search_player(map, player);//hasilsearch
-
-
-        last = last_block(map);
-
-
 
     //menghilangkan keberadaan player di petak
     DeleteP(&here->list_player, player);
 
 
     //ngubah posisi
-    if(here == last)
+    if(here->map_next == NULL) // last block
     {
         here = map.first;//startblock;
-        InsVFirst(&here->list_player, player);
+        place_player(here,player);
     }
     else
     {
         here = here->map_next;
-        InsVFirst(&here->list_player, player);
+        place_player(here,player);
     }
 
 }
