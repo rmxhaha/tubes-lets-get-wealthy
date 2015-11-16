@@ -16,7 +16,7 @@ void player_init(PlayerAddress *Padd)
     *Padd = (Player*)malloc(sizeof(Player));
 
     (*Padd)->name[0] = '\0';
-    (*Padd)->money = 0;
+    (*Padd)->money = 2000000;
     (*Padd)->revolution_count = 0;
     (*Padd)->save_chance = 0;
 }
