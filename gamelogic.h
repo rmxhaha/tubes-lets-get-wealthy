@@ -5,15 +5,6 @@
 #include "Player.h"
 #include "MonopolyMap.h"
 
-/**
-	Spec :
-		kalau di nyampe ujung map
-		- mulai dari map.first lagi
-		kalau melewati start maka
-		- revolution_count di tambah
-		- jika revolution_count != 1 maka duit di tambah 150k
-*/
-
 
 //mengembalikan true apabila di block terdapat player(tidak spesifik player mana)
 boolean is_player_on(BlockAddress B);
@@ -27,6 +18,15 @@ void place_player(BlockAddress B, PlayerAddress player);
 //majuin player 1 petak
 void pindah_player1(MonopolyMap map, PlayerAddress player );
 
+
+/**
+    kalau di nyampe ujung map
+    - mulai dari map.first lagi
+    kalau melewati start maka
+    - revolution_count di tambah
+    - jika revolution_count != 1 maka duit di tambah 150k
+*/
+
 //majuin player sesuai lemparan dadu
 void pindah_player(MonopolyMap map, PlayerAddress player, int d );
 
@@ -35,16 +35,20 @@ void pick_jumlah_player(MonopolyMap* map);
 
 
 /**
-	Spec :
-		pada putaran pertama hanya bisa membeli hingga level 2
-		pada putaran selanjutnya bisa membeli hingga level 3
-		landmark bisa di beli jika gedung sudah level 3 dan di putaran setelah pembelian gedung level 3
-		<Spec di atas tidak di temukan di file tugas>
-
+    membeli tanah jika
+    1. masih kosong gunakan tab_harga[0]
+        cek apakah uang cukup
+        tampilkan pesan berhasil atau gagal
+    2. tidak kosong, beli paksa dengan harga  kumulatif (tab_harga[level]) * 2
 
 */
 
 void process_buy(MonopolyMap,PlayerAddress);
+
+/**
+    Meningkatkan level gedung
+    jika gedung bukan milik player atau uang tidak cukup tampilkan pesan kesalahan
+*/
 
 void process_upgrade(MonopolyMap,PlayerAddress);
 
@@ -61,8 +65,20 @@ void do_chance (MonopolyMap *map, PlayerAddress *P);
 //-apabila terdapat pemain yang memiliki seluruh petak di tiga blok
 boolean is_game_finished(MonopolyMap);
 
+
+/**
+    menulis uang dengan format
+        4B242
+        4M500
+        200K300
+*/
 void print_money( int money );
 
+/**
+    menulis ListPlayer ke layar dengan format
+    > nama1 jumlah_uang1
+      nama2 jumlah_uang2
+*/
 void print_leaderboard(MonopolyMap);
 
 void sell(MonopolyMap*,Block*);
