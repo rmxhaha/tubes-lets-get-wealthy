@@ -22,7 +22,7 @@ boolean is_player_on(BlockAddress B);
 BlockAddress search_player(MonopolyMap map,PlayerAddress player);
 
 //masukin player ke block
-void place_player(BlockAddress *B, PlayerAddress player);
+void place_player(BlockAddress B, PlayerAddress player);
 
 //majuin player 1 petak
 void pindah_player1(MonopolyMap map, PlayerAddress player );
