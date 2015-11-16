@@ -56,10 +56,12 @@ BlockAddress last_block(MonopolyMap map)
     BlockAddress last;
     last = map.first;
 
-    while(last != NULL)
+    while(last->map_next != NULL)
     {
         last = last->map_next;
     }
+
+    return last;
 }
 
 //=====================================================================================
