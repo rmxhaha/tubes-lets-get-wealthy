@@ -174,3 +174,21 @@ void print_map(MonopolyMap map ){
 	}
 }
 
+void print_leaderboard(MonopolyMap map){
+	Address PP;
+	PlayerAddress PA;
+	boolean first = true;
+	
+	loop_list( map.ListPlayer,PP,
+		if( first ){
+			printf("> ");
+			first = false;
+		}
+		else 
+			printf("  ");
+		
+		PA = Info(PP);
+		printf("Player %s %d\n", PA->name, PA->money );
+	);
+}
+
