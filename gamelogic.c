@@ -191,7 +191,19 @@ void do_chance (MonopolyMap *map, PlayerAddress *P)
 
 
 
-
+void print_money( int money ){
+	int b = money / 1000000000;
+	int m = money / 1000000;
+	int k = money / 1000;
+	int r = money % 1000;
+	
+	if( b != 0 ) printf("%dB ", b);
+	if( m != 0 ) printf("%dM ", m);
+	if( k != 0 ) printf("%dK ", k);
+	if( r != 0 ) printf("%d", r);
+	
+	printf("\n");
+}
 
 
 
