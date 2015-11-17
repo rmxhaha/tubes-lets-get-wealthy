@@ -55,7 +55,7 @@ void process_buy(MonopolyMap,PlayerAddress);
 
 void process_upgrade(MonopolyMap,PlayerAddress);
 
-void pindah_player_ke(MonopolyMap,PlayerAddress, BlockAddress);
+void pindah_player_ke(MonopolyMap *map,PlayerAddress player, BlockAddress bpindah);
 
 void do_chance (MonopolyMap *map, PlayerAddress *P);
 

@@ -184,8 +184,15 @@ void process_upgrade(MonopolyMap,PlayerAddress);
 
 //=====================================================================================
 
-void pindah_player_ke(MonopolyMap,PlayerAddress, BlockAddress);
-
+void pindah_player_ke(MonopolyMap *map,PlayerAddress player, BlockAddress bpindah)
+{
+    //cari blockaddress player
+    BlockAddress here = search_player(*map, player);
+    //hapus keberadaan player di situ
+    DeleteP(&here->list_player, player);
+    //taroh di tempat baru
+    place_player(bpindah,player);
+}
 //=====================================================================================
 
 void do_chance (MonopolyMap *map, PlayerAddress *P)

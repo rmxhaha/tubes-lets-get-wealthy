@@ -3,6 +3,7 @@
 #include "MonopolyMap.h"
 #include "infopetak.h"
 #include "gamelogic.h"
+#include "worldtravel.h"
 
 #define ifCommand(cmd)\
 	if( strcmp( command, cmd) == 0 )
@@ -13,6 +14,7 @@ int main(){
 	Address cplayer; // current player
 	char command[100];
 	char tmp[100];
+    PlayerAddress PA;
 
 	int dadu1, dadu2;
 	set_Random(); // init random
@@ -23,7 +25,7 @@ int main(){
 
     pick_jumlah_player(&map);
 	cplayer = First(map.ListPlayer);
-
+    PA = Info(cplayer);
 	// repeat until game is won
 	do {
         printf("> ");
@@ -55,6 +57,11 @@ int main(){
 		}
 		else ifCommand("leaderboard"){
 			print_leaderboard( map );
+		}
+		/*tambah cheat buat travel*/
+		else ifCommand("travel"){
+            scanf("%s",tmp);
+            player_travel(map,PA,tmp);
 		}
 		else {
 			printf("perintah tidak diketahui\n");
