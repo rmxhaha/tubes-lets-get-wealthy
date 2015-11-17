@@ -66,3 +66,13 @@ void block_load_from_bin( FILE* stream, BlockAddress block ){
         break;
     }
 }
+
+int block_cost( Block b ){
+    int i = 0;
+    int cost = 0;
+
+    for( i = 0; i <= b.level; ++ i )
+        cost += b.tab_harga[i];
+
+    return cost;
+}
