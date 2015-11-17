@@ -305,5 +305,20 @@ void buyoffered(MonopolyMap* map, Player* player, char* nama_petak){
 }
 
 void showoffered(MonopolyMap* map){
+    Address PP;
+    BlockAddress BP;
+    boolean first = true;
 
+    loop_list(map->ListOffered,PP,
+        if( first ){
+            printf("> ");
+            first = false;
+        }
+        else
+            printf("  ");
+
+        BP = Info(PP);
+
+        printf("%s, harga ", BP->name ); print_money( block_cost(*BP));
+    );
 }
