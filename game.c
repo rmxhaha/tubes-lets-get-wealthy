@@ -51,7 +51,7 @@ int main(){
 
 		}
 		else ifCommand("board"){
-
+            print_map(map);
 		}
 		else ifCommand("leaderboard"){
 			print_leaderboard( map );
