@@ -31,7 +31,7 @@ BlockAddress search_block_by_name(MonopolyMap map, char* namatempat)
         }
     }
     while(!found && b != NULL);
-	
+
     if(found)
     {
 		return b;
@@ -269,3 +269,31 @@ void print_leaderboard(MonopolyMap map){
 
 
 
+void sell(MonopolyMap* map,Block* b){
+    if( b->owner == NULL ) return;
+
+    // insert kalau belum ada
+    if( Search(map->ListOffered,b) == NULL )
+        InsVFirst(&map->ListOffered,b);
+}
+
+void buyoffered(MonopolyMap* map,char* nama_petak){
+    Address PP;
+    BlockAddress BA;
+
+    loop_list(map->ListOffered,PP,
+        BA = Info(PP);
+        if( strcmp( BA->name, nama_petak) == 0 ){
+            break;
+        }
+    );
+
+    if( BA == NULL )
+        printf("> kota tidak ada di list penjualan\n");
+    else {
+        // kalau uang cukup pindah posesi
+    }
+}
+void showoffered(MonopolyMap* map){
+
+}
