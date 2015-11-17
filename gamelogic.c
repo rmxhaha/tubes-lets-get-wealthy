@@ -10,6 +10,39 @@ boolean is_player_on(BlockAddress B)
 }
 
 //=====================================================================================
+//mengembalikan BlockAddress sesuai dengan nama input, atau NULL
+BlockAddress search_block_by_name(MonopolyMap map, char* namatempat)
+{
+    BlockAddress b;
+    boolean found;
+
+    //mencari nama kota
+    found = false;
+    b = map.first;
+    do
+    {
+        if(strcmp(namatempat,b->name)==0)
+        {
+            found = true;
+        }
+        else
+        {
+           b = b->map_next;
+        }
+    }
+    while(!found && b != NULL);
+	
+    if(found)
+    {
+		return b;
+    }
+    else
+    {
+		return NULL;
+    }
+}
+
+//=====================================================================================
 
 //mengembalikan BlockAddress di mana player berada, atau NULL
 BlockAddress search_player(MonopolyMap map,PlayerAddress player)

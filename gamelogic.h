@@ -9,6 +9,9 @@
 //mengembalikan true apabila di block terdapat player(tidak spesifik player mana)
 boolean is_player_on(BlockAddress B);
 
+//mengembalikan BlockAddress berdasarkan input nama block, atau NULL
+BlockAddress search_block_by_name(MonopolyMap map, char* namatempat);
+
 //mengembalikan BlockAddress di mana player berada, atau NULL
 BlockAddress search_player(MonopolyMap map,PlayerAddress player);
 
