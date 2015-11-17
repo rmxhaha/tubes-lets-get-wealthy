@@ -277,7 +277,7 @@ void sell(MonopolyMap* map,Block* b){
         InsVFirst(&map->ListOffered,b);
 }
 
-void buyoffered(MonopolyMap* map,char* nama_petak){
+void buyoffered(MonopolyMap* map, Player* player, char* nama_petak){
     Address PP;
     BlockAddress BA;
 
@@ -289,11 +289,21 @@ void buyoffered(MonopolyMap* map,char* nama_petak){
     );
 
     if( BA == NULL )
-        printf("> kota tidak ada di list penjualan\n");
-    else {
-        // kalau uang cukup pindah posesi
+        printf("> kota tidak ada di list penjualan");
+    else if( BA->owner == player )
+        printf("> kota yang ingin anda beli adalah milik anda");
+    else if( block_cost(*BA) <= player->money ){
+        BA->owner = player;
+        player->money -= block_cost(*BA);
+        printf("> terbeli, sisa uang anda "); print_money(player->money);
     }
+    else {
+        printf("> uang anda tidak cukup");
+    }
+
+    printf("\n");
 }
+
 void showoffered(MonopolyMap* map){
 
 }
