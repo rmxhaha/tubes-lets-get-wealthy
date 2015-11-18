@@ -123,6 +123,21 @@ void pindah_player1(MonopolyMap map, PlayerAddress player )
         place_player(here,player);
     }
 
+
+    //cek udah muter
+    if(here == map.first)
+    {
+        player->revolution_count++;
+    }
+
+    //cek lewat worldcup
+    if(here->type == 8)
+    {
+        //ubah jadi false parameter player pemegang worldcup
+    }
+
+
+
 }
 
 //=====================================================================================
@@ -134,6 +149,15 @@ void pindah_player(MonopolyMap map, PlayerAddress player, int d )
     for(i=1; i<=d; i++)
     {
         pindah_player1(map, player );
+    }
+
+    //cek masuk worldcup
+    BlockAddress here;
+    here = search_player(map, player);
+
+    if(here->type == 8)
+    {
+        //ubah jadi true status pemegang world cup
     }
 }
 
