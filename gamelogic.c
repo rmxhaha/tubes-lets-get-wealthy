@@ -128,6 +128,11 @@ void pindah_player1(MonopolyMap map, PlayerAddress player )
     if(here == map.first)
     {
         player->revolution_count++;
+
+        if(player->revolution_count > 1)
+        {
+            player->money += 150000;
+        }
     }
 
     //cek lewat worldcup
