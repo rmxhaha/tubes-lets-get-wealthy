@@ -139,6 +139,7 @@ void pindah_player1(MonopolyMap map, PlayerAddress player )
     if(here->type == 8)
     {
         //ubah jadi false parameter player pemegang worldcup
+        player->world_cup_holder = false;
     }
 
 
@@ -163,6 +164,7 @@ void pindah_player(MonopolyMap map, PlayerAddress player, int d )
     if(here->type == 8)
     {
         //ubah jadi true status pemegang world cup
+        player->world_cup_holder = true;
     }
 }
 
@@ -213,14 +215,32 @@ void process_upgrade(MonopolyMap,PlayerAddress);
 
 //=====================================================================================
 
-void pindah_player_ke(MonopolyMap *map,PlayerAddress player, BlockAddress bpindah)
+void pindah_player_ke(MonopolyMap map,PlayerAddress player, BlockAddress bpindah)
 {
     //cari blockaddress player
-    BlockAddress here = search_player(*map, player);
+    BlockAddress here = search_player(map, player);
     //hapus keberadaan player di situ
     DeleteP(&here->list_player, player);
     //taroh di tempat baru
     place_player(bpindah,player);
+
+    //cek udah muter
+    if(here == map.first)
+    {
+        player->revolution_count++;
+
+        if(player->revolution_count > 1)
+        {
+            player->money += 150000;
+        }
+    }
+
+    //cek lewat worldcup
+    if(here->type == 8)
+    {
+        //ubah jadi false parameter player pemegang worldcup
+        player->world_cup_holder = false;
+    }
 }
 //=====================================================================================
 

@@ -19,6 +19,7 @@ void player_init(PlayerAddress *Padd)
     (*Padd)->money = 2000000;
     (*Padd)->revolution_count = 0;
     (*Padd)->save_chance = 0;
+    (*Padd)->world_cup_holder = false;
 }
 
 
