@@ -89,6 +89,9 @@ void buyoffered(MonopolyMap*, Player* buyer, char* nama_petak);
 void showoffered(MonopolyMap*);
 
 
+//tidak ngecek apakah petak sudah di-claim player lain
+void buy(MonopolyMap map, PlayerAddress P);
+
 
 
 #endif

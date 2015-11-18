@@ -329,3 +329,23 @@ void showoffered(MonopolyMap* map){
         printf("%s, harga ", BP->name ); print_money( block_cost(*BP));
     );
 }
+
+void buy(MonopolyMap map, PlayerAddress P)
+{
+    BlockAddress B;
+    B = search_player(map, P);
+
+    if(P->money >= B->tab_harga[B->level])
+    {
+        P->money -= (B->tab_harga[B->level]);
+        B->owner = P;
+
+        printf("Selamat, kota %s kini menjadi milikmu!\n", B->name);
+        printf("level bangunan %d\n", B->level);
+        printf("sisa uangmu: ");print_money(P->money);printf("\n");
+    }
+    else
+    {
+        printf("Uangmu tidak cukup untuk membeli kota ini\n");
+    }
+}
