@@ -89,9 +89,10 @@ void buyoffered(MonopolyMap*, Player* buyer, char* nama_petak);
 void showoffered(MonopolyMap*);
 
 
-//tidak ngecek apakah petak sudah di-claim player lain
+//udah gabung sama beli paksa
 void buy(MonopolyMap map, PlayerAddress P);
 
+//harga upgrade dari tab_harga[level]
 void upgrade(MonopolyMap map, PlayerAddress P);
 
 
