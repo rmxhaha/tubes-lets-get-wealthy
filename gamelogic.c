@@ -364,17 +364,43 @@ void buy(MonopolyMap map, PlayerAddress P)
     BlockAddress B;
     B = search_player(map, P);
 
-    if(P->money >= B->tab_harga[B->level])
+    //cek kepemilikan
+    if(B->owner == NULL)
     {
-        P->money -= (B->tab_harga[B->level]);
-        B->owner = P;
+        if(P->money >= B->tab_harga[B->level])
+        {
+            P->money -= (B->tab_harga[B->level]);
+            B->owner = P;
 
-        printf("Selamat, kota %s kini menjadi milikmu!\n", B->name);
-        printf("level bangunan %d\n", B->level);
+            printf("Selamat, kota %s kini menjadi milikmu!\n", B->name);
+            printf("level bangunan %d\n", B->level);
+            printf("sisa uangmu: ");print_money(P->money);printf("\n");
+        }
+        else
+        {
+            printf("Uangmu tidak cukup untuk membeli kota ini\n");
+        }
+    else
+    {
+        printf("Properti player lain\n");
+    }
+}
+
+void upgrade(MonopolyMap map, PlayerAddress P)
+{
+    BlockAddress B;
+    B = search_player(map, P);
+
+    if((P->money >= B->tab_harga[B->level + 1]) && (B->owner == P))
+    {
+        P->money -= (B->tab_harga[B->level + 1]);
+        B->level++
+
+        printf("Selamat, bangunanmu di %s memiliki level %d!\n", B->name, B->level);
         printf("sisa uangmu: ");print_money(P->money);printf("\n");
     }
     else
     {
-        printf("Uangmu tidak cukup untuk membeli kota ini\n");
+        printf("Uangmu tidak cukup untuk upgrade\n");
     }
 }
