@@ -180,10 +180,10 @@ void pick_jumlah_player(MonopolyMap *map){
 
 	do{
 		printf("Jumlah player = ");scanf("%d",&N);
-		if( N < 2 || 4 < N ){
+		if( N < MIN_PLAYER || MAX_PLAYER < N ){
 			printf("Jumlah player tidak wajar (tolong pilih dari 2-4 player)\n");
 		}
-	} while( N < 2 || 4 < N );
+	} while( MIN_PLAYER < 2 || 4 < MAX_PLAYER );
 
 	for( i = 0; i < N; ++ i ){
 		player_alokasi(&PA);
