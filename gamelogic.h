@@ -36,18 +36,6 @@ void pindah_player(MonopolyMap map, PlayerAddress player, int d );
 void pick_jumlah_player(MonopolyMap* map);
 
 
-
-/**
-    membeli tanah jika
-    1. masih kosong gunakan tab_harga[0]
-        cek apakah uang cukup
-        tampilkan pesan berhasil atau gagal
-    2. tidak kosong, beli paksa dengan harga  kumulatif (tab_harga[level]) * 2
-
-*/
-
-void process_buy(MonopolyMap,PlayerAddress);
-
 /**
     Meningkatkan level gedung
     jika gedung bukan milik player atau uang tidak cukup tampilkan pesan kesalahan
@@ -89,10 +77,21 @@ void buyoffered(MonopolyMap*, Player* buyer, char* nama_petak);
 void showoffered(MonopolyMap*);
 
 
-//udah gabung sama beli paksa
+/**
+    membeli tanah jika
+    1. masih kosong gunakan tab_harga[0]
+        cek apakah uang cukup
+        tampilkan pesan berhasil atau gagal
+    2. tidak kosong, beli paksa dengan harga  kumulatif (tab_harga[level]) * 2
+
+*/
 void buy(MonopolyMap map, PlayerAddress P);
 
-//harga upgrade dari tab_harga[level]
+/**
+    upgrade gedung pada tanah
+    1. menambah level gedung jika uang mencukupi
+    2. memberikan pesan jika uang tidak cukup
+*/
 void upgrade(MonopolyMap map, PlayerAddress P);
 
 
