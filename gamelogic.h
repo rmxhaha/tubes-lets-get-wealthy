@@ -72,8 +72,23 @@ void print_money( int money );
 */
 void print_leaderboard(MonopolyMap);
 
-void sell(MonopolyMap*,Block*);
+/**
+    memasukan block pada List Penjualan (ListOffered)
+    1. jika block tidak ditemukan berikan pesan kesalahan
+    2. jika block bukan milik player penjual beri pesan kesalahan
+    3. jika block belum ada pada list penjualan tambahkan ke list penjualan
+*/
+void sell(MonopolyMap* map,Player* cplayer, char *nama_petak);
+
+/**
+    membeli dari list penjualan  (ListOffered)
+    1. jika nama petak yang disebutkan tidak ada maka
+*/
 void buyoffered(MonopolyMap*, Player* buyer, char* nama_petak);
+
+/**
+
+*/
 void showoffered(MonopolyMap*);
 
 
