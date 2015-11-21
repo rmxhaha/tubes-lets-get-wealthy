@@ -43,6 +43,11 @@ void pick_jumlah_player(MonopolyMap* map);
 
 void process_upgrade(MonopolyMap,PlayerAddress);
 
+
+/**
+    memindahkan player dari satu tempat ke block tujuan
+    I.S. bpindah harus ada dalam map
+*/
 void pindah_player_ke(MonopolyMap map,PlayerAddress player, BlockAddress bpindah);
 
 void do_chance (MonopolyMap *map, PlayerAddress *P);

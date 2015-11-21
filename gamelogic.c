@@ -125,7 +125,7 @@ void pindah_player1(MonopolyMap map, PlayerAddress player )
 
 
     //cek udah muter
-    if(here == map.first)
+    if(here-> == map.first)
     {
         player->revolution_count++;
 
@@ -219,28 +219,11 @@ void pindah_player_ke(MonopolyMap map,PlayerAddress player, BlockAddress bpindah
 {
     //cari blockaddress player
     BlockAddress here = search_player(map, player);
-    //hapus keberadaan player di situ
-    DeleteP(&here->list_player, player);
-    //taroh di tempat baru
-    place_player(bpindah,player);
 
-    //cek udah muter
-    if(here == map.first)
-    {
-        player->revolution_count++;
-
-        if(player->revolution_count > 1)
-        {
-            player->money += 150000;
-        }
+    while( here != bpindah ){
+        pindah_player1(map,player);
     }
 
-    //cek lewat worldcup
-    if(here->type == WORLD_CUP)
-    {
-        //ubah jadi false parameter player pemegang worldcup
-        player->world_cup_holder = false;
-    }
 }
 //=====================================================================================
 
@@ -325,17 +308,20 @@ void print_leaderboard(MonopolyMap map){
 
 
 
-void sell(MonopolyMap* map,Block* b){
-    if( b->owner == NULL ) return;
+void sell(MonopolyMap* map,Player* cplayer, char *nama_petak){
+    BlockAddress BA = search_block_by_name( *map, nama_petak );
 
-    // insert kalau belum ada
-    if( Search(map->ListOffered,b) == NULL )
-        InsVFirst(&map->ListOffered,b);
+    if( BA == NULL )
+        printf("> Kota tidak ditemukan\n");
+    else if( BA->owner != cplayer )
+        printf("> Anda bukan pemilik kota tersebut\n");
+    else if( Search(map->ListOffered,BA) == NULL )
+        InsVFirst(&map->ListOffered,BA);
 }
 
 void buyoffered(MonopolyMap* map, Player* player, char* nama_petak){
     Address PP;
-    BlockAddress BA = search_block_by_name( *map, nama_petak );
+    BlockAddress BA;
 
     loop_list(map->ListOffered,PP,
         BA = Info(PP);
