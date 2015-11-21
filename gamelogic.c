@@ -207,16 +207,6 @@ void pick_jumlah_player(MonopolyMap *map){
 		putaran player selesai setelah buy process
 */
 
-//=====================================================================================
-
-void process_buy(MonopolyMap,PlayerAddress);
-
-//=====================================================================================
-
-void process_upgrade(MonopolyMap,PlayerAddress);
-
-//=====================================================================================
-
 void pindah_player_ke(MonopolyMap map,PlayerAddress player, BlockAddress bpindah)
 {
     //cari blockaddress player
