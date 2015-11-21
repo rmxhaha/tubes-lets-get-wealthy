@@ -2,6 +2,7 @@
 #define PLAYER_H
 #include "Chance.h"
 #include "stdlib.h"
+#include "boolean.h"
 
 // jika bank maka Player *player adalah NULL
 
