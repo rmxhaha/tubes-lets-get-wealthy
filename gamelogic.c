@@ -119,7 +119,7 @@ void pindah_player1(MonopolyMap map, PlayerAddress player )
 
         if(player->revolution_count > 1)
         {
-            player->money += 150000;
+            player->money += BONUS_MONEY_PER_REVOLUTION;
         }
     }
 

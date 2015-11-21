@@ -6,6 +6,9 @@
 #include "MonopolyMap.h"
 
 
+
+#define BONUS_MONEY_PER_REVOLUTION 150000
+
 //mengembalikan true apabila di block terdapat player(tidak spesifik player mana)
 boolean is_player_on(BlockAddress B);
 
