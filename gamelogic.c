@@ -335,7 +335,7 @@ void sell(MonopolyMap* map,Block* b){
 
 void buyoffered(MonopolyMap* map, Player* player, char* nama_petak){
     Address PP;
-    BlockAddress BA;
+    BlockAddress BA = search_block_by_name( *map, nama_petak );
 
     loop_list(map->ListOffered,PP,
         BA = Info(PP);
