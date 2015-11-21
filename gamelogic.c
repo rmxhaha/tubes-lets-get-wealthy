@@ -111,6 +111,18 @@ void pindah_player1(MonopolyMap map, PlayerAddress player )
     DeleteP(&here->list_player, player);
 
 
+
+    //cek udah muter
+    if(here->type == START)
+    {
+        player->revolution_count++;
+
+        if(player->revolution_count > 1)
+        {
+            player->money += 150000;
+        }
+    }
+
     //ngubah posisi
     if(here->map_next == NULL) // last block
     {
@@ -124,16 +136,6 @@ void pindah_player1(MonopolyMap map, PlayerAddress player )
     }
 
 
-    //cek udah muter
-    if(here-> == map.first)
-    {
-        player->revolution_count++;
-
-        if(player->revolution_count > 1)
-        {
-            player->money += 150000;
-        }
-    }
 
     //cek lewat worldcup
     if(here->type == WORLD_CUP)
