@@ -136,7 +136,7 @@ void pindah_player1(MonopolyMap map, PlayerAddress player )
     }
 
     //cek lewat worldcup
-    if(here->type == 8)
+    if(here->type == WORLD_CUP)
     {
         //ubah jadi false parameter player pemegang worldcup
         player->world_cup_holder = false;
@@ -161,7 +161,7 @@ void pindah_player(MonopolyMap map, PlayerAddress player, int d )
     BlockAddress here;
     here = search_player(map, player);
 
-    if(here->type == 8)
+    if(here->type == WORLD_CUP)
     {
         //ubah jadi true status pemegang world cup
         player->world_cup_holder = true;
@@ -236,7 +236,7 @@ void pindah_player_ke(MonopolyMap map,PlayerAddress player, BlockAddress bpindah
     }
 
     //cek lewat worldcup
-    if(here->type == 8)
+    if(here->type == WORLD_CUP)
     {
         //ubah jadi false parameter player pemegang worldcup
         player->world_cup_holder = false;
