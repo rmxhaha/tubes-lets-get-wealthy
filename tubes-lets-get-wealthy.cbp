@@ -67,6 +67,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="listlinier.h" />
+		<Unit filename="worldtravel.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="worldtravel.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
