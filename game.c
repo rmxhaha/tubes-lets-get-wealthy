@@ -25,9 +25,10 @@ int main(){
 
     pick_jumlah_player(&map);
 	cplayer = First(map.ListPlayer);
-    PA = Info(cplayer);
 	// repeat until game is won
 	do {
+        PA = Info(cplayer);
+
         printf("> ");
 		scanf("%s", command );
 		ifCommand("rolldice"){
