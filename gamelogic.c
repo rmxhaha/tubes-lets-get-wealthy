@@ -79,7 +79,9 @@ BlockAddress search_player(MonopolyMap map,PlayerAddress player)
 //masukin player ke block
 void place_player(BlockAddress B, PlayerAddress player)
 {
+	if (B != NULL) { 
     InsVFirst(&B->list_player, player);
+	}
 }
 
 //=====================================================================================
@@ -244,7 +246,38 @@ void do_chance (MonopolyMap *map, PlayerAddress *P)
 	}
 	else { /* 1, 2, 3, 4, 5 (GOTO_PAJAK, GOTO_PENJARA,
 		GOTO_START, GOTO_KELILING_DUNIA, MATI_LAMPU,) */
-
+		switch(c) {
+			case 1 : //GOTO_PAJAK
+				B = search_block_by_name( *map, "Pajak");
+				place_player(B, *P);
+				break;
+			case 2 : //GOTO_PENJARA
+				B = search_block_by_name( *map, "Penjara");
+				place_player(B, *P);
+				break;
+			case 3 : //GOTO_START
+				B = search_block_by_name( *map, "Start");
+				place_player(B, *P);
+				break;
+			case 4 : //GOTO_KELILING_DUNIA
+				B = search_block_by_name( *map, "World_Travel");
+				place_player(B, *P);
+				break;
+			case 5 : //MATI_LAMPU
+				do {
+					scanf("%s", input);
+					B = search_block_by_name( *map, input);
+					if (B == NULL) { 
+						printf("Kota tidak ada, ulangi");
+					}
+					else {
+						//Set multiplier kota jadi 0 selama 3 turn
+					}
+				} while (B == NULL); 
+				break;
+			default : 
+				break;
+		}
 	}
 }
 
