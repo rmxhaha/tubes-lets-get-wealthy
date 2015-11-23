@@ -142,31 +142,18 @@ void pindah_player1(MonopolyMap map, PlayerAddress player)
     //cek lewat worldcup
     if(here->type == 8)
     {
-        printf("masuk cek wc\n");
-        if(player->world_cup_holder)
+       if(player->world_cup_holder)
         {
             //ubah harga
-            printf("mengubah harga\n");
-            printf("awal %d\n",map.world_cup_city->tab_harga[map.world_cup_city->level]);
             map.world_cup_city->tab_harga[map.world_cup_city->level] = (map.world_cup_city->tab_harga[map.world_cup_city->level]) / 2;
-            printf("baru %d\n",map.world_cup_city->tab_harga[map.world_cup_city->level]);
-        }
+       }
         //ubah jadi false parameter player pemegang worldcup
-        printf("ubah status\n");
         //semua jadi false statusnya
         pemain = First(map.ListPlayer);
         ip = Info(pemain);
         do
         {
             ip->world_cup_holder = false;
-            if(ip->world_cup_holder)
-            {
-                printf("player ini wch\n");
-            }
-            else
-            {
-                printf("player ini bukan wch\n");
-            }
             pemain = Next(pemain);
         }
         while ((pemain) != NULL);
@@ -194,15 +181,18 @@ void pindah_player(MonopolyMap *map, PlayerAddress player, int d )
     {
         //ubah jadi true status pemegang world cup
         player->world_cup_holder = true;
+         printf("> ");
         scanf("%s",perintah);
         if(strcmp(perintah,"host")==0)
         {
-            printf("    yey masuk sini\n");
-            //printf("KOTA WORLD CUP APA? %s\n",(*map).world_cup_city->name);
-
+            if((*map).world_cup_city!=NULL)
+            {
+                //harga kota dijadiin normal dulu
+                (*map).world_cup_city->tab_harga[(*map).world_cup_city->level] = ((*map).world_cup_city->tab_harga[(*map).world_cup_city->level]) / 2;
+            }
             scanf("%s",namatempat);
             block_host(map,player,namatempat);
-            printf("kota host dalam gamelogic: %s\n",(*map).world_cup_city->name);
+            printf("Kota %s berhasil menjadi world cup\n",(*map).world_cup_city->name);
         }
         else
         {
@@ -265,23 +255,20 @@ void pindah_player_ke(MonopolyMap *map,PlayerAddress player, BlockAddress bpinda
     {
         //ubah jadi true status pemegang world cup
         (player)->world_cup_holder = true;
+         printf("> ");
         scanf("%s",perintah);
         if(strcmp(perintah,"host")==0)
         {
-            printf("    yey masuk sini\n");
-            //printf("KOTA WORLD CUP APA? %s\n",(*map).world_cup_city->name);
-            if((*map).world_cup_city!=NULL)
+           if((*map).world_cup_city!=NULL)
             {
                 //harga kota dijadiin normal dulu
-                printf("mengubah harga\n");
-                printf("awal %d\n",(*map).world_cup_city->tab_harga[(*map).world_cup_city->level]);
                 (*map).world_cup_city->tab_harga[(*map).world_cup_city->level] = ((*map).world_cup_city->tab_harga[(*map).world_cup_city->level]) / 2;
-                printf("baru %d\n",(*map).world_cup_city->tab_harga[(*map).world_cup_city->level]);
             }
             scanf("%s",namatempat);
             block_host(map,player,namatempat);
-            printf("kota host dalam gamelogic: %s\n",(*map).world_cup_city->name);
-        }
+            printf("Kota %s berhasil menjadi world cup\n",(*map).world_cup_city->name);
+
+       }
         else
         {
             printf("perintah salah\n");
