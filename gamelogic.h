@@ -36,7 +36,7 @@ void pindah_player1(MonopolyMap map, PlayerAddress player );
 */
 
 //majuin player sesuai lemparan dadu
-void pindah_player(MonopolyMap map, PlayerAddress player, int d );
+void pindah_player(MonopolyMap *map, PlayerAddress player, int d );
 
 void pick_jumlah_player(MonopolyMap* map);
 
@@ -53,7 +53,7 @@ void process_upgrade(MonopolyMap,PlayerAddress);
     memindahkan player dari satu tempat ke block tujuan
     I.S. bpindah harus ada dalam map
 */
-void pindah_player_ke(MonopolyMap map,PlayerAddress player, BlockAddress bpindah);
+void pindah_player_ke(MonopolyMap *map,PlayerAddress player, BlockAddress bpindah);
 
 void do_chance (MonopolyMap *map, PlayerAddress *P);
 

@@ -79,7 +79,7 @@ BlockAddress search_player(MonopolyMap map,PlayerAddress player)
 //masukin player ke block
 void place_player(BlockAddress B, PlayerAddress player)
 {
-	if (B != NULL) { 
+	if (B != NULL) {
     InsVFirst(&B->list_player, player);
 	}
 }
@@ -103,28 +103,18 @@ BlockAddress last_block(MonopolyMap map)
 
 //majuin player 1 petak
 //masih belom bisa, last masih salah
-void pindah_player1(MonopolyMap map, PlayerAddress player )
+void pindah_player1(MonopolyMap map, PlayerAddress player)
 {
     BlockAddress here;
-
+    Address pemain;
+    PlayerAddress ip;
     here = search_player(map, player);//hasilsearch
+    char kotahost[100];
 
     //menghilangkan keberadaan player di petak
     DeleteP(&here->list_player, player);
 
-
-
-    //cek udah muter
-    if(here->type == START)
-    {
-        player->revolution_count++;
-
-        if(player->revolution_count > 1)
-        {
-            player->money += BONUS_MONEY_PER_REVOLUTION;
-        }
-    }
-
+    //printf("masuk pindah_player1\n");
     //ngubah posisi
     if(here->map_next == NULL) // last block
     {
@@ -138,37 +128,86 @@ void pindah_player1(MonopolyMap map, PlayerAddress player )
     }
 
 
-
-    //cek lewat worldcup
-    if(here->type == WORLD_CUP)
+    //cek udah muter
+    if(here == map.first)
     {
-        //ubah jadi false parameter player pemegang worldcup
-        player->world_cup_holder = false;
+        player->revolution_count++;
+
+        if(player->revolution_count > 1)
+        {
+            player->money += 150000;
+        }
     }
 
-
-
+    //cek lewat worldcup
+    if(here->type == 8)
+    {
+        printf("masuk cek wc\n");
+        if(player->world_cup_holder)
+        {
+            //ubah harga
+            printf("mengubah harga\n");
+            printf("awal %d\n",map.world_cup_city->tab_harga[map.world_cup_city->level]);
+            map.world_cup_city->tab_harga[map.world_cup_city->level] = (map.world_cup_city->tab_harga[map.world_cup_city->level]) / 2;
+            printf("baru %d\n",map.world_cup_city->tab_harga[map.world_cup_city->level]);
+        }
+        //ubah jadi false parameter player pemegang worldcup
+        printf("ubah status\n");
+        //semua jadi false statusnya
+        pemain = First(map.ListPlayer);
+        ip = Info(pemain);
+        do
+        {
+            ip->world_cup_holder = false;
+            if(ip->world_cup_holder)
+            {
+                printf("player ini wch\n");
+            }
+            else
+            {
+                printf("player ini bukan wch\n");
+            }
+            pemain = Next(pemain);
+        }
+        while ((pemain) != NULL);
+    }
 }
 
 //=====================================================================================
 
-void pindah_player(MonopolyMap map, PlayerAddress player, int d )
+void pindah_player(MonopolyMap *map, PlayerAddress player, int d )
 {
     int i;
+    char perintah[100];
+    char namatempat[100];
 
     for(i=1; i<=d; i++)
     {
-        pindah_player1(map, player );
+        pindah_player1(*map, player );
     }
 
     //cek masuk worldcup
     BlockAddress here;
-    here = search_player(map, player);
+    here = search_player(*map, player);
 
-    if(here->type == WORLD_CUP)
+    if(here->type == 8)
     {
         //ubah jadi true status pemegang world cup
         player->world_cup_holder = true;
+        scanf("%s",perintah);
+        if(strcmp(perintah,"host")==0)
+        {
+            printf("    yey masuk sini\n");
+            //printf("KOTA WORLD CUP APA? %s\n",(*map).world_cup_city->name);
+
+            scanf("%s",namatempat);
+            block_host(map,player,namatempat);
+            printf("kota host dalam gamelogic: %s\n",(*map).world_cup_city->name);
+        }
+        else
+        {
+            printf("perintah salah\n");
+        }
     }
 }
 
@@ -209,13 +248,44 @@ void pick_jumlah_player(MonopolyMap *map){
 		putaran player selesai setelah buy process
 */
 
-void pindah_player_ke(MonopolyMap map,PlayerAddress player, BlockAddress bpindah)
+void pindah_player_ke(MonopolyMap *map,PlayerAddress player, BlockAddress bpindah)
 {
     //cari blockaddress player
-    BlockAddress here = search_player(map, player);
+    BlockAddress here = search_player(*map, player);
+    char perintah[100];
+    char namatempat[100];
 
-    while( here != bpindah ){
-        pindah_player1(map,player);
+    while (here!=bpindah)
+    {
+        pindah_player1(*map, player);
+        here = search_player(*map, player);
+    }
+
+    if(here->type == 8)
+    {
+        //ubah jadi true status pemegang world cup
+        (player)->world_cup_holder = true;
+        scanf("%s",perintah);
+        if(strcmp(perintah,"host")==0)
+        {
+            printf("    yey masuk sini\n");
+            //printf("KOTA WORLD CUP APA? %s\n",(*map).world_cup_city->name);
+            if((*map).world_cup_city!=NULL)
+            {
+                //harga kota dijadiin normal dulu
+                printf("mengubah harga\n");
+                printf("awal %d\n",(*map).world_cup_city->tab_harga[(*map).world_cup_city->level]);
+                (*map).world_cup_city->tab_harga[(*map).world_cup_city->level] = ((*map).world_cup_city->tab_harga[(*map).world_cup_city->level]) / 2;
+                printf("baru %d\n",(*map).world_cup_city->tab_harga[(*map).world_cup_city->level]);
+            }
+            scanf("%s",namatempat);
+            block_host(map,player,namatempat);
+            printf("kota host dalam gamelogic: %s\n",(*map).world_cup_city->name);
+        }
+        else
+        {
+            printf("perintah salah\n");
+        }
     }
 
 }
@@ -229,6 +299,7 @@ void do_chance (MonopolyMap *map, PlayerAddress *P)
 	//KAMUS
 	Chance c;
 	char input[10];
+	BlockAddress B;
 
 	//ALGORITMA
 	c = get_chance();
@@ -267,15 +338,15 @@ void do_chance (MonopolyMap *map, PlayerAddress *P)
 				do {
 					scanf("%s", input);
 					B = search_block_by_name( *map, input);
-					if (B == NULL) { 
+					if (B == NULL) {
 						printf("Kota tidak ada, ulangi");
 					}
 					else {
 						//Set multiplier kota jadi 0 selama 3 turn
 					}
-				} while (B == NULL); 
+				} while (B == NULL);
 				break;
-			default : 
+			default :
 				break;
 		}
 	}

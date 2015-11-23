@@ -4,6 +4,7 @@
 #include "infopetak.h"
 #include "gamelogic.h"
 #include "worldtravel.h"
+#include "host.h"
 
 #define ifCommand(cmd)\
 	if( strcmp( command, cmd) == 0 )
@@ -61,9 +62,12 @@ int main(){
 		}
 		/*tambah cheat buat travel*/
 		else ifCommand("travel"){
-            scanf("%s",tmp);
-            player_travel(map,PA,tmp);
+            scanf("%s", &tmp);
+            player_travel(map,PA, &tmp);
 		}
+		else ifCommand("cheathost"){
+            cheat_block_host(&map,PA);
+        }
 		else {
 			printf("perintah tidak diketahui\n");
 		}

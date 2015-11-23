@@ -7,7 +7,7 @@ void block_info_petak(MonopolyMap map, char* namatempat)
 
     //mencari nama kota
     found = false;
-    b = map.first;
+    b = (map).first;
     do
     {
         if(strcmp(namatempat,b->name)==0)
@@ -20,7 +20,7 @@ void block_info_petak(MonopolyMap map, char* namatempat)
         }
     }
     while(!found && b != NULL);
-	
+
     if(found)
     {
         printf("%s, pemilik properti ",b->name);
@@ -39,7 +39,7 @@ void block_info_petak(MonopolyMap map, char* namatempat)
         }
         else
         {
-            printf("%d\n",(b->level++));
+            printf("%d\n",(b->level));
         }
         printf("Biaya sewa: %d\n",b->tab_harga[b->level]);
         printf("Biaya ambil alih : %d\n",b->tab_harga[b->level]);
