@@ -306,40 +306,61 @@ void do_chance (MonopolyMap *map, PlayerAddress *P)
 		GOTO_START, GOTO_KELILING_DUNIA, MATI_LAMPU,) */
 		switch(c) {
 			case 1 : //GOTO_PAJAK
-				B = search_block_by_name( *map, "Pajak");
-				place_player(B, *P);
+				B = search_block_by_name(*map, "Pajak");
+				pindah_player_ke(*map, *P, B);
 				break;
 			case 2 : //GOTO_PENJARA
-				B = search_block_by_name( *map, "Penjara");
-				place_player(B, *P);
+				B = search_block_by_name(*map, "Penjara");
+				pindah_player_ke(*map, *P, B);
 				break;
 			case 3 : //GOTO_START
-				B = search_block_by_name( *map, "Start");
-				place_player(B, *P);
+				B = search_block_by_name(*map, "Start");
+				pindah_player_ke(*map, *P, B);
 				break;
 			case 4 : //GOTO_KELILING_DUNIA
 				B = search_block_by_name( *map, "World_Travel");
-				place_player(B, *P);
+				pindah_player_ke(*map, *P, B);
 				break;
 			case 5 : //MATI_LAMPU
 				do {
 					scanf("%s", input);
 					B = search_block_by_name( *map, input);
-					if (B == NULL) {
+					if (B == NULL) { 
 						printf("Kota tidak ada, ulangi");
 					}
 					else {
 						//Set multiplier kota jadi 0 selama 3 turn
 					}
-				} while (B == NULL);
+				} while (B == NULL); 
 				break;
-			default :
+			default : 
 				break;
 		}
 	}
 }
 
+void bayar_pajak(PlayerAddress *P)
+/*Datang ke kantor pajak, player membayar pajak sebesar 100K*,
+  kalau tidak bisa bayar, bangkrut.*/
+{
+	if ((*P)->money >= 100000) { //bayar pajak
+		(*P)->money -= 100000;
+	}
+	else { //bangkrut
+		
+	}
+}
 
+void sell_bank (PlayerAddress P, BlockAddress *B)
+/*Jual tanah ke bank*/
+{
+	if (P == (*B)->owner) {
+		//Jual tanah
+	}
+	else {
+		printf("Tanah bukan milik anda, tidak bisa dijual.");
+	}
+}
 
 void print_money( int money ){
 	int b = money / 1000000000 % 1000;
