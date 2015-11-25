@@ -12,6 +12,8 @@
 int main(){
 	MonopolyMap map;
 	Block block;
+	BlockAddress here;
+	boolean roll;  //buat ngecek reroll, jadiin true pas ganti player
 	Address cplayer; // current player
 	char command[100];
 	char tmp[100];
@@ -23,6 +25,7 @@ int main(){
 	FILE *f = fopen("mapdata.txt","r");
     map = load_map(f);
     fclose(f);
+    roll = true;
 
     pick_jumlah_player(&map);
 	cplayer = First(map.ListPlayer);
@@ -33,14 +36,39 @@ int main(){
         printf("> ");
 		scanf("%s", command );
 		ifCommand("rolldice"){
-            lempar_Dadu(&dadu1,&dadu2);
+		    //jalanin player & lempar dadu
+		    if(roll)
+            {
+                roll = false;
+                lempar_Dadu(&dadu1,&dadu2);
+                pindah_player(&map, PA, dadu1+dadu2);
+                here = search_player(map, PA);
+
+                if(dadu1 == dadu2)
+                {
+                    printf("re-roll\n");
+                    roll = true;
+                }
+            }
+            else
+            {
+                printf("sudah jalan\n");
+            }
+
+            printf("player sekarang di %s\n", here->name);
+
+            //bayar pajak
+            if(!(here->owner == NULL) && !(here->owner == PA))
+            {
+
+            }
 		}
 		else ifCommand("info"){
             scanf("%s", tmp);
             block_info_petak(map,tmp);
 		}
 		else ifCommand("buy"){
-
+            buy(map, PA);
 		}
 		else ifCommand("sell"){
 
@@ -52,7 +80,7 @@ int main(){
 
 		}
 		else ifCommand("upgrade"){
-
+            upgrade(map, &PA);
 		}
 		else ifCommand("board"){
             print_map(map);

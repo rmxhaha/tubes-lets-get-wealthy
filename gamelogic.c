@@ -277,7 +277,7 @@ void pindah_player_ke(MonopolyMap *map,PlayerAddress player, BlockAddress bpinda
 
 }
 //=====================================================================================
-
+/*
 void do_chance (MonopolyMap *map, PlayerAddress *P)
 {
 /*	Player menerima kartu kesempatan secara random, melakukan aksi berdasarkan kartu
@@ -287,7 +287,7 @@ void do_chance (MonopolyMap *map, PlayerAddress *P)
 	Chance c;
 	char input[10];
 	BlockAddress B;
-
+/*
 	//ALGORITMA
 	c = get_chance();
 	printf("Kartu kesempatan : %d\n", c);
@@ -304,7 +304,7 @@ void do_chance (MonopolyMap *map, PlayerAddress *P)
 	}
 	else { /* 1, 2, 3, 4, 5 (GOTO_PAJAK, GOTO_PENJARA,
 		GOTO_START, GOTO_KELILING_DUNIA, MATI_LAMPU,) */
-		switch(c) {
+/*		switch(c) {
 			case 1 : //GOTO_PAJAK
 				B = search_block_by_name(*map, "Pajak");
 				pindah_player_ke(*map, *P, B);
@@ -325,20 +325,20 @@ void do_chance (MonopolyMap *map, PlayerAddress *P)
 				do {
 					scanf("%s", input);
 					B = search_block_by_name( *map, input);
-					if (B == NULL) { 
+					if (B == NULL) {
 						printf("Kota tidak ada, ulangi");
 					}
 					else {
 						//Set multiplier kota jadi 0 selama 3 turn
 					}
-				} while (B == NULL); 
+				} while (B == NULL);
 				break;
-			default : 
+			default :
 				break;
 		}
 	}
 }
-
+*/
 void bayar_pajak(PlayerAddress *P)
 /*Datang ke kantor pajak, player membayar pajak sebesar 100K*,
   kalau tidak bisa bayar, bangkrut.*/
@@ -347,7 +347,7 @@ void bayar_pajak(PlayerAddress *P)
 		(*P)->money -= 100000;
 	}
 	else { //bangkrut
-		
+
 	}
 }
 
@@ -474,54 +474,76 @@ void buy(MonopolyMap map, PlayerAddress P)
     BlockAddress B;
     B = search_player(map, P);
 
-    //cek kepemilikan
-    if(B->owner == NULL)
+    if((B->type == TANAH) || (B->type == PARIWISATA))
     {
-        if(P->money >= block_cost(*B))
+        if(P->revolution_count>=1)
         {
-            P->money -= block_cost(*B);
-            B->owner = P;
+            //cek kepemilikan
+            if(B->owner == NULL)
+            {
+                if(P->money >= block_cost(*B))
+                {
+                    P->money -= block_cost(*B);
+                    B->owner = P;
 
-            printf("Selamat, kota %s kini menjadi milikmu!\n", B->name);
-            printf("level bangunan %d\n", B->level);
-            printf("sisa uangmu: ");print_money(P->money);printf("\n");
+                    printf("Selamat, kota %s kini menjadi milikmu!\n", B->name);
+                    printf("level bangunan %d\n", B->level);
+                    printf("sisa uangmu: ");print_money(P->money);printf("\n");
+                }
+                else
+                {
+                    printf("Uangmu tidak cukup untuk membeli kota ini\n");
+                }
+            }
+            else
+            {
+                printf("Properti player lain\n");
+                if(P->money >= block_cost(*B)*2)
+                {
+                    P->money -= block_cost(*B)*2;
+                    B->owner = P;
+
+                    printf("Selamat, kota %s kini menjadi milikmu!\n", B->name);
+                    printf("level bangunan %d\n", B->level);
+                    printf("sisa uangmu: ");print_money(P->money);printf("\n");
+                }
+                else
+                {
+                    printf("Uangmu tidak cukup untuk membeli kota ini\n");
+                }
+            }
         }
         else
         {
-            printf("Uangmu tidak cukup untuk membeli kota ini\n");
+            printf("Belum muter\n");
         }
     }
     else
     {
-        printf("Properti player lain\n");
-        if(P->money >= block_cost(*B)*2)
-        {
-            P->money -= block_cost(*B)*2;
-            B->owner = P;
-
-            printf("Selamat, kota %s kini menjadi milikmu!\n", B->name);
-            printf("level bangunan %d\n", B->level);
-            printf("sisa uangmu: ");print_money(P->money);printf("\n");
-        }
-        else
-        {
-            printf("Uangmu tidak cukup untuk membeli kota ini\n");
-        }
+        printf("Petak tidak diperjualbelikan\n");
     }
 }
 
-void upgrade(MonopolyMap map, PlayerAddress P)
+void upgrade(MonopolyMap map, PlayerAddress *P)
 {
     BlockAddress B;
-    B = search_player(map, P);
+    B = search_player(map, *P);
 
-    if((P->money >= B->tab_harga[B->level + 1]) && (B->owner == P))
+    if((*P)->money >= B->tab_harga[B->level + 1])
     {
-        P->money -= (B->tab_harga[B->level + 1]);
-        B->level++;
+        if(B->owner == *P)
+        {
+            (*P)->money -= (B->tab_harga[B->level + 1]);
+            B->level++;
 
-        printf("Selamat, bangunanmu di %s memiliki level %d!\n", B->name, B->level);
-        printf("sisa uangmu: ");print_money(P->money);printf("\n");
+
+            printf("Selamat, bangunanmu di %s memiliki level %d!\n", B->name, B->level);
+            printf("sisa uangmu: ");print_money((*P)->money);printf("\n");
+        }
+        else
+        {
+            printf("Bukan properti anda\n");
+        }
     }
     else
     {
