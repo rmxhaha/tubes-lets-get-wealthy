@@ -176,7 +176,7 @@ void pindah_player(MonopolyMap *map, PlayerAddress player, int d )
     BlockAddress here;
     here = search_player(*map, player);
 
-    habispindah(here, player);
+    habispindah(map, here, player);
 
 }
 
@@ -434,6 +434,7 @@ void print_leaderboard(MonopolyMap map){
 
 
 void sell(MonopolyMap* map,Player* cplayer, char *nama_petak){
+
     BlockAddress BA = search_block_by_name( *map, nama_petak );
 
     if( BA == NULL )
@@ -497,7 +498,7 @@ void buy(MonopolyMap map, PlayerAddress P)
 
     if((B->type == TANAH) || (B->type == PARIWISATA))
     {
-        if(P->revolution_count>=1)
+        //if(P->revolution_count>=1)
         {
             //cek kepemilikan
             if(B->owner == NULL)
@@ -534,9 +535,9 @@ void buy(MonopolyMap map, PlayerAddress P)
                 }
             }
         }
-        else
+        //else
         {
-            printf("Belum muter\n");
+            //printf("Belum muter\n");
         }
     }
     else

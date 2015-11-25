@@ -63,6 +63,15 @@ int main(){
 		}
 		else ifCommand("buy"){
             buy(map, PA);
+
+            if(here->owner == PA)
+            {
+                printf("kebeli\n");
+            }
+            else
+            {
+                printf("kaga kebeli\n");
+            }
 		}
 		else ifCommand("sell"){
 
