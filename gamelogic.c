@@ -517,6 +517,10 @@ void buy(MonopolyMap map, PlayerAddress P)
                     printf("Uangmu tidak cukup untuk membeli kota ini\n");
                 }
             }
+            else if(B->owner == P)
+            {
+                printf("properti anda\n");
+            }
             else
             {
                 printf("Properti player lain\n");
