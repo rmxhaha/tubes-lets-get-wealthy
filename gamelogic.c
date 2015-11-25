@@ -165,8 +165,7 @@ void pindah_player1(MonopolyMap map, PlayerAddress player)
 void pindah_player(MonopolyMap *map, PlayerAddress player, int d )
 {
     int i;
-    char perintah[100];
-    char namatempat[100];
+
 
     for(i=1; i<=d; i++)
     {
@@ -177,11 +176,55 @@ void pindah_player(MonopolyMap *map, PlayerAddress player, int d )
     BlockAddress here;
     here = search_player(*map, player);
 
-    if(here->type == 8)
+    habispindah(here, player);
+
+}
+
+//=====================================================================================
+
+void habispindah(MonopolyMap *map, BlockAddress here, PlayerAddress player)
+{
+    char perintah[100];
+    char namatempat[100];
+    printf("player sekarang di petak %s\n", here->name);
+
+    if(here->type == TANAH)
+    {
+        //bayar pajak
+        if(!(here->owner == NULL) && !(here->owner == player))
+        {
+
+        }
+    }
+    else if(here->type == KESEMPATAN)
+    {
+
+    }
+    else if(here->type == PAJAK)
+    {
+
+    }
+    else if(here->type == KELILING_DUNIA)
+    {
+
+    }
+    else if(here->type == BONUS)
+    {
+
+    }
+    else if(here->type == PARIWISATA)
+    {
+
+    }
+    else if(here->type == DESERTED_ISLAND)
+    {
+
+    }
+    else if(here->type == WORLD_CUP)
     {
         //ubah jadi true status pemegang world cup
         player->world_cup_holder = true;
-         printf("> ");
+        printf("> ");
         scanf("%s",perintah);
         if(strcmp(perintah,"host")==0)
         {
@@ -199,10 +242,11 @@ void pindah_player(MonopolyMap *map, PlayerAddress player, int d )
             printf("perintah salah\n");
         }
     }
+
 }
 
-//=====================================================================================
 
+//=====================================================================================
 
 void pick_jumlah_player(MonopolyMap *map){
 	int N,i;

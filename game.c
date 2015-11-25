@@ -55,13 +55,7 @@ int main(){
                 printf("sudah jalan\n");
             }
 
-            printf("player sekarang di %s\n", here->name);
 
-            //bayar pajak
-            if(!(here->owner == NULL) && !(here->owner == PA))
-            {
-
-            }
 		}
 		else ifCommand("info"){
             scanf("%s", tmp);
