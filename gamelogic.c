@@ -245,7 +245,6 @@ void habispindah(MonopolyMap *map, BlockAddress here, PlayerAddress player)
 
 }
 
-
 //=====================================================================================
 
 void pick_jumlah_player(MonopolyMap *map){
@@ -295,29 +294,7 @@ void pindah_player_ke(MonopolyMap *map,PlayerAddress player, BlockAddress bpinda
         here = search_player(*map, player);
     }
 
-    if(here->type == 8)
-    {
-        //ubah jadi true status pemegang world cup
-        (player)->world_cup_holder = true;
-         printf("> ");
-        scanf("%s",perintah);
-        if(strcmp(perintah,"host")==0)
-        {
-           if((*map).world_cup_city!=NULL)
-            {
-                //harga kota dijadiin normal dulu
-                (*map).world_cup_city->tab_harga[(*map).world_cup_city->level] = ((*map).world_cup_city->tab_harga[(*map).world_cup_city->level]) / 2;
-            }
-            scanf("%s",namatempat);
-            block_host(map,player,namatempat);
-            printf("Kota %s berhasil menjadi world cup\n",(*map).world_cup_city->name);
-
-       }
-        else
-        {
-            printf("perintah salah\n");
-        }
-    }
+    habispindah(map, bpindah, player);
 
 }
 //=====================================================================================
