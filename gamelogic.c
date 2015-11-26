@@ -556,11 +556,11 @@ void upgrade(MonopolyMap map, PlayerAddress *P)
     BlockAddress B;
     B = search_player(map, *P);
 
-    if((*P)->money >= B->tab_harga[B->level + 1])
+    if((*P)->money >= block_upgrade_cost(B))
     {
         if(B->owner == *P)
         {
-            (*P)->money -= (B->tab_harga[B->level + 1]);
+            (*P)->money -= block_upgrade_cost(B);
             B->level++;
 
 
