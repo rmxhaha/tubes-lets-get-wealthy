@@ -80,7 +80,7 @@ int block_cost( Block b ){
     return b.tab_harga[b.level];
 }
 
-int block_upgrade_cost(){
+int block_upgrade_cost( Block b ){
     if( b.level == 4 )
         return b.tab_harga[4];
     else
