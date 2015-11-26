@@ -13,6 +13,7 @@ typedef struct {
 	List ListPlayer; // giliran
 	List ListOffered; // list barang lelang
 	BlockAddress world_cup_city;
+	Address cplayer;
 } MonopolyMap;
 
 MonopolyMap load_map(FILE*);

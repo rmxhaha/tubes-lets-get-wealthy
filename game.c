@@ -14,7 +14,6 @@ int main(){
 	Block block;
 	BlockAddress here;
 	boolean roll, reroll;  //buat ngecek reroll, jadiin true pas ganti player
-	Address cplayer; // current player
 	char command[100];
 	char tmp[100];
     PlayerAddress PA;
@@ -29,10 +28,9 @@ int main(){
     reroll = false;
 
     pick_jumlah_player(&map);
-	cplayer = First(map.ListPlayer);
 	// repeat until game is won
 	do {
-        PA = Info(cplayer);
+        PA = Info(map.cplayer);
 
         printf("> ");
 		scanf("%s", command );
@@ -128,7 +126,7 @@ int main(){
             } else {
                 roll = true;
                 reroll = false;
-                endturn(map,&cplayer);
+                endturn(&map);
             }
         }
         else ifCommand("bangkrut"){
@@ -137,7 +135,7 @@ int main(){
         }
         /*cheat langsung ke petak bayar pajak*/
         else ifCommand("cheattax"){
-            bayar_pajak(&map,&PA, &cplayer);
+            bayar_pajak(&map,&PA);
         }
 		else {
 			printf("perintah tidak diketahui\n");
