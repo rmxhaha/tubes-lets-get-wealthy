@@ -27,14 +27,38 @@ int main(){
     roll = true;
     reroll = false;
 
-    pick_jumlah_player(&map);
+    scanf("%c",&tmp[0]);
+
+    if( tmp[0] == 'l' ){
+        f = fopen("savedata.dat","r");
+        load_game(f,&map);
+        fclose(f);
+    }
+    else {
+        pick_jumlah_player(&map);
+    }
+
+
+/*
+
+    here = Info(First(map.ListOffered));
+    printf("%d\n",here);
+    printf("%d\n",here->id);
+
+
+*/
 	// repeat until game is won
 	do {
         PA = Info(map.cplayer);
 
         printf("> ");
 		scanf("%s", command );
-		ifCommand("rolldice"){
+		ifCommand("save"){
+            f = fopen("savedata.dat","w+");
+		    save_game(f,map);
+		    fclose(f);
+		}
+		else ifCommand("rolldice"){
 		    //jalanin player & lempar dadu
 		    if(roll || reroll)
             {

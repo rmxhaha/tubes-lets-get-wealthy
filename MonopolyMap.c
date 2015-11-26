@@ -20,11 +20,11 @@ MonopolyMap load_map(FILE* stream){
 	for( i = 0; i < N; ++ i )
 	{
 		T = A + i;
-		T->id = i + 1;
 
         block_init(T);
 		block_load_from_bin(stream, T);
 
+		T -> id = i + 1; // jangan pernah di rubah bahaya !!!
 
 		if( i == 0 ){
 			map.first = T;
@@ -175,4 +175,88 @@ void print_map(MonopolyMap map ){
 	}
 }
 
+
+List ListPlayer; // giliran
+List ListOffered; // list barang lelang
+BlockAddress world_cup_city;
+Address cplayer;
+
+
+
+// make sure permission file is w+
+void save_game(FILE* f,MonopolyMap map){
+    Player arr[MAX_PLAYER];
+    int kotaIds[50];
+
+    int i;
+    int n;
+    Address P;
+    PlayerAddress PA;
+    BlockAddress BA;
+
+    n = NbElmt(map.ListPlayer);
+    i = 0;
+    loop_list(map.ListPlayer,P,
+        PA = Info(P);
+        arr[i++] = *PA;
+    );
+
+    fwrite(&n,sizeof(int),1,f);
+    fwrite(&arr,sizeof(Player),n,f);
+
+    n = NbElmt(map.ListOffered);
+    i = 0;
+    loop_list(map.ListOffered,P,
+        BA = Info(P);
+        kotaIds[i++] = BA->id; // simpan id kotanya aja
+    );
+
+    fwrite(&n,sizeof(int),1,f);
+    fwrite(&kotaIds,sizeof(int),n,f);
+    fflush(f);
+}
+
+
+// make sure permission file is w+
+void load_game(FILE* f,MonopolyMap* map){
+    Player *arr;
+    int i,id, n,k;
+    int kotaIds[50];
+    BlockAddress BA;
+
+
+    fread(&n,sizeof(int),1,f);
+    // bulk allocate untuk players
+
+    arr = malloc( sizeof(Player)*n );
+    fread(arr,sizeof(Player),n,f);
+
+    CreateList(&(map->ListPlayer));
+    for( i = 0; i < n; ++i ){
+        InsVLast(&map->ListPlayer,&arr[i]);
+    }
+
+
+    fread(&n,4,1,f);
+    fread(&kotaIds,sizeof(int),n,f);
+
+    BA = map->first;
+
+    CreateList(&(map->ListOffered));
+    for( i = 0; i < n; ++ i ){
+        id = kotaIds[i];
+
+        BA = map->first;
+
+        do {
+            if( BA->id == id ) break;
+            BA = BA->map_next;
+        } while( BA != NULL );
+
+
+        InsVLast(&map->ListOffered,BA);
+    }
+
+
+}
 
