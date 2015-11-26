@@ -188,7 +188,7 @@ void save_game(FILE* f,MonopolyMap map){
     Player arr[MAX_PLAYER];
     int kotaIds[50];
 
-    int i;
+    int i,k;
     int n;
     Address P;
     PlayerAddress PA;
@@ -198,11 +198,35 @@ void save_game(FILE* f,MonopolyMap map){
     i = 0;
     loop_list(map.ListPlayer,P,
         PA = Info(P);
+        if( map.cplayer == P ) k = i;
         arr[i++] = *PA;
     );
 
+
     fwrite(&n,sizeof(int),1,f);
-    fwrite(&arr,sizeof(Player),n,f);
+    fwrite(&k,sizeof(int),1,f);
+    fwrite(&arr,sizeof(Player),n,f); // player meta data
+
+    // player locations
+    BA = map.first;
+    do {
+        if( !IsListEmpty(BA->list_player) ){
+            loop_list(BA->list_player,P,
+                PA = Info(P);
+                for( i = 0; i < n; ++ i )
+                    if( PA->name[0] == arr[i].name[0] ) // check 1 char pertama aja ?
+                        break;
+
+                kotaIds[i] = BA->id;
+
+            );
+        }
+        BA = BA->map_next;
+    }while(BA!=NULL);
+
+
+    fwrite(&kotaIds,sizeof(int),n,f);
+
 
     n = NbElmt(map.ListOffered);
     i = 0;
@@ -213,6 +237,8 @@ void save_game(FILE* f,MonopolyMap map){
 
     fwrite(&n,sizeof(int),1,f);
     fwrite(&kotaIds,sizeof(int),n,f);
+
+
     fflush(f);
 }
 
@@ -223,18 +249,40 @@ void load_game(FILE* f,MonopolyMap* map){
     int i,id, n,k;
     int kotaIds[50];
     BlockAddress BA;
+    Address P;
 
 
     fread(&n,sizeof(int),1,f);
+    fread(&k,sizeof(int),1,f);
     // bulk allocate untuk players
 
     arr = malloc( sizeof(Player)*n );
     fread(arr,sizeof(Player),n,f);
+    fread(kotaIds,sizeof(int),n,f);
 
     CreateList(&(map->ListPlayer));
-    for( i = 0; i < n; ++i ){
+    for( i = 0; i < n; ++i )
+    {
         InsVLast(&map->ListPlayer,&arr[i]);
+
+        BA = map->first;
+        do {
+            if( BA->id == kotaIds[i] )
+            {
+                InsVFirst(&BA->list_player,&arr[i]);
+                break;
+            }
+
+            BA = BA->map_next;
+        } while( BA != NULL );
     }
+
+    P = First(map->ListPlayer);
+    for( i = 0; i < k; ++ i ){
+        P = Next(P);
+    }
+
+    map->cplayer = P;
 
 
     fread(&n,4,1,f);

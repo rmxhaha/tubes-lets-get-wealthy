@@ -22,8 +22,9 @@ int main(){
 	set_Random(); // init random
 
 	FILE *f = fopen("mapdata.txt","r");
-    map = load_map(f);
-    fclose(f);
+	map = load_map(f);
+	fclose(f);
+
     roll = true;
     reroll = false;
 
@@ -57,6 +58,7 @@ int main(){
             f = fopen("savedata.dat","w+");
 		    save_game(f,map);
 		    fclose(f);
+		    printf("Saved\n");
 		}
 		else ifCommand("rolldice"){
 		    //jalanin player & lempar dadu
