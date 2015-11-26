@@ -150,7 +150,7 @@ void pindah_player1(MonopolyMap map, PlayerAddress player)
        if(player->world_cup_holder)
         {
             //ubah harga
-            map.world_cup_city->tab_harga[map.world_cup_city->level] = (map.world_cup_city->tab_harga[map.world_cup_city->level]) / 2;
+            map.world_cup_city->multiplier = 1;
        }
         //ubah jadi false parameter player pemegang worldcup
         //semua jadi false statusnya
@@ -195,8 +195,8 @@ void habispindah(MonopolyMap *map, BlockAddress here, PlayerAddress player)
 
     if(here->type == TANAH)
     {
-        //bayar pajak
-        if(!(here->owner == NULL) && !(here->owner == player))
+        //bayar sewa
+        if(!(here->owner == NULL) && !(here->owner != player))
         {
 
         }
@@ -211,7 +211,8 @@ void habispindah(MonopolyMap *map, BlockAddress here, PlayerAddress player)
     }
     else if(here->type == KELILING_DUNIA)
     {
-
+        scanf("%s",&namatempat);
+        player_travel(*map,player,&namatempat);
     }
     else if(here->type == BONUS)
     {
@@ -219,7 +220,11 @@ void habispindah(MonopolyMap *map, BlockAddress here, PlayerAddress player)
     }
     else if(here->type == PARIWISATA)
     {
+        //bayar sewa
+        if(!(here->owner == NULL) && !(here->owner != player))
+        {
 
+        }
     }
     else if(here->type == DESERTED_ISLAND)
     {
@@ -229,6 +234,7 @@ void habispindah(MonopolyMap *map, BlockAddress here, PlayerAddress player)
     {
         //ubah jadi true status pemegang world cup
         player->world_cup_holder = true;
+        printf("Anda di world cup\n");
         printf("> ");
         scanf("%s",perintah);
         if(strcmp(perintah,"host")==0)
@@ -236,7 +242,7 @@ void habispindah(MonopolyMap *map, BlockAddress here, PlayerAddress player)
             if((*map).world_cup_city!=NULL)
             {
                 //harga kota dijadiin normal dulu
-                (*map).world_cup_city->tab_harga[(*map).world_cup_city->level] = ((*map).world_cup_city->tab_harga[(*map).world_cup_city->level]) / 2;
+                (*map).world_cup_city->multiplier = 1;
             }
             scanf("%s",namatempat);
             block_host(map,player,namatempat);
@@ -299,7 +305,8 @@ void pindah_player_ke(MonopolyMap *map,PlayerAddress player, BlockAddress bpinda
         here = search_player(*map, player);
     }
 
-    habispindah(map, bpindah, player);
+    here = search_player(*map, player);
+    habispindah(map, here, player);
 
 }
 //=====================================================================================

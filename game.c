@@ -137,6 +137,11 @@ int main(){
         else ifCommand("cheattax"){
             bayar_pajak(&map,&PA, &cplayer);
         }
+        else ifCommand("cheat_rolll_travel"){
+            strcpy(tmp, "KelDun");
+            here = search_block_by_name(map, tmp);
+            pindah_player_ke(&map, PA, here);
+        }
 		else {
 			printf("perintah tidak diketahui\n");
 		}
