@@ -556,7 +556,7 @@ void upgrade(MonopolyMap map, PlayerAddress *P)
     BlockAddress B;
     B = search_player(map, *P);
 
-    if((*P)->money >= block_upgrade_cost(*B))
+    if((*P)->money >= block_upgrade_cost(*B) && B->level <= 4 )
     {
         if(B->owner == *P)
         {
