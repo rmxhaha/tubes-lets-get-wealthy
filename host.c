@@ -1,5 +1,5 @@
 #include "host.h"
-void block_host (MonopolyMap (*map), PlayerAddress player, char *namatempat)
+void block_host (MonopolyMap *map, PlayerAddress player, char *namatempat)
 {
     BlockAddress here= search_block_by_name(*map,namatempat);
 
