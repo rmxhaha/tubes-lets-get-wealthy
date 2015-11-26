@@ -114,11 +114,19 @@ int main(){
             roll = true;
             endturn(map,&cplayer);
         }
+        else ifCommand("bangkrut"){
+            PA->money = 1;
+            print_money(PA->money);
+        }
+        /*cheat langsung ke petak bayar pajak*/
+        else ifCommand("cheattax"){
+            bayar_pajak(&map,&PA, &cplayer);
+        }
 		else {
 			printf("perintah tidak diketahui\n");
 		}
 
-	} while( true );
+	} while(!is_game_finished(map));
 
 
     BlockAddress addr = map.first;

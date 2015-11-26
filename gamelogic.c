@@ -298,7 +298,7 @@ void pindah_player_ke(MonopolyMap *map,PlayerAddress player, BlockAddress bpinda
 
 }
 //=====================================================================================
-/*
+
 void do_chance (MonopolyMap *map, PlayerAddress *P)
 {
 /*	Player menerima kartu kesempatan secara random, melakukan aksi berdasarkan kartu
@@ -308,7 +308,7 @@ void do_chance (MonopolyMap *map, PlayerAddress *P)
 	Chance c;
 	char input[10];
 	BlockAddress B;
-/*
+
 	//ALGORITMA
 	c = get_chance();
 	printf("Kartu kesempatan : %d\n", c);
@@ -325,22 +325,22 @@ void do_chance (MonopolyMap *map, PlayerAddress *P)
 	}
 	else { /* 1, 2, 3, 4, 5 (GOTO_PAJAK, GOTO_PENJARA,
 		GOTO_START, GOTO_KELILING_DUNIA, MATI_LAMPU,) */
-/*		switch(c) {
+        switch(c) {
 			case 1 : //GOTO_PAJAK
 				B = search_block_by_name(*map, "Pajak");
-				pindah_player_ke(*map, *P, B);
+				pindah_player_ke(&(*map), *P, B);
 				break;
 			case 2 : //GOTO_PENJARA
 				B = search_block_by_name(*map, "Penjara");
-				pindah_player_ke(*map, *P, B);
+				pindah_player_ke(&(*map), *P, B);
 				break;
 			case 3 : //GOTO_START
 				B = search_block_by_name(*map, "Start");
-				pindah_player_ke(*map, *P, B);
+				pindah_player_ke(&(*map), *P, B);
 				break;
 			case 4 : //GOTO_KELILING_DUNIA
 				B = search_block_by_name( *map, "World_Travel");
-				pindah_player_ke(*map, *P, B);
+				pindah_player_ke(&(*map), *P, B);
 				break;
 			case 5 : //MATI_LAMPU
 				do {
@@ -359,8 +359,8 @@ void do_chance (MonopolyMap *map, PlayerAddress *P)
 		}
 	}
 }
-*/
-void bayar_pajak(PlayerAddress *P)
+
+void bayar_pajak(MonopolyMap *map,PlayerAddress *P, Address* cplayer)
 /*Datang ke kantor pajak, player membayar pajak sebesar 100K*,
   kalau tidak bisa bayar, bangkrut.*/
 {
@@ -368,7 +368,8 @@ void bayar_pajak(PlayerAddress *P)
 		(*P)->money -= 100000;
 	}
 	else { //bangkrut
-
+            printf("bangkrut kasian\n");
+        player_bangkrut(&(*map),*P, cplayer);
 	}
 }
 
@@ -584,5 +585,41 @@ void endturn (MonopolyMap map, Address *cplayer)
     if (*cplayer==NULL)
     {
         (*cplayer)= First(map.ListPlayer);
+    }
+}
+
+void player_bangkrut(MonopolyMap *map, PlayerAddress player, Address *cplayer)
+{
+    BlockAddress B = (*map).first;
+    do
+    {
+
+        if((B->owner)==player)
+        {
+            B->owner = NULL;
+            B->level = 0;
+            B->multiplier = 1;
+            printf("Tanah %s bukan milik anda lagi.\n",B->name);
+        }
+        B = B->map_next;
+    }while (B!=NULL);
+    endturn(*map, cplayer);
+    BlockAddress here = search_player(*map,player);
+    DeleteP(&(here->list_player),player);
+    DeleteP(&(*map).ListPlayer,player);
+
+    printf("Anda sudah bangkrut dan kalah dan menghilang\n");
+}
+
+boolean is_game_finished(MonopolyMap map)
+{
+    /*1. player cuma satu*/
+    if(NbElmt(map.ListPlayer)==1)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
     }
 }

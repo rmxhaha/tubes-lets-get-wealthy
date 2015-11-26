@@ -56,9 +56,10 @@ void process_upgrade(MonopolyMap,PlayerAddress);
 void pindah_player_ke(MonopolyMap *map,PlayerAddress player, BlockAddress bpindah);
 
 void do_chance (MonopolyMap *map, PlayerAddress *P);
-void bayar_pajak(PlayerAddress *P);
+void bayar_pajak(MonopolyMap *map,PlayerAddress *P, Address* cplayer);
 void sell_bank (PlayerAddress P, BlockAddress *B);
 
+void player_bangkrut(MonopolyMap *map, PlayerAddress player, Address *cplayer);
 //True wajib
 //-jika terdapat 1 atau kurang pemain di map, dengan asumsi
 // pemain yang uangnya habis di-remove dari map.
