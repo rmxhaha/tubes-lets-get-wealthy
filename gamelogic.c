@@ -203,11 +203,11 @@ void habispindah(MonopolyMap *map, BlockAddress here, PlayerAddress player)
     }
     else if(here->type == KESEMPATAN)
     {
-
+        // do chance
     }
     else if(here->type == PAJAK)
     {
-
+        bayar_pajak(map,&player);
     }
     else if(here->type == KELILING_DUNIA)
     {
@@ -281,6 +281,7 @@ void pick_jumlah_player(MonopolyMap *map){
 		InsVLast(&(map->ListPlayer), PA);
 	}
 
+	map->cplayer = First(map->ListPlayer);
 }
 
 /**
@@ -372,7 +373,7 @@ void do_chance (MonopolyMap *map, PlayerAddress *P)
 	}
 }
 
-void bayar_pajak(MonopolyMap *map,PlayerAddress *P, Address* cplayer)
+void bayar_pajak(MonopolyMap *map,PlayerAddress *P)
 /*Datang ke kantor pajak, player membayar pajak sebesar 100K*,
   kalau tidak bisa bayar, bangkrut.*/
 {
@@ -381,7 +382,7 @@ void bayar_pajak(MonopolyMap *map,PlayerAddress *P, Address* cplayer)
 	}
 	else { //bangkrut
             printf("bangkrut kasian\n");
-        player_bangkrut(&(*map),*P, cplayer);
+        player_bangkrut(map,P);
 	}
 }
 
@@ -591,22 +592,21 @@ void upgrade(MonopolyMap map, PlayerAddress *P)
     }
 }
 
-void endturn (MonopolyMap map, Address *cplayer)
+void endturn (MonopolyMap *map)
 {
-    (*cplayer) = Next(*cplayer);
-    if (*cplayer==NULL)
+    map->cplayer = Next(map->cplayer);
+    if (map->cplayer==NULL)
     {
-        (*cplayer)= First(map.ListPlayer);
+        map->cplayer= First(map->ListPlayer);
     }
 }
 
-void player_bangkrut(MonopolyMap *map, PlayerAddress player, Address *cplayer)
+void player_bangkrut(MonopolyMap *map, PlayerAddress *player)
 {
     BlockAddress B = (*map).first;
     do
     {
-
-        if((B->owner)==player)
+        if((B->owner)==*player)
         {
             B->owner = NULL;
             B->level = 0;
@@ -614,11 +614,14 @@ void player_bangkrut(MonopolyMap *map, PlayerAddress player, Address *cplayer)
             printf("Tanah %s bukan milik anda lagi.\n",B->name);
         }
         B = B->map_next;
-    }while (B!=NULL);
-    endturn(*map, cplayer);
-    BlockAddress here = search_player(*map,player);
-    DeleteP(&(here->list_player),player);
-    DeleteP(&(*map).ListPlayer,player);
+    } while (B!=NULL);
+
+
+    endturn(map);
+
+    BlockAddress here = search_player(*map,*player);
+    DeleteP(&(here->list_player),*player);
+    DeleteP(&map->ListPlayer,*player);
 
     printf("Anda sudah bangkrut dan kalah dan menghilang\n");
 }
