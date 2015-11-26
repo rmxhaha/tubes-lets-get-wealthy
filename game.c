@@ -13,7 +13,7 @@ int main(){
 	MonopolyMap map;
 	Block block;
 	BlockAddress here;
-	boolean roll;  //buat ngecek reroll, jadiin true pas ganti player
+	boolean roll, reroll;  //buat ngecek reroll, jadiin true pas ganti player
 	Address cplayer; // current player
 	char command[100];
 	char tmp[100];
@@ -26,6 +26,7 @@ int main(){
     map = load_map(f);
     fclose(f);
     roll = true;
+    reroll = false;
 
     pick_jumlah_player(&map);
 	cplayer = First(map.ListPlayer);
@@ -37,7 +38,7 @@ int main(){
 		scanf("%s", command );
 		ifCommand("rolldice"){
 		    //jalanin player & lempar dadu
-		    if(roll)
+		    if(roll || reroll)
             {
                 roll = false;
                 lempar_Dadu(&dadu1,&dadu2);
@@ -47,7 +48,7 @@ int main(){
                 if(dadu1 == dadu2)
                 {
                     printf("re-roll\n");
-                    roll = true;
+                    reroll = true;
                 }
             }
             else
@@ -111,8 +112,13 @@ int main(){
             printf("current player: %s\n",PA->name);
         }
         else ifCommand("endturn"){
-            roll = true;
-            endturn(map,&cplayer);
+            if( roll ){
+                printf("anda belum rolldice sehingga anda tidak bisa endturn\n");
+            } else {
+                roll = true;
+                reroll = false;
+                endturn(map,&cplayer);
+            }
         }
 		else {
 			printf("perintah tidak diketahui\n");
