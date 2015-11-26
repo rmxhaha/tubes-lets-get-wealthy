@@ -14,7 +14,7 @@ void cheat_block_host (MonopolyMap *map, PlayerAddress player)
     char kota[100];
     BlockAddress wc = (*map).first;
     BlockAddress tes;
-    while (wc->type!=8)
+    while (wc->type!=WORLD_CUP)
     {
         wc = wc->map_next;
     }
