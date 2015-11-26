@@ -59,6 +59,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="gamelogic.h" />
+		<Unit filename="host.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="host.h" />
 		<Unit filename="infopetak.c">
 			<Option compilerVar="CC" />
 		</Unit>
