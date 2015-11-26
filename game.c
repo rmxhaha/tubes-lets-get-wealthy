@@ -108,6 +108,15 @@ int main(){
 		else ifCommand("cheathost"){
             cheat_block_host(&map,PA);
         }
+        else ifCommand("host"){
+            if( search_player(map,PA)->type != WORLD_CUP){
+                printf("Anda tidak berada di world cup.\n");
+            }
+            else {
+                scanf("%s", &tmp);
+                block_host( &map,PA,tmp);
+            }
+        }
         else ifCommand("whoami"){
             printf("current player: %s\n",PA->name);
         }
