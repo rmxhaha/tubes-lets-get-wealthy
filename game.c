@@ -41,6 +41,8 @@ int main(){
 		    if(roll || reroll)
             {
                 roll = false;
+                reroll = false;
+
                 lempar_Dadu(&dadu1,&dadu2);
                 pindah_player(&map, PA, dadu1+dadu2);
                 here = search_player(map, PA);
