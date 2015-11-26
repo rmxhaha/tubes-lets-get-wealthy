@@ -488,6 +488,7 @@ void showoffered(MonopolyMap* map){
         BP = Info(PP);
 
         printf("%s, harga ", BP->name ); print_money( block_cost(*BP));
+        printf("\n");
     );
 }
 
@@ -498,7 +499,7 @@ void buy(MonopolyMap map, PlayerAddress P)
 
     if((B->type == TANAH) || (B->type == PARIWISATA))
     {
-        //if(P->revolution_count>=1)
+        if(P->revolution_count>=1)
         {
             //cek kepemilikan
             if(B->owner == NULL)
@@ -539,9 +540,9 @@ void buy(MonopolyMap map, PlayerAddress P)
                 }
             }
         }
-        //else
+        else
         {
-            //printf("Belum muter\n");
+            printf("Belum muter\n");
         }
     }
     else
@@ -574,5 +575,14 @@ void upgrade(MonopolyMap map, PlayerAddress *P)
     else
     {
         printf("Uangmu tidak cukup untuk upgrade\n");
+    }
+}
+
+void endturn (MonopolyMap map, Address *cplayer)
+{
+    (*cplayer) = Next(*cplayer);
+    if (*cplayer==NULL)
+    {
+        (*cplayer)= First(map.ListPlayer);
     }
 }

@@ -64,6 +64,7 @@ int main(){
 		else ifCommand("buy"){
             buy(map, PA);
 
+            here = search_player(map, PA);
             if(here->owner == PA)
             {
                 printf("kebeli\n");
@@ -74,13 +75,20 @@ int main(){
             }
 		}
 		else ifCommand("sell"){
-
+            char wa[50];
+            scanf("%s", &wa);
+            sell(&map, PA, wa);
 		}
 		else ifCommand("sellbank"){
-
+            sell_bank(PA, &here);
 		}
 		else ifCommand("showoffered"){
-
+            showoffered(&map);
+		}
+		else ifCommand("buyoffered"){
+            char wi[50];
+            scanf("%s", &wi);
+            buyoffered(&map, PA, wi);
 		}
 		else ifCommand("upgrade"){
             upgrade(map, &PA);
@@ -98,6 +106,13 @@ int main(){
 		}
 		else ifCommand("cheathost"){
             cheat_block_host(&map,PA);
+        }
+        else ifCommand("whoami"){
+            printf("current player: %s\n",PA->name);
+        }
+        else ifCommand("endturn"){
+            roll = true;
+            endturn(map,&cplayer);
         }
 		else {
 			printf("perintah tidak diketahui\n");

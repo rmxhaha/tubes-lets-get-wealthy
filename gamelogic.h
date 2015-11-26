@@ -122,5 +122,5 @@ void buy(MonopolyMap map, PlayerAddress P);
 void upgrade(MonopolyMap map, PlayerAddress *P);
 
 
-
+void endturn (MonopolyMap map, Address *cplayer);
 #endif
