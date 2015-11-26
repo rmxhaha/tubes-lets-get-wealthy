@@ -1,5 +1,5 @@
 #include "host.h"
-void block_host (MonopolyMap (*map), PlayerAddress player, char *namatempat)
+void block_host (MonopolyMap *map, PlayerAddress player, char *namatempat)
 {
     BlockAddress here= search_block_by_name(*map,namatempat);
 
@@ -14,7 +14,7 @@ void cheat_block_host (MonopolyMap *map, PlayerAddress player)
     char kota[100];
     BlockAddress wc = (*map).first;
     BlockAddress tes;
-    while (wc->type!=8)
+    while (wc->type!=WORLD_CUP)
     {
         wc = wc->map_next;
     }

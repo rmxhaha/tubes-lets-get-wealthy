@@ -68,11 +68,21 @@ void block_load_from_bin( FILE* stream, BlockAddress block ){
 }
 
 int block_cost( Block b ){
-    int i = 0;
+/*    int i = 0;
     int cost = 0;
 
     for( i = 0; i <= b.level; ++ i )
         cost += b.tab_harga[i];
 
     return cost;
+    */
+
+    return b.tab_harga[b.level];
+}
+
+int block_upgrade_cost( Block b ){
+    if( b.level == 4 )
+        return b.tab_harga[4];
+    else
+        return b.tab_harga[b.level+1];
 }

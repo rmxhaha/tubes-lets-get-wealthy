@@ -13,7 +13,7 @@ int main(){
 	MonopolyMap map;
 	Block block;
 	BlockAddress here;
-	boolean roll;  //buat ngecek reroll, jadiin true pas ganti player
+	boolean roll, reroll;  //buat ngecek reroll, jadiin true pas ganti player
 	Address cplayer; // current player
 	char command[100];
 	char tmp[100];
@@ -26,6 +26,7 @@ int main(){
     map = load_map(f);
     fclose(f);
     roll = true;
+    reroll = false;
 
     pick_jumlah_player(&map);
 	cplayer = First(map.ListPlayer);
@@ -37,7 +38,7 @@ int main(){
 		scanf("%s", command );
 		ifCommand("rolldice"){
 		    //jalanin player & lempar dadu
-		    if(roll)
+		    if(roll || reroll)
             {
                 roll = false;
                 lempar_Dadu(&dadu1,&dadu2);
@@ -47,7 +48,7 @@ int main(){
                 if(dadu1 == dadu2)
                 {
                     printf("re-roll\n");
-                    roll = true;
+                    reroll = true;
                 }
             }
             else
@@ -107,12 +108,26 @@ int main(){
 		else ifCommand("cheathost"){
             cheat_block_host(&map,PA);
         }
+        else ifCommand("host"){
+            if( search_player(map,PA)->type != WORLD_CUP){
+                printf("Anda tidak berada di world cup.\n");
+            }
+            else {
+                scanf("%s", &tmp);
+                block_host( &map,PA,tmp);
+            }
+        }
         else ifCommand("whoami"){
             printf("current player: %s\n",PA->name);
         }
         else ifCommand("endturn"){
-            roll = true;
-            endturn(map,&cplayer);
+            if( roll ){
+                printf("anda belum rolldice sehingga anda tidak bisa endturn\n");
+            } else {
+                roll = true;
+                reroll = false;
+                endturn(map,&cplayer);
+            }
         }
         else ifCommand("bangkrut"){
             PA->money = 1;
@@ -147,3 +162,5 @@ int main(){
 
 	return 0;
 }
+
+

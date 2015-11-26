@@ -1,5 +1,10 @@
 #include "gamelogic.h"
 
+boolean is_game_finished(MonopolyMap map ){
+    if( NbElmt(map.ListPlayer) == 1 ) return true;
+    return false;
+}
+
 //mengembalikan true apabila di block terdapat player(tidak spesifik player mana)
 boolean is_player_on(BlockAddress B)
 {
@@ -557,11 +562,11 @@ void upgrade(MonopolyMap map, PlayerAddress *P)
     BlockAddress B;
     B = search_player(map, *P);
 
-    if((*P)->money >= B->tab_harga[B->level + 1])
+    if((*P)->money >= block_upgrade_cost(*B) && B->level <= 4 )
     {
         if(B->owner == *P)
         {
-            (*P)->money -= (B->tab_harga[B->level + 1]);
+            (*P)->money -= block_upgrade_cost(*B);
             B->level++;
 
 
@@ -611,15 +616,3 @@ void player_bangkrut(MonopolyMap *map, PlayerAddress player, Address *cplayer)
     printf("Anda sudah bangkrut dan kalah dan menghilang\n");
 }
 
-boolean is_game_finished(MonopolyMap map)
-{
-    /*1. player cuma satu*/
-    if(NbElmt(map.ListPlayer)==1)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-}
