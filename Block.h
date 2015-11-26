@@ -86,4 +86,6 @@ void block_load_from_bin( FILE*, BlockAddress );
 
 int block_cost( Block b );
 
+int block_upgrade_cost( Block b );
+
 #endif
