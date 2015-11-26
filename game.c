@@ -142,6 +142,24 @@ int main(){
             here = search_block_by_name(map, tmp);
             pindah_player_ke(&map, PA, here);
         }
+        else ifCommand("cheatchance")
+        {
+            strcpy(tmp, "Kesemp.");
+            here = search_block_by_name(map, tmp);
+            pindah_player_ke(&map, PA, here);
+        }
+        else ifCommand("gotojail")
+        {
+            strcpy(tmp, "Deser.Isl.");
+            here = search_block_by_name(map, tmp);
+            pindah_player_ke(&map, PA, here);
+        }
+        else ifCommand("gototax")
+        {
+            strcpy(tmp, "Pajak");
+            here = search_block_by_name(map, tmp);
+            pindah_player_ke(&map, PA, here);
+        }
 		else {
 			printf("perintah tidak diketahui\n");
 		}

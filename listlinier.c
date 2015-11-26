@@ -1,8 +1,8 @@
 /* Nama/ NIM		: Candra Ramsi/13514090
  * Nama file		: listlinier.c
- * Topik		    : list 
+ * Topik		    : list
  * Tanggal		    : 15 oktober 2015
- * Deskripsi		: list lanjar 
+ * Deskripsi		: list lanjar
 */
 
 #include "listlinier.h"
@@ -249,7 +249,7 @@ void DeleteP (List *L, Infotype X){
 	if( IsListEmpty(*L) ){
 		return;
 	}
-	
+
 	if( Info(First(*L)) == X ){
 		DeleteFirst(L,&P);
 		Dealokasi(&P);
@@ -277,7 +277,7 @@ void DeleteLast (List *L, Address *P){
 	Address T;
 	Address Prec;
 	loop_list(*L, T, if(Next(T) == Nil) break; Prec = T; );
-	
+
 	Next(Prec) = Nil;
 	*P = T;
 }
@@ -310,7 +310,7 @@ void PrintInfo (List L){
 		}
 		printf("]");
 	}
-	
+
 	printf("\n");
 }
 
@@ -368,7 +368,7 @@ void DeleteAll (List *L){
 */
 	Address P;
 	Address T;
-	
+
 	P = First(*L);
 	while( P != Nil){
 		T = Next(P);
@@ -387,19 +387,19 @@ void InversList (List *L){
 */
 	Address T = Nil,Prec = Nil;
 	Address P = Nil;
-	
+
 	if( NbElmt(*L) >= 2 ){
 		Prec = Nil;
 		P = First(*L);
-		
+
 		while( Next(P) != Nil ){
 			T = Next(P);
 			Next(P) = Prec;
-			
+
 			Prec = P;
 			P = T;
 		}
-		
+
 		Next(P) = Prec;
 		First(*L) = P;
 	}
@@ -414,7 +414,7 @@ List FInversList (List L){
 	Address P;
 	CreateList(&L2);
 	loop_list( L, P, InsVFirst(&L2,Info(P)));
-	
+
 	return L2;
 }
 
@@ -496,7 +496,7 @@ void Concat (List L1, List L2, List *L3){
 		DeleteAll(&L1c);
 		return;
 	}
-	
+
     InsertLast(&L1c,First(L2c));
 
     *L3 = L1c;
