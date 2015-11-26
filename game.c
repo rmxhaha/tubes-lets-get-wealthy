@@ -133,7 +133,7 @@ int main(){
 			printf("perintah tidak diketahui\n");
 		}
 
-	} while( true );
+	} while( !is_game_finished(map) );
 
 
     BlockAddress addr = map.first;

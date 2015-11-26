@@ -1,5 +1,10 @@
 #include "gamelogic.h"
 
+boolean is_game_finished(MonopolyMap map ){
+    if( NbElmt(map.ListPlayer) == 1 ) return true;
+    return false;
+}
+
 //mengembalikan true apabila di block terdapat player(tidak spesifik player mana)
 boolean is_player_on(BlockAddress B)
 {
