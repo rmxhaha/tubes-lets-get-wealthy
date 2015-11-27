@@ -32,7 +32,7 @@ int main(){
 
     if( tmp[0] == 'l' ){
         f = fopen("savedata.dat","r");
-        load_game(f,&map,&roll);
+        load_game(f,&map,&roll,&reroll);
         fclose(f);
     }
     else {
@@ -56,7 +56,7 @@ int main(){
 		scanf("%s", command );
 		ifCommand("save"){
             f = fopen("savedata.dat","w+");
-		    save_game(f,map,roll);
+		    save_game(f,map,roll,reroll);
 		    fclose(f);
 		    printf("Saved\n");
 		}

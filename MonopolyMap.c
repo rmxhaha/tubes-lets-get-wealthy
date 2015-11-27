@@ -202,7 +202,7 @@ typedef struct {
 } BlockGameData;
 
 // make sure permission file is w+
-void save_game(FILE* f,MonopolyMap map,boolean roll){
+void save_game(FILE* f,MonopolyMap map,boolean roll, boolean reroll){
     Player arr[MAX_PLAYER];
     int kotaIds[50];
 	BlockGameData blocksData[50];
@@ -221,6 +221,9 @@ void save_game(FILE* f,MonopolyMap map,boolean roll){
         arr[i++] = *PA;
     );
 
+
+    fwrite(&roll,sizeof(boolean),1,f);
+    fwrite(&reroll,sizeof(boolean),1,f);
 
 	// num of player
     fwrite(&nPlayer,sizeof(int),1,f);
@@ -284,13 +287,17 @@ void save_game(FILE* f,MonopolyMap map,boolean roll){
 
 
 // make sure permission file is w+
-void load_game(FILE* f,MonopolyMap* map,boolean *roll){
+void load_game(FILE* f,MonopolyMap* map,boolean *roll,  boolean *reroll){
     Player *arr;
     int i,id, n,k, nPlayer;
     int kotaIds[50];
     BlockAddress BA;
     Address P;
 	BlockGameData blocksData[50];
+
+
+    fread(roll,sizeof(boolean),1,f);
+    fread(reroll,sizeof(boolean),1,f);
 
 	// num of player
     fread(&nPlayer,sizeof(int),1,f);

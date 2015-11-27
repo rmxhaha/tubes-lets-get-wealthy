@@ -21,8 +21,8 @@ MonopolyMap load_map(FILE*);
 
 void print_map(MonopolyMap);
 
-void save_game(FILE*,MonopolyMap map, boolean roll);
+void save_game(FILE*,MonopolyMap map, boolean roll, boolean reroll);
 
-void load_game(FILE*,MonopolyMap* map, boolean* roll);
+void load_game(FILE*,MonopolyMap* map, boolean* roll, boolean* reroll);
 
 #endif
