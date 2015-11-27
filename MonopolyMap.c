@@ -202,7 +202,7 @@ typedef struct {
 } BlockGameData;
 
 // make sure permission file is w+
-void save_game(FILE* f,MonopolyMap map){
+void save_game(FILE* f,MonopolyMap map,boolean roll){
     Player arr[MAX_PLAYER];
     int kotaIds[50];
 	BlockGameData blocksData[50];
@@ -284,7 +284,7 @@ void save_game(FILE* f,MonopolyMap map){
 
 
 // make sure permission file is w+
-void load_game(FILE* f,MonopolyMap* map){
+void load_game(FILE* f,MonopolyMap* map,boolean *roll){
     Player *arr;
     int i,id, n,k, nPlayer;
     int kotaIds[50];

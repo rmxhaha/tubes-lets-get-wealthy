@@ -32,7 +32,7 @@ int main(){
 
     if( tmp[0] == 'l' ){
         f = fopen("savedata.dat","r");
-        load_game(f,&map);
+        load_game(f,&map,&roll);
         fclose(f);
     }
     else {
@@ -56,7 +56,7 @@ int main(){
 		scanf("%s", command );
 		ifCommand("save"){
             f = fopen("savedata.dat","w+");
-		    save_game(f,map);
+		    save_game(f,map,roll);
 		    fclose(f);
 		    printf("Saved\n");
 		}
@@ -65,16 +65,16 @@ int main(){
 		    if(roll || reroll)
             {
                 roll = false;
-                reroll = false;
 
                 lempar_Dadu(&dadu1,&dadu2);
                 pindah_player(&map, PA, dadu1+dadu2);
                 here = search_player(map, PA);
 
-                if(dadu1 == dadu2)
+                reroll = dadu1 == dadu2;
+
+                if(reroll)
                 {
                     printf("re-roll\n");
-                    reroll = true;
                 }
             }
             else
@@ -147,7 +147,7 @@ int main(){
             printf("current player: %s\n",PA->name);
         }
         else ifCommand("endturn"){
-            if( roll ){
+            if( roll || reroll ){
                 printf("anda belum rolldice sehingga anda tidak bisa endturn\n");
             } else {
                 roll = true;
