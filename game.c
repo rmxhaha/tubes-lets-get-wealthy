@@ -81,6 +81,8 @@ int main(){
             sell(&map, PA, wa);
 		}
 		else ifCommand("sellbank"){
+            scanf("%s", &tmp);
+            here = search_block_by_name(map, tmp);
             sell_bank(PA, &here);
 		}
 		else ifCommand("showoffered"){
@@ -159,6 +161,10 @@ int main(){
             strcpy(tmp, "Pajak");
             here = search_block_by_name(map, tmp);
             pindah_player_ke(&map, PA, here);
+        }
+        else ifCommand("maju")
+        {
+            pindah_player(&map, PA, 1);
         }
 		else {
 			printf("perintah tidak diketahui\n");

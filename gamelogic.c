@@ -49,6 +49,15 @@ BlockAddress search_block_by_name(MonopolyMap map, char* namatempat)
 
 //=====================================================================================
 
+void dapet_Bonust(PlayerAddress player)
+{
+    player->money += 150000;
+    printf("Selamat, kamu mendapat bonus 150k\n");
+    printf("Uang anda ");print_money(player->money);printf("\n");
+}
+
+//=====================================================================================
+
 //mengembalikan BlockAddress di mana player berada, atau NULL
 BlockAddress search_player(MonopolyMap map,PlayerAddress player)
 {
@@ -203,7 +212,7 @@ void habispindah(MonopolyMap *map, BlockAddress here, PlayerAddress *player)
     char perintah[100];
     char namatempat[100];
     printf("player sekarang di petak %s\n", here->name);
-
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     if(here->type == TANAH)
     {
         //bayar sewa
@@ -232,24 +241,29 @@ void habispindah(MonopolyMap *map, BlockAddress here, PlayerAddress *player)
             }
         }
     }
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     else if(here->type == KESEMPATAN)
     {
         // do chance
         do_chance(map,player);
     }
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     else if(here->type == PAJAK)
     {
         bayar_pajak(map,player);
     }
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     else if(here->type == KELILING_DUNIA)
     {
         scanf("%s",&namatempat);
         player_travel(*map,*player,&namatempat);
     }
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     else if(here->type == BONUS)
     {
-
+        dapet_Bonust(*player);
     }
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     else if(here->type == PARIWISATA)
     {
         //bayar sewa
@@ -258,6 +272,7 @@ void habispindah(MonopolyMap *map, BlockAddress here, PlayerAddress *player)
 
         }
     }
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     else if(here->type == DESERTED_ISLAND)
     {
         printf("Kasian masuk penjara!");
@@ -283,6 +298,7 @@ void habispindah(MonopolyMap *map, BlockAddress here, PlayerAddress *player)
             player_bangkrut(map,player);
         }
     }
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     else if(here->type == WORLD_CUP)
     {
         //ubah jadi true status pemegang world cup
@@ -462,10 +478,13 @@ void sell_bank (PlayerAddress P, BlockAddress *B)
 /*Jual tanah ke bank*/
 {
 	if (P == (*B)->owner) {
-		//Jual tanah
+		(*B)->owner = NULL;
+		P->money += block_cost(**B);
+		printf("Tanah berhasil dijual\n");
+		printf("Uang anda ");print_money(P->money);printf("\n");
 	}
 	else {
-		printf("Tanah bukan milik anda, tidak bisa dijual.");
+		printf("Tanah bukan milik anda, tidak bisa dijual.\n");
 	}
 }
 

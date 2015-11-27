@@ -124,4 +124,6 @@ void upgrade(MonopolyMap map, PlayerAddress *P);
 
 
 void endturn (MonopolyMap* map);
+
+void dapet_Bonust(PlayerAddress player);
 #endif
