@@ -183,23 +183,37 @@ Address cplayer;
 
 
 
-#idx_player(arr,i,n,name)\
+#define idx_player(arr,i,n,name_)\
 	for( i = 0; i < n; ++ i )\
-		if( name[0] == arr[i].name[0] ) \
+		if( name_[0] == arr[i].name[0] ) \
 			break;
+
+#define loop_map(map,BA,todo)\
+	BA = map.first;\
+	do {\
+		todo;\
+		BA = BA->map_next;\
+	} while(BA != NULL);
+
+typedef struct {
+	int level;
+	int owner_idx;
+	int multiplier;
+} BlockGameData;
 
 // make sure permission file is w+
 void save_game(FILE* f,MonopolyMap map){
     Player arr[MAX_PLAYER];
     int kotaIds[50];
+	BlockGameData blocksData[50];
 
     int i,k;
-    int n;
+    int n, nPlayer;
     Address P;
     PlayerAddress PA;
     BlockAddress BA;
 
-    n = NbElmt(map.ListPlayer);
+    nPlayer = NbElmt(map.ListPlayer);
     i = 0;
     loop_list(map.ListPlayer,P,
         PA = Info(P);
@@ -207,15 +221,15 @@ void save_game(FILE* f,MonopolyMap map){
         arr[i++] = *PA;
     );
 
-	
+
 	// num of player
-    fwrite(&n,sizeof(int),1,f);
+    fwrite(&nPlayer,sizeof(int),1,f);
 
 	// cplayer
     fwrite(&k,sizeof(int),1,f);
 
 	// player data
-    fwrite(&arr,sizeof(Player),n,f); // player meta data
+    fwrite(&arr,sizeof(Player),nPlayer,f); // player meta data
 
     // player locations
     BA = map.first;
@@ -223,7 +237,7 @@ void save_game(FILE* f,MonopolyMap map){
         if( !IsListEmpty(BA->list_player) ){
             loop_list(BA->list_player,P,
                 PA = Info(P);
-				idx_player(arr,i,n,PA->name);
+				idx_player(arr,i,nPlayer,PA->name);
                 kotaIds[i] = BA->id;
             );
         }
@@ -231,9 +245,9 @@ void save_game(FILE* f,MonopolyMap map){
     }while(BA!=NULL);
 
 
-    fwrite(&kotaIds,sizeof(int),n,f);
+    fwrite(&kotaIds,sizeof(int),nPlayer,f);
 
-	
+
 	// ListOffered
     n = NbElmt(map.ListOffered);
     i = 0;
@@ -245,6 +259,25 @@ void save_game(FILE* f,MonopolyMap map){
     fwrite(&n,sizeof(int),1,f);
     fwrite(&kotaIds,sizeof(int),n,f);
 
+	// data block
+	n = 0;
+	loop_map(map,BA,
+		blocksData[n].level = BA->level;
+		if( BA->owner != NULL ){
+            idx_player(arr,i,nPlayer,BA->owner->name);
+            blocksData[n].owner_idx = i;
+		}
+		else {
+            blocksData[n].owner_idx = -1;
+		}
+		blocksData[n].multiplier = BA->multiplier;
+		n++;
+	);
+
+	// num of block
+	fwrite(&n,sizeof(int),1,f);
+	fwrite(&blocksData, sizeof(BlockGameData),n,f);
+
 
     fflush(f);
 }
@@ -253,29 +286,30 @@ void save_game(FILE* f,MonopolyMap map){
 // make sure permission file is w+
 void load_game(FILE* f,MonopolyMap* map){
     Player *arr;
-    int i,id, n,k;
+    int i,id, n,k, nPlayer;
     int kotaIds[50];
     BlockAddress BA;
     Address P;
+	BlockGameData blocksData[50];
 
 	// num of player
-    fread(&n,sizeof(int),1,f);
-	
+    fread(&nPlayer,sizeof(int),1,f);
+
 	// cplayer
     fread(&k,sizeof(int),1,f);
 
 
     // bulk allocate untuk players
-    arr = malloc( sizeof(Player)*n );
+    arr = malloc( sizeof(Player)*nPlayer );
 
 	// player data
-    fread(arr,sizeof(Player),n,f);
-	
+    fread(arr,sizeof(Player),nPlayer,f);
+
 	// player locations
-    fread(kotaIds,sizeof(int),n,f);
+    fread(kotaIds,sizeof(int),nPlayer,f);
 
     CreateList(&(map->ListPlayer));
-    for( i = 0; i < n; ++i )
+    for( i = 0; i < nPlayer; ++i )
     {
 		// player data
         InsVLast(&map->ListPlayer,&arr[i]);
@@ -298,8 +332,8 @@ void load_game(FILE* f,MonopolyMap* map){
     for( i = 0; i < k; ++ i ) P = Next(P);
     map->cplayer = P;
 
-	
-	
+
+
 	// ListOffered
     fread(&n,4,1,f);
     fread(&kotaIds,sizeof(int),n,f);
@@ -321,6 +355,21 @@ void load_game(FILE* f,MonopolyMap* map){
         InsVLast(&map->ListOffered,BA);
     }
 
+
+	// data block
+	fread(&n,sizeof(int),1,f);
+	fread(&blocksData, sizeof(BlockGameData),n,f);
+
+	i = 0;
+	loop_map((*map),BA,
+		BA->level = blocksData[i].level;
+		BA->multiplier = blocksData[i].multiplier;
+		if( blocksData[i].owner_idx != -1 )
+            BA->owner = &arr[ blocksData[i].owner_idx ];
+        else
+            BA->owner = NULL;
+		++i;
+	);
 
 }
 
