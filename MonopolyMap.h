@@ -14,6 +14,7 @@ typedef struct {
 	List ListPlayer; // giliran
 	List ListOffered; // list barang lelang
 	BlockAddress world_cup_city;
+	List ListBlackout;
 	Address cplayer;
 } MonopolyMap;
 

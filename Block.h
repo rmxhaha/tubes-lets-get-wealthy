@@ -30,6 +30,7 @@ typedef struct TBlock{
 	int tab_harga[5];
 	int tab_denda[5];
 	Player* owner;
+	Player* blackoutguy;
 	List list_player;
 	BlockType type;
 	int id;

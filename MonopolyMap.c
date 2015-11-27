@@ -82,7 +82,8 @@ MonopolyMap load_map(FILE* stream){
 
 	/*List offered*/
 	CreateList(&map.ListOffered);
-
+    /*List blackout*/
+    CreateList(&map.ListBlackout);
     /*init world cup*/
     map.world_cup_city = NULL;
     return map;

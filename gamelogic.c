@@ -49,6 +49,15 @@ BlockAddress search_block_by_name(MonopolyMap map, char* namatempat)
 
 //=====================================================================================
 
+void dapet_Bonust(PlayerAddress player)
+{
+    player->money += 150000;
+    printf("Selamat, kamu mendapat bonus 150k\n");
+    printf("Uang anda ");print_money(player->money);printf("\n");
+}
+
+//=====================================================================================
+
 //mengembalikan BlockAddress di mana player berada, atau NULL
 BlockAddress search_player(MonopolyMap map,PlayerAddress player)
 {
@@ -110,8 +119,8 @@ BlockAddress last_block(MonopolyMap map)
 //masih belom bisa, last masih salah
 void pindah_player1(MonopolyMap map, PlayerAddress player)
 {
-    BlockAddress here;
-    Address pemain;
+    BlockAddress here,blackout;
+    Address pemain,P;
     PlayerAddress ip;
     here = search_player(map, player);//hasilsearch
     char kotahost[100];
@@ -141,6 +150,17 @@ void pindah_player1(MonopolyMap map, PlayerAddress player)
         if(player->revolution_count > 1)
         {
             player->money += 150000;
+        }
+        P = First(map.ListBlackout);
+        while(P!=NULL)
+        {
+            blackout = Info(P);
+            if(blackout->blackoutguy==player)
+            {
+                blackout->multiplier = 1;
+                //DeleteP(&map.ListBlackout, blackout);
+            }
+                P = Next(P);
         }
     }
 
@@ -187,53 +207,102 @@ void pindah_player(MonopolyMap *map, PlayerAddress player, int d )
 
 //=====================================================================================
 
-void habispindah(MonopolyMap *map, BlockAddress here, PlayerAddress player)
+void habispindah(MonopolyMap *map, BlockAddress here, PlayerAddress *player)
 {
     char perintah[100];
     char namatempat[100];
     printf("player sekarang di petak %s\n", here->name);
-
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     if(here->type == TANAH)
     {
         //bayar sewa
-        if(!(here->owner == NULL) && !(here->owner != player))
+        if(!(here->owner == NULL) && (here->owner != *player))
         {
+            printf("Kasian bayar sewa!\n");
+            if ((*player)->save_chance == BEBAS_SEWA)
+            {
+                do
+                {
+                    scanf("%s",perintah);
+                    if(strcmp(perintah,"free_penalty")!=0)
+                    {
+                        printf("Anda punya kartu bebas sewa. Tulis 'free_penalty'\n");
+                    }
 
+                }while(strcmp(perintah,"free_penalty")!=0);
+                (*player)->save_chance =0;
+            }
+            else if ((*player)->money >= (here->multiplier * here->tab_denda[here->level])) { //bayar pajak
+                (*player)->money -= (here->multiplier * here->tab_denda[here->level]);
+            }
+            else { //bangkrut
+                    printf("bangkrut kasian\n");
+                player_bangkrut(map,player);
+            }
         }
     }
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     else if(here->type == KESEMPATAN)
     {
         // do chance
+        do_chance(map,player);
     }
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     else if(here->type == PAJAK)
     {
-        bayar_pajak(map,&player);
+        bayar_pajak(map,player);
     }
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     else if(here->type == KELILING_DUNIA)
     {
         scanf("%s",&namatempat);
-        player_travel(*map,player,&namatempat);
+        player_travel(*map,*player,&namatempat);
     }
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     else if(here->type == BONUS)
     {
-
+        dapet_Bonust(*player);
     }
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     else if(here->type == PARIWISATA)
     {
         //bayar sewa
-        if(!(here->owner == NULL) && !(here->owner != player))
+        if(!(here->owner == NULL) && !(here->owner != *player))
         {
 
         }
     }
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     else if(here->type == DESERTED_ISLAND)
     {
+        printf("Kasian masuk penjara!");
+        if ((*player)->save_chance == BEBAS_PENJARA)
+        {
+            do
+            {
+                scanf("%s",perintah);
+                if(strcmp(perintah,"free_me")!=0)
+                {
+                    printf("Anda punya kartu bebas penjara. Tulis 'free me'");
+                }
 
+            }while(strcmp(perintah,"free_me")!=0);
+         (*player)->save_chance =0;
+        }
+        else if ((*player)->money >= 1000000)
+        {
+            printf("Uang anda berkurang 1M\n");
+            (*player)->money -= 1000000;
+        }
+        else {
+            player_bangkrut(map,player);
+        }
     }
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     else if(here->type == WORLD_CUP)
     {
         //ubah jadi true status pemegang world cup
-        player->world_cup_holder = true;
+        (*player)->world_cup_holder = true;
         printf("Anda di world cup\n");
         printf("> ");
         scanf("%s",perintah);
@@ -307,7 +376,7 @@ void pindah_player_ke(MonopolyMap *map,PlayerAddress player, BlockAddress bpinda
     }
 
     here = search_player(*map, player);
-    habispindah(map, here, player);
+    habispindah(map, here, &player);
 
 }
 //=====================================================================================
@@ -323,7 +392,8 @@ void do_chance (MonopolyMap *map, PlayerAddress *P)
 	BlockAddress B;
 
 	//ALGORITMA
-	c = get_chance();
+	//c = get_chance();
+    c = BEBAS_PAJAK;
 	printf("Kartu kesempatan : %d\n", c);
 	if (c==6 || c==7 || c==8 || c==9 || c==10) {
 		printf("Ingin simpan kartu?");
@@ -344,7 +414,7 @@ void do_chance (MonopolyMap *map, PlayerAddress *P)
 				pindah_player_ke(&(*map), *P, B);
 				break;
 			case 2 : //GOTO_PENJARA
-				B = search_block_by_name(*map, "Penjara");
+				B = search_block_by_name(*map, "Deser.Isl.");
 				pindah_player_ke(&(*map), *P, B);
 				break;
 			case 3 : //GOTO_START
@@ -352,7 +422,7 @@ void do_chance (MonopolyMap *map, PlayerAddress *P)
 				pindah_player_ke(&(*map), *P, B);
 				break;
 			case 4 : //GOTO_KELILING_DUNIA
-				B = search_block_by_name( *map, "World_Travel");
+				B = search_block_by_name( *map, "KelDun");
 				pindah_player_ke(&(*map), *P, B);
 				break;
 			case 5 : //MATI_LAMPU
@@ -364,6 +434,9 @@ void do_chance (MonopolyMap *map, PlayerAddress *P)
 					}
 					else {
 						//Set multiplier kota jadi 0 selama 3 turn
+                        InsVLast(&(*map).ListBlackout,B);
+                        B->multiplier = 0;
+                        B->blackoutguy = *P;
 					}
 				} while (B == NULL);
 				break;
@@ -377,7 +450,22 @@ void bayar_pajak(MonopolyMap *map,PlayerAddress *P)
 /*Datang ke kantor pajak, player membayar pajak sebesar 100K*,
   kalau tidak bisa bayar, bangkrut.*/
 {
-	if ((*P)->money >= 100000) { //bayar pajak
+	char perintah[100];
+	printf("Kasian bayar pajak!\n");
+    if ((*P)->save_chance == BEBAS_PAJAK)
+    {
+        do
+        {
+            scanf("%s",perintah);
+            if(strcmp(perintah,"free_tax")!=0)
+            {
+                printf("Anda punya kartu bebas pajak. Tulis 'free_tax'\n");
+            }
+
+        }while(strcmp(perintah,"free_tax")!=0);
+        (*P)->save_chance =0;
+    }
+	else if ((*P)->money >= 100000) { //bayar pajak
 		(*P)->money -= 100000;
 	}
 	else { //bangkrut
@@ -390,10 +478,13 @@ void sell_bank (PlayerAddress P, BlockAddress *B)
 /*Jual tanah ke bank*/
 {
 	if (P == (*B)->owner) {
-		//Jual tanah
+		(*B)->owner = NULL;
+		P->money += block_cost(**B);
+		printf("Tanah berhasil dijual\n");
+		printf("Uang anda ");print_money(P->money);printf("\n");
 	}
 	else {
-		printf("Tanah bukan milik anda, tidak bisa dijual.");
+		printf("Tanah bukan milik anda, tidak bisa dijual.\n");
 	}
 }
 
