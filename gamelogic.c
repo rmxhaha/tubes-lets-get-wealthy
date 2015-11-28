@@ -156,36 +156,20 @@ void pindah_player1(MonopolyMap map, PlayerAddress player)
         P = First(map.ListBlackout);
         while(P!=NULL)
         {
-           blackout = Info(P);
-           if(blackout->owner==player)
-            {
-                printf("Kota %s punya %s sudah normal\n",blackout->name, blackout->owner);
-                if(blackout==map.world_cup_city)
-                {
-                    blackout->multiplier=2;
-                }
-                else
-                {
-                    blackout->multiplier=1;
-                }
-            }
-            /*if(blackout->blackoutguy==player)
-            {
-                blackout->multiplier = 1;
-                //DeleteP(&map.ListBlackout, blackout);
-            }*/
-                P = Next(P);
+			blackout = Info(P);
+			if(blackout->owner == player)
+			{
+				printf("Kota %s punya %s sudah normal\n",blackout->name, blackout->owner);
+			}
+			P = Next(P);
         }
     }
 
     //cek lewat worldcup
     if(here->type == WORLD_CUP)
     {
-       if(player->world_cup_holder)
-        {
-            //ubah harga
-            map.world_cup_city->multiplier = 1;
-       }
+		map.world_cup_city = NULL;
+			
         //ubah jadi false parameter player pemegang worldcup
         //semua jadi false statusnya
         pemain = First(map.ListPlayer);
@@ -323,11 +307,6 @@ void habispindah(MonopolyMap *map, BlockAddress here, PlayerAddress *player)
             }
         } while (strcmp(perintah,"host")!=0 || (search_block_by_name(*map, namatempat) == NULL));
 
-        if((*map).world_cup_city!=NULL)
-        {
-            //harga kota dijadiin normal dulu
-            (*map).world_cup_city->multiplier = 1;
-        }
         block_host(map,*player,namatempat);
         if((*map).world_cup_city!=NULL)
         {
@@ -451,8 +430,6 @@ void do_chance (MonopolyMap *map, PlayerAddress *P)
 					else {
 						//Set multiplier kota jadi 0 selama 3 turn
                         InsVLast(&(*map).ListBlackout,B);
-                        B->multiplier = 0;
-                        //B->blackoutguy = *P;
                         if(((B->owner)->save_chance==PERLINDUNGAN))
                         {
                             printf("Player yang punya petak itu punya kartu perlindungan \n");
@@ -731,7 +708,6 @@ void player_bangkrut(MonopolyMap *map, PlayerAddress *player)
         {
             B->owner = NULL;
             B->level = 0;
-            B->multiplier = 1;
             printf("Tanah %s bukan milik anda lagi.\n",B->name);
         }
         B = B->map_next;
@@ -755,7 +731,7 @@ void protect(BlockAddress *blackout, MonopolyMap *map, PlayerAddress player,char
     while((P!=NULL)&&(!stop))
     {
         *blackout = Info(P);
-        if(strcmp(((*blackout)->name),tempat)==0)
+        if(strcmp((*blackout)->name,tempat)==0)
         {
             stop = true;
         }
@@ -766,17 +742,9 @@ void protect(BlockAddress *blackout, MonopolyMap *map, PlayerAddress player,char
     }
     if(stop)
     {
-        if(((*blackout)->owner==player))
+        if((*blackout)->owner==player)
         {
             printf("Kota %s punya %s sudah normal\n",(*blackout)->name, (*blackout)->owner);
-            if((*blackout)==(*map).world_cup_city)
-            {
-                (*blackout)->multiplier=2;
-            }
-            else
-            {
-                (*blackout)->multiplier=1;
-            }
         }
     }
     else
@@ -785,4 +753,25 @@ void protect(BlockAddress *blackout, MonopolyMap *map, PlayerAddress player,char
     }
 }
 
+void updateBlockStatus(MonopolyMap map){
+	BlockAddress BA = map.first;
+	BlockAddress BB;
+	Address P;
+	
+	do {
+		BA->multiplier = 1;
+		
+		if( BA == map.world_cup_city ){
+			BA->multiplier = 2;
+		}
+		
+		loop_list(map.ListBlackout,P,
+			BB = Info(P);
+			if( BB == BA )
+				BA->multiplier = 0;
+		);
+		
+		BA = BA->map_next;
+	} while( BA != NULL );
+}
 

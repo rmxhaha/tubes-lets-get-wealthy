@@ -245,6 +245,8 @@ int main(){
 			printf("perintah tidak diketahui\n");
 		}
 
+		updateBlockStatus( map );
+		
 	} while( !is_game_finished(map) );
 
 
