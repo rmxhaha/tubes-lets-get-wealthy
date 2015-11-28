@@ -174,9 +174,7 @@ int main(){
         }
         else ifCommand("cheatchance")
         {
-            strcpy(tmp, "Kesemp.");
-            here = search_block_by_name(map, tmp);
-            pindah_player_ke(&map, PA, here);
+            scanf("%d", &PA->save_chance);
         }
         else ifCommand("gotojail")
         {
