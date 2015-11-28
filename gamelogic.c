@@ -322,12 +322,14 @@ void habispindah(MonopolyMap *map, BlockAddress here, PlayerAddress *player)
         do {
             printf("> ");
             scanf("%s",perintah);
-            scanf("%s",namatempat);
             if (strcmp(perintah,"host")!=0) {
                 printf("perintah salah, ulangi\n");
             }
-            else if (search_block_by_name(*map, namatempat) == NULL) {
+            else {
+                scanf("%s",namatempat);
+                if (search_block_by_name(*map, namatempat) == NULL) {
                 printf("tidak ada block %s, ulangi\n", namatempat);
+                }
             }
         } while (strcmp(perintah,"host")!=0 || (search_block_by_name(*map, namatempat) == NULL));
 
