@@ -51,7 +51,7 @@ BlockAddress search_block_by_name(MonopolyMap map, char* namatempat)
 
 void dapet_Bonust(PlayerAddress player)
 {
-    player->money += 150000;
+    player->money += BONUS_MONEY_PER_REVOLUTION;
     printf("Selamat, kamu mendapat bonus 150k\n");
     printf("Uang anda ");print_money(player->money);printf("\n");
     //printf("%d",player->money);
@@ -150,13 +150,13 @@ void pindah_player1(MonopolyMap map, PlayerAddress player)
 
         if(player->revolution_count > 1)
         {
-            player->money += 150000;
+            player->money += BONUS_MONEY_PER_REVOLUTION;
         }
         //turn_on_light(&blackout,&map,player);
         P = First(map.ListBlackout);
         while(P!=NULL)
         {
-            blackout = Info(P);
+           blackout = Info(P);
            if(blackout->owner==player)
             {
                 printf("Kota %s punya %s sudah normal\n",blackout->name, blackout->owner);
