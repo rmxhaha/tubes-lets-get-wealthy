@@ -54,6 +54,7 @@ void dapet_Bonust(PlayerAddress player)
     player->money += 150000;
     printf("Selamat, kamu mendapat bonus 150k\n");
     printf("Uang anda ");print_money(player->money);printf("\n");
+    //printf("%d",player->money);
 }
 
 //=====================================================================================
@@ -274,7 +275,7 @@ void habispindah(MonopolyMap *map, BlockAddress here, PlayerAddress *player)
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     else if(here->type == BONUS)
     {
-        dapet_Bonust(*player);
+       dapet_Bonust(*player);
     }
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     else if(here->type == PARIWISATA)
@@ -291,6 +292,7 @@ void habispindah(MonopolyMap *map, BlockAddress here, PlayerAddress *player)
         printf("Kasian masuk penjara!");
         if ((*player)->save_chance == BEBAS_PENJARA)
         {
+            puts("tes masuk penjara");
             do
             {
                 scanf("%s",perintah);
@@ -332,7 +334,7 @@ void habispindah(MonopolyMap *map, BlockAddress here, PlayerAddress *player)
         }
         else
         {
-            printf("perintah salah\n");
+            printf("perintah salah. Masukkan 'host <nama kota>'\n");
         }
     }
 
@@ -413,7 +415,7 @@ void do_chance (MonopolyMap *map, PlayerAddress *P)
     }
     else
     {
-       c = 5;
+       c = 2;
     }
 	printf("Kartu kesempatan : %d\n", c);
 	if (c==6 || c==7 || c==8 || c==9 || c==10) {
@@ -595,6 +597,7 @@ void buyoffered(MonopolyMap* map, Player* player, char* nama_petak){
     else if( BA->owner == player )
         printf("> kota yang ingin anda beli adalah milik anda");
     else if( block_cost(*BA) <= player->money ){
+        (BA->owner)->money += block_cost(*BA);
         BA->owner = player;
         player->money -= block_cost(*BA);
         printf("> terbeli, sisa uang anda "); print_money(player->money);
@@ -723,6 +726,7 @@ void endturn (MonopolyMap *map)
 
 void player_bangkrut(MonopolyMap *map, PlayerAddress *player)
 {
+
     BlockAddress B = (*map).first;
     do
     {
@@ -736,13 +740,11 @@ void player_bangkrut(MonopolyMap *map, PlayerAddress *player)
         B = B->map_next;
     } while (B!=NULL);
 
-
     endturn(map);
 
     BlockAddress here = search_player(*map,*player);
     DeleteP(&(here->list_player),*player);
     DeleteP(&map->ListPlayer,*player);
-
     printf("Anda sudah bangkrut dan kalah dan menghilang\n");
 }
 
