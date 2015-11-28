@@ -151,7 +151,11 @@ void print_map(MonopolyMap map ){
 				printf("          ");
 			else{
 				printf("%10s", P->owner->name );
-
+                /*print level bangunan*/
+                if(P->level!=0)
+                {
+                    printf("%d",P->level);
+                }
 			}
 		}
 
