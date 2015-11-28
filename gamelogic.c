@@ -52,7 +52,7 @@ BlockAddress search_block_by_name(MonopolyMap map, char* namatempat)
 void dapet_Bonust(PlayerAddress player)
 {
     player->money += BONUS_MONEY_PER_REVOLUTION;
-    printf("Selamat, kamu mendapat bonus 150k\n");
+    printf("Selamat, kamu mendapat bonus "); print_money( BONUS_MONEY_PER_REVOLUTION ); printf("\n");
     printf("Uang anda ");print_money(player->money);printf("\n");
     //printf("%d",player->money);
 }
