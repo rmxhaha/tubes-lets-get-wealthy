@@ -311,6 +311,14 @@ void save_game(FILE* f,MonopolyMap map,boolean roll, boolean reroll, boolean upg
 	fwrite(&n,sizeof(int),1,f);
 	fwrite(&blocksData, sizeof(BlockGameData),n,f);
 
+	
+	// world_cup_city
+	if( map.world_cup_city != NULL )
+		k = map.world_cup_city->id;
+	else
+		k = -1;
+
+	fwrite(&k, sizeof(int),1,f);
 
     fflush(f);
 }
@@ -399,6 +407,22 @@ void load_game(FILE* f,MonopolyMap* map,boolean *roll,  boolean *reroll, boolean
             BA->owner = NULL;
 		++i;
 	);
+	
+	// world_cup_city
+	fread(&k,sizeof(int),1,f);
+	
+	map->world_cup_city = NULL;
+	if( k != -1 )
+	{
+		BA = map->first;
+		do {
+			if( BA->id == k ){
+				map->world_cup_city = BA;
+				break;
+			}
+			BA = BA->map_next;
+		} while( BA != NULL );
+	}
 
 }
 
