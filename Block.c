@@ -77,7 +77,11 @@ int block_cost( Block b ){
     return cost;
     */
 
-    return b.tab_harga[b.level] * b.multiplier;
+    return b.tab_harga[b.level];
+}
+
+int block_rent_cost( Block b ){
+	return b.tab_denda[b.level] * b.multiplier;
 }
 
 int block_upgrade_cost( Block b ){
