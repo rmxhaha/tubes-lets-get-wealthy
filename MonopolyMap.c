@@ -96,6 +96,7 @@ void print_map(MonopolyMap map ){
 	memset(tpeta,0,sizeof(tpeta)); // fill with NULL
 	int i,k;
 	char tmpstr[100];
+	char *s;
 
 	BlockAddress
 		P,T,
@@ -150,12 +151,16 @@ void print_map(MonopolyMap map ){
 			if( P == NULL || P->owner == NULL )
 				printf("          ");
 			else{
-				printf("%10s", P->owner->name );
+				tmpstr[0] = '\0';
+				strcat(tmpstr, P->owner->name );
+				s = tmpstr + strlen(tmpstr);
                 /*print level bangunan*/
                 if(P->level!=0)
                 {
-                    printf("%d",P->level);
-                }
+					sprintf(s,"%d",P->level);
+				}
+				
+				printf("%10s", tmpstr);
 			}
 		}
 
