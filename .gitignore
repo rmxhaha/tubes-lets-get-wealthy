@@ -3,3 +3,4 @@ obj/
 *.exe
 *.depend
 *.layout
+*.dat
