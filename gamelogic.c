@@ -315,28 +315,31 @@ void habispindah(MonopolyMap *map, BlockAddress here, PlayerAddress *player)
     }
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     else if(here->type == WORLD_CUP)
-    {
+   {
         //ubah jadi true status pemegang world cup
         (*player)->world_cup_holder = true;
         printf("Anda di world cup\n");
-        printf("> ");
-        scanf("%s",perintah);
-        if(strcmp(perintah,"host")==0)
-        {
-            if((*map).world_cup_city!=NULL)
-            {
-                //harga kota dijadiin normal dulu
-                (*map).world_cup_city->multiplier = 1;
-            }
+        do {
+            printf("> ");
+            scanf("%s",perintah);
             scanf("%s",namatempat);
-            block_host(map,player,namatempat);
-            printf("Kota %s berhasil menjadi world cup\n",(*map).world_cup_city->name);
-        }
-        else
+            if (strcmp(perintah,"host")!=0) {
+                printf("perintah salah, ulangi\n");
+            }
+            else if (search_block_by_name(*map, namatempat) == NULL) {
+                printf("tidak ada block %s, ulangi\n", namatempat);
+            }
+        } while (strcmp(perintah,"host")!=0 || (search_block_by_name(*map, namatempat) == NULL));
+
+        if((*map).world_cup_city!=NULL)
         {
-            printf("perintah salah. Masukkan 'host <nama kota>'\n");
+            //harga kota dijadiin normal dulu
+            (*map).world_cup_city->multiplier = 1;
         }
+        block_host(map,player,namatempat);
+        printf("Kota %s berhasil menjadi world cup\n",(*map).world_cup_city->name);
     }
+
 
 }
 
