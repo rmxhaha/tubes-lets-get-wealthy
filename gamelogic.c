@@ -151,15 +151,28 @@ void pindah_player1(MonopolyMap map, PlayerAddress player)
         {
             player->money += 150000;
         }
+        //turn_on_light(&blackout,&map,player);
         P = First(map.ListBlackout);
         while(P!=NULL)
         {
             blackout = Info(P);
-            if(blackout->blackoutguy==player)
+           if(blackout->owner==player)
+            {
+                printf("Kota %s punya %s sudah normal\n",blackout->name, blackout->owner);
+                if(blackout==map.world_cup_city)
+                {
+                    blackout->multiplier=2;
+                }
+                else
+                {
+                    blackout->multiplier=1;
+                }
+            }
+            /*if(blackout->blackoutguy==player)
             {
                 blackout->multiplier = 1;
                 //DeleteP(&map.ListBlackout, blackout);
-            }
+            }*/
                 P = Next(P);
         }
     }
@@ -393,17 +406,25 @@ void do_chance (MonopolyMap *map, PlayerAddress *P)
 
 	//ALGORITMA
 	//c = get_chance();
-    c = BEBAS_PAJAK;
+	scanf("%s",input);
+	if(strcmp(input,"protect")==0)
+    {
+        c=PERLINDUNGAN;
+    }
+    else
+    {
+       c = 5;
+    }
 	printf("Kartu kesempatan : %d\n", c);
 	if (c==6 || c==7 || c==8 || c==9 || c==10) {
 		printf("Ingin simpan kartu?");
 		scanf("%s", input);
 		if (strcmp(input, "simpan")== 0) {
-			printf("Simpan kartu.");
+			printf("Simpan kartu.\n");
 			(*P)->save_chance = c;
 		}
 		else {
-			printf("Buang kartu.");
+			printf("Buang kartu.\n");
 		}
 	}
 	else { /* 1, 2, 3, 4, 5 (GOTO_PAJAK, GOTO_PENJARA,
@@ -430,13 +451,21 @@ void do_chance (MonopolyMap *map, PlayerAddress *P)
 					scanf("%s", input);
 					B = search_block_by_name( *map, input);
 					if (B == NULL) {
-						printf("Kota tidak ada, ulangi");
+						printf("Kota tidak ada, ulangi\n");
 					}
+					else if (B->owner ==NULL)
+                    {
+                        printf("Kota ini tidak ada yang punya, gimana sih\n");
+                    }
 					else {
 						//Set multiplier kota jadi 0 selama 3 turn
                         InsVLast(&(*map).ListBlackout,B);
                         B->multiplier = 0;
-                        B->blackoutguy = *P;
+                        //B->blackoutguy = *P;
+                        if(((B->owner)->save_chance==PERLINDUNGAN))
+                        {
+                            printf("Player yang punya petak itu punya kartu perlindungan \n");
+                        }
 					}
 				} while (B == NULL);
 				break;
@@ -716,4 +745,45 @@ void player_bangkrut(MonopolyMap *map, PlayerAddress *player)
 
     printf("Anda sudah bangkrut dan kalah dan menghilang\n");
 }
+
+void protect(BlockAddress *blackout, MonopolyMap *map, PlayerAddress player,char* tempat)
+{
+
+    Address P = First((*map).ListBlackout);
+    boolean stop = false;
+    BlockAddress tes = Info(P);
+    //tempat pasti ada karna di cek di game.c
+    while((P!=NULL)&&(!stop))
+    {
+        *blackout = Info(P);
+        if(strcmp(((*blackout)->name),tempat)==0)
+        {
+            stop = true;
+        }
+        else
+        {
+            P = Next(P);
+        }
+    }
+    if(stop)
+    {
+        if(((*blackout)->owner==player))
+        {
+            printf("Kota %s punya %s sudah normal\n",(*blackout)->name, (*blackout)->owner);
+            if((*blackout)==(*map).world_cup_city)
+            {
+                (*blackout)->multiplier=2;
+            }
+            else
+            {
+                (*blackout)->multiplier=1;
+            }
+        }
+    }
+    else
+    {
+        printf("Tidak bisa pakai protect\n");
+    }
+}
+
 

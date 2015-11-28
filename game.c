@@ -17,6 +17,8 @@ int main(){
 	char command[100];
 	char tmp[100];
     PlayerAddress PA;
+    Address P;
+    BlockAddress blackout;
 
 	int dadu1, dadu2;
 	set_Random(); // init random
@@ -165,6 +167,23 @@ int main(){
         else ifCommand("maju")
         {
             pindah_player(&map, PA, 1);
+        }
+        else ifCommand("protect")
+        {
+            scanf("%s",tmp);
+            if(PA->save_chance==8)//kalau punya kartu perlindungan
+            {
+                here = search_block_by_name(map,tmp);
+                if(tmp!=NULL)
+                {
+                    protect(&blackout,&map,PA,tmp);
+                }
+            }
+            else
+            {
+                printf("Anda tidak punya kartu perlindungan.\n");
+            }
+
         }
 		else {
 			printf("perintah tidak diketahui\n");
