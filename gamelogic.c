@@ -227,7 +227,7 @@ void habispindah(MonopolyMap *map, BlockAddress here, PlayerAddress *player)
     char namatempat[100];
     printf("player sekarang di petak %s\n", here->name);
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    if(here->type == TANAH)
+    if(here->type == TANAH || here->type == PARIWISATA)
     {
         //bayar sewa
         if(!(here->owner == NULL) && (here->owner != *player))
@@ -246,11 +246,11 @@ void habispindah(MonopolyMap *map, BlockAddress here, PlayerAddress *player)
                 }while(strcmp(perintah,"free_penalty")!=0);
                 (*player)->save_chance =0;
             }
-            else if ((*player)->money >= (here->multiplier * here->tab_denda[here->level])) { //bayar pajak
-                (*player)->money -= (here->multiplier * here->tab_denda[here->level]);
+            else if ((*player)->money >= block_rent_cost(here)) { //bayar pajak
+                (*player)->money -= block_rent_cost(here);
             }
             else { //bangkrut
-                    printf("bangkrut kasian\n");
+				printf("bangkrut kasian\n");
                 player_bangkrut(map,player);
             }
         }
@@ -277,36 +277,6 @@ void habispindah(MonopolyMap *map, BlockAddress here, PlayerAddress *player)
     {
        dapet_Bonust(*player);
     }
-    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    else if(here->type == PARIWISATA)
-    {
-        //bayar sewa
-        if(!(here->owner == NULL) && (here->owner != *player))
-        {
-            printf("Kasian bayar sewa!\n");
-            if ((*player)->save_chance == BEBAS_SEWA)
-            {
-                do
-                {
-                    scanf("%s",perintah);
-                    if(strcmp(perintah,"free_penalty")!=0)
-                    {
-                        printf("Anda punya kartu bebas sewa. Tulis 'free_penalty'\n");
-                    }
-
-                }while(strcmp(perintah,"free_penalty")!=0);
-                (*player)->save_chance =0;
-            }
-            else if ((*player)->money >= (here->multiplier * here->tab_denda[here->level])) { //bayar pajak
-                (*player)->money -= (here->multiplier * here->tab_denda[here->level]);
-            }
-            else { //bangkrut
-                    printf("bangkrut kasian\n");
-                player_bangkrut(map,player);
-            }
-        }
-    }
-    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     else if(here->type == DESERTED_ISLAND)
     {
         printf("Kasian masuk penjara!\n");
