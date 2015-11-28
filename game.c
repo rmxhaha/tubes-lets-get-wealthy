@@ -44,9 +44,14 @@ int main(){
         if( tmp[0] == 'y' )
         {
             f = fopen("savedata.dat","r");
-            load_game(f,&map,&roll,&reroll,&upgraded);
-            fclose(f);
-            printf("loaded\n");
+			if( f == NULL ){
+				printf("fail to load\n");
+			}
+			else {
+				load_game(f,&map,&roll,&reroll,&upgraded);
+				fclose(f);
+				printf("loaded\n");
+			}
         }
     }
 
@@ -72,9 +77,14 @@ int main(){
 		scanf("%s", command );
 		ifCommand("save"){
             f = fopen("savedata.dat","w+");
-		    save_game(f,map,roll,reroll,upgraded);
-		    fclose(f);
-		    printf("saved\n");
+			if( f == NULL ){
+				printf("fail to save\n");
+			}
+			else {
+				save_game(f,map,roll,reroll,upgraded);
+				fclose(f);
+				printf("saved\n");
+			}
 		}
 		else ifCommand("rolldice"){
 		    //jalanin player & lempar dadu
