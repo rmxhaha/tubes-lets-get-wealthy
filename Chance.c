@@ -5,6 +5,6 @@ Chance get_chance() {
 	//Memilih kartu chance secara random
 	int x;
 
-	x = rand()%11;
-	return x;
+	x = rand()%10;
+	return (x + 1);
 }
