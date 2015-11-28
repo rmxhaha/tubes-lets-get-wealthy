@@ -34,24 +34,26 @@ int main(){
     reroll = false;
     upgraded = false;
 
-    printf("Mau load save game ?(y/n)");
-    scanf("%c",&tmp[0]);
+    if( access("savedata.dat", F_OK ) == -1){
+        tmp[0] = 'n'; // no save game by default
+    }
+    else {
+        printf("Mau load save game ?(y/n)");
+        scanf("%c",&tmp[0]);
 
-    if( tmp[0] == 'y' )
-    {
-        if( access("savedata.dat", F_OK ) == -1){
-            printf("save game tidak ditemukan\n");
-        }
-        else {
+        if( tmp[0] == 'y' )
+        {
             f = fopen("savedata.dat","r");
             load_game(f,&map,&roll,&reroll,&upgraded);
             fclose(f);
             printf("loaded\n");
         }
     }
-    else {
+
+    // if no load save
+    if( tmp[0] != 'y' )
         pick_jumlah_player(&map);
-    }
+
 
 
 /*
