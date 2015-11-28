@@ -415,19 +415,10 @@ void do_chance (MonopolyMap *map, PlayerAddress *P)
 	BlockAddress B;
 
 	//ALGORITMA
-	//c = get_chance();
-	scanf("%s",input);
-	if(strcmp(input,"protect")==0)
-    {
-        c=PERLINDUNGAN;
-    }
-    else
-    {
-       c = 2;
-    }
+	c = get_chance();
 	printf("Kartu kesempatan : %d\n", c);
 	if (c==6 || c==7 || c==8 || c==9 || c==10) {
-		printf("Ingin simpan kartu?");
+		printf("Ingin simpan kartu?\n");
 		scanf("%s", input);
 		if (strcmp(input, "simpan")== 0) {
 			printf("Simpan kartu.\n");
