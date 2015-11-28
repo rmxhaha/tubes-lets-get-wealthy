@@ -5,6 +5,8 @@
 #include "gamelogic.h"
 #include "worldtravel.h"
 #include "host.h"
+#include "unistd.h"
+#include "stdio.h"
 
 #define ifCommand(cmd)\
 	if( strcmp( command, cmd) == 0 )
@@ -32,12 +34,20 @@ int main(){
     reroll = false;
     upgraded = false;
 
+    printf("Mau load save game ?(y/n)");
     scanf("%c",&tmp[0]);
 
-    if( tmp[0] == 'l' ){
-        f = fopen("savedata.dat","r");
-        load_game(f,&map,&roll,&reroll,&upgraded);
-        fclose(f);
+    if( tmp[0] == 'y' )
+    {
+        if( access("savedata.dat", F_OK ) == -1){
+            printf("save game tidak ditemukan\n");
+        }
+        else {
+            f = fopen("savedata.dat","r");
+            load_game(f,&map,&roll,&reroll,&upgraded);
+            fclose(f);
+            printf("loaded\n");
+        }
     }
     else {
         pick_jumlah_player(&map);
@@ -62,7 +72,7 @@ int main(){
             f = fopen("savedata.dat","w+");
 		    save_game(f,map,roll,reroll,upgraded);
 		    fclose(f);
-		    printf("Saved\n");
+		    printf("saved\n");
 		}
 		else ifCommand("rolldice"){
 		    //jalanin player & lempar dadu
