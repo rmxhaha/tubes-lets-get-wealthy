@@ -215,7 +215,7 @@ void pindah_player(MonopolyMap *map, PlayerAddress player, int d )
     BlockAddress here;
     here = search_player(*map, player);
 
-    habispindah(map, here, player);
+    habispindah(map, here, &player);
 
 }
 
@@ -281,9 +281,29 @@ void habispindah(MonopolyMap *map, BlockAddress here, PlayerAddress *player)
     else if(here->type == PARIWISATA)
     {
         //bayar sewa
-        if(!(here->owner == NULL) && !(here->owner != *player))
+        if(!(here->owner == NULL) && (here->owner != *player))
         {
+            printf("Kasian bayar sewa!\n");
+            if ((*player)->save_chance == BEBAS_SEWA)
+            {
+                do
+                {
+                    scanf("%s",perintah);
+                    if(strcmp(perintah,"free_penalty")!=0)
+                    {
+                        printf("Anda punya kartu bebas sewa. Tulis 'free_penalty'\n");
+                    }
 
+                }while(strcmp(perintah,"free_penalty")!=0);
+                (*player)->save_chance =0;
+            }
+            else if ((*player)->money >= (here->multiplier * here->tab_denda[here->level])) { //bayar pajak
+                (*player)->money -= (here->multiplier * here->tab_denda[here->level]);
+            }
+            else { //bangkrut
+                    printf("bangkrut kasian\n");
+                player_bangkrut(map,player);
+            }
         }
     }
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -419,7 +439,7 @@ void do_chance (MonopolyMap *map, PlayerAddress *P)
 	printf("Kartu kesempatan : %d\n", c);
 	if (c==6 || c==7 || c==8 || c==9 || c==10) {
 		printf("Ingin simpan kartu?\n");
-		scanf("%s", input);
+		scanf(" %s", input);
 		if (strcmp(input, "simpan")== 0) {
 			printf("Simpan kartu.\n");
 			(*P)->save_chance = c;
