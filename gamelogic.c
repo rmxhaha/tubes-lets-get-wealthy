@@ -179,7 +179,7 @@ void pindah_player1(MonopolyMap map, PlayerAddress player)
     }
 
     //cek lewat worldcup
-    if(here->type == 8)
+    if(here->type == WORLD_CUP)
     {
        if(player->world_cup_holder)
         {
