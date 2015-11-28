@@ -14,6 +14,7 @@ int main(){
 	Block block;
 	BlockAddress here;
 	boolean roll, reroll;  //buat ngecek reroll, jadiin true pas ganti player
+	boolean upgraded; //untuk cek sudah upgrade. jadi false pas ganti player
 	char command[100];
 	char tmp[100];
     PlayerAddress PA;
@@ -29,12 +30,13 @@ int main(){
 
     roll = true;
     reroll = false;
+    upgraded = false;
 
     scanf("%c",&tmp[0]);
 
     if( tmp[0] == 'l' ){
         f = fopen("savedata.dat","r");
-        load_game(f,&map,&roll,&reroll);
+        load_game(f,&map,&roll,&reroll,&upgraded);
         fclose(f);
     }
     else {
@@ -58,7 +60,7 @@ int main(){
 		scanf("%s", command );
 		ifCommand("save"){
             f = fopen("savedata.dat","w+");
-		    save_game(f,map,roll,reroll);
+		    save_game(f,map,roll,reroll,upgraded);
 		    fclose(f);
 		    printf("Saved\n");
 		}
@@ -122,7 +124,14 @@ int main(){
             buyoffered(&map, PA, wi);
 		}
 		else ifCommand("upgrade"){
-            upgrade(map, &PA);
+            if(!upgraded)
+            {
+                upgrade(map, &PA,&upgraded);
+            }
+            else
+            {
+                printf("Gaboleh tamak, anda sudah upgrade.\n");
+            }
 		}
 		else ifCommand("board"){
             print_map(map);
@@ -156,6 +165,7 @@ int main(){
             } else {
                 roll = true;
                 reroll = false;
+                upgraded = false;
                 endturn(&map);
             }
         }

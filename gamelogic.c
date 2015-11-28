@@ -596,6 +596,7 @@ void buyoffered(MonopolyMap* map, Player* player, char* nama_petak){
     else if( BA->owner == player )
         printf("> kota yang ingin anda beli adalah milik anda");
     else if( block_cost(*BA) <= player->money ){
+            /*init upgrade jadi false supaya pas beli bisa upgrade sekali. kynya harus tambah parameter:(*/
         (BA->owner)->money += block_cost(*BA);
         BA->owner = player;
         player->money -= block_cost(*BA);
@@ -644,7 +645,7 @@ void buy(MonopolyMap map, PlayerAddress P)
                 {
                     P->money -= block_cost(*B);
                     B->owner = P;
-
+                    /*init upgrade jadi false supaya pas beli bisa upgrade sekali. kynya harus tambah parameter:(*/
                     printf("Selamat, kota %s kini menjadi milikmu!\n", B->name);
                     printf("level bangunan %d\n", B->level);
                     printf("sisa uangmu: ");print_money(P->money);printf("\n");
@@ -687,19 +688,19 @@ void buy(MonopolyMap map, PlayerAddress P)
     }
 }
 
-void upgrade(MonopolyMap map, PlayerAddress *P)
+void upgrade(MonopolyMap map, PlayerAddress *P,boolean *upgraded)
 {
     BlockAddress B;
     B = search_player(map, *P);
     if((*P)->money >= block_upgrade_cost(*B))
     {
-        if((((B->type == TANAH)&&(B->level <= 4))|| ((B->type == PARIWISATA)&&(B->level <= 0))))
+    if((((B->type == TANAH)&&(B->level <= 4))|| ((B->type == PARIWISATA)&&(B->level <= 0))))
         {
             if(B->owner == *P)
             {
                 (*P)->money -= block_upgrade_cost(*B);
                 B->level++;
-
+                *upgraded = true;
                 printf("Selamat, bangunanmu di %s memiliki level %d!\n", B->name, B->level);
                 printf("sisa uangmu: ");print_money((*P)->money);printf("\n");
             }

@@ -118,7 +118,7 @@ void buy(MonopolyMap map, PlayerAddress P);
     1. menambah level gedung jika uang mencukupi
     2. memberikan pesan jika uang tidak cukup
 */
-void upgrade(MonopolyMap map, PlayerAddress *P);
+void upgrade(MonopolyMap map, PlayerAddress *P,boolean *upgraded);
 
 
 void endturn (MonopolyMap* map);
