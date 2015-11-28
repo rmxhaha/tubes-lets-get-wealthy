@@ -251,7 +251,7 @@ void save_game(FILE* f,MonopolyMap map,boolean roll, boolean reroll, boolean upg
     fwrite(&roll,sizeof(boolean),1,f);
     fwrite(&reroll,sizeof(boolean),1,f);
     //sudah upgrade?
-    //fwrite(&upgraded,sizeof(boolean),1,f);
+    fwrite(&upgraded,sizeof(boolean),1,f);
 	// num of player
     fwrite(&nPlayer,sizeof(int),1,f);
 
@@ -329,7 +329,7 @@ void load_game(FILE* f,MonopolyMap* map,boolean *roll,  boolean *reroll, boolean
     fread(roll,sizeof(boolean),1,f);
     fread(reroll,sizeof(boolean),1,f);
     //sudah upgrade?
-    //fread(upgraded,sizeof(boolean),1,f);
+    fread(upgraded,sizeof(boolean),1,f);
 
 	// num of player
     fread(&nPlayer,sizeof(int),1,f);
