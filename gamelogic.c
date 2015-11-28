@@ -49,7 +49,7 @@ BlockAddress search_block_by_name(MonopolyMap map, char* namatempat)
 
 //=====================================================================================
 
-void dapet_Bonust(PlayerAddress player)
+void dapet_bonus(PlayerAddress player)
 {
     player->money += BONUS_MONEY_PER_REVOLUTION;
     printf("Selamat, kamu mendapat bonus "); print_money( BONUS_MONEY_PER_REVOLUTION ); printf("\n");
@@ -275,7 +275,7 @@ void habispindah(MonopolyMap *map, BlockAddress here, PlayerAddress *player)
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     else if(here->type == BONUS)
     {
-       dapet_Bonust(*player);
+       dapet_bonus(*player);
     }
     else if(here->type == DESERTED_ISLAND)
     {
