@@ -206,6 +206,27 @@ typedef struct {
 	int multiplier;
 } BlockGameData;
 
+#define ListBlockToArrayOfId(LB,P,BA,kotaIds,i)\
+    n = NbElmt(LB);\
+    i = 0;\
+    loop_list(LB,P,\
+        BA = Info(P);\
+        kotaIds[i++] = BA->id; \
+    );\
+
+#define ArrayOfIdToListBlock(kotaIds,i,n,map,LB,BA)\
+    CreateList(&(LB));\
+	\
+    for( i = 0; i < n; ++ i ){\
+        BA = map->first;\
+        do {\
+            if( BA->id == kotaIds[i] ) break;\
+            BA = BA->map_next;\
+        } while( BA != NULL );\
+		\
+        InsVLast(&LB,BA);\
+    }	
+
 // make sure permission file is w+
 void save_game(FILE* f,MonopolyMap map,boolean roll, boolean reroll, boolean upgraded){
     Player arr[MAX_PLAYER];
@@ -258,15 +279,14 @@ void save_game(FILE* f,MonopolyMap map,boolean roll, boolean reroll, boolean upg
 
 
 	// ListOffered
-    n = NbElmt(map.ListOffered);
-    i = 0;
-    loop_list(map.ListOffered,P,
-        BA = Info(P);
-        kotaIds[i++] = BA->id; // simpan id kotanya aja
-    );
+
+	ListBlockToArrayOfId(map.ListOffered,P,BA,kotaIds,i);
 
     fwrite(&n,sizeof(int),1,f);
     fwrite(&kotaIds,sizeof(int),n,f);
+	
+	// List Blackout
+
 
 	// data block
 	n = 0;
@@ -353,22 +373,7 @@ void load_game(FILE* f,MonopolyMap* map,boolean *roll,  boolean *reroll, boolean
     fread(&n,4,1,f);
     fread(&kotaIds,sizeof(int),n,f);
 
-    BA = map->first;
-
-    CreateList(&(map->ListOffered));
-    for( i = 0; i < n; ++ i ){
-        id = kotaIds[i];
-
-        BA = map->first;
-
-        do {
-            if( BA->id == id ) break;
-            BA = BA->map_next;
-        } while( BA != NULL );
-
-
-        InsVLast(&map->ListOffered,BA);
-    }
+	ArrayOfIdToListBlock(kotaIds,i,n,map,map->ListOffered,BA);
 
 
 	// data block
