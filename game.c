@@ -14,8 +14,8 @@
 int main(){
 	MonopolyMap map;
 	Block block;
-	BlockAddress here;
-	boolean roll, reroll;  //buat ngecek reroll, jadiin true pas ganti player
+	BlockAddress here, there;
+	boolean roll,reroll;  //buat ngecek reroll, jadiin true pas ganti player
 	boolean upgraded; //untuk cek sudah upgrade. jadi false pas ganti player
 	char command[100];
 	char tmp[100];
@@ -30,7 +30,6 @@ int main(){
 	map = load_map(f);
 	fclose(f);
 
-    roll = true;
     reroll = false;
     upgraded = false;
 
@@ -69,184 +68,185 @@ int main(){
 
 
 */
+
+	#define rolldice_routine\
+		printf("Rolling dice\n");\
+		\
+		lempar_Dadu(&dadu1,&dadu2);\
+		pindah_player(&map, PA, dadu1+dadu2);\
+		here = search_player(map, PA);\
+		\
+		reroll = dadu1 == dadu2;\
+		upgraded = false;\
+		if(reroll)\
+		{\
+			printf("re-roll\n");\
+		}\
+
+
 	// repeat until game is won
 	do {
         PA = Info(map.cplayer);
 
-        printf("> ");
-		scanf("%s", command );
-		ifCommand("save"){
-            f = fopen("savedata.dat","w+");
-			if( f == NULL ){
-				printf("fail to save\n");
+		rolldice_routine;
+		do {
+			printf("> ");
+			scanf("%s", command );
+			ifCommand("save"){
+				f = fopen("savedata.dat","w+");
+				if( f == NULL ){
+					printf("fail to save\n");
+				}
+				else {
+					save_game(f,map,roll,reroll,upgraded);
+					fclose(f);
+					printf("saved\n");
+				}
+			}
+			else ifCommand("rolldice"){
+				//jalanin player & lempar dadu
+				if(!reroll)
+					printf("sudah jalan\n");
+				else {
+					rolldice_routine;
+				}
+			}
+			else ifCommand("info"){
+				scanf("%s", tmp);
+				block_info_petak(map,tmp);
+			}
+			else ifCommand("buy"){
+				buy(map, PA, &upgraded);
+
+				here = search_player(map, PA);
+				if(here->owner == PA)
+				{
+					printf("kebeli\n");
+				}
+				else
+				{
+					printf("kaga kebeli\n");
+				}
+			}
+			else ifCommand("sell"){
+				char wa[50];
+				scanf("%s", &wa);
+				sell(&map, PA, wa);
+			}
+			else ifCommand("sellbank"){
+				scanf("%s", &tmp);
+				here = search_block_by_name(map, tmp);
+				sell_bank(PA, &here);
+			}
+			else ifCommand("showoffered"){
+				showoffered(&map);
+			}
+			else ifCommand("buyoffered"){
+				char wi[50];
+				scanf("%s", &wi);
+				buyoffered(&map, PA, wi,&upgraded);
+			}
+			else ifCommand("upgrade"){
+				if(!upgraded)
+				{
+					upgrade(map, &PA,&upgraded);
+				}
+				else
+				{
+					printf("Gaboleh tamak, anda sudah upgrade.\n");
+				}
+			}
+			else ifCommand("board"){
+				print_map(map);
+			}
+			else ifCommand("leaderboard"){
+				print_leaderboard( map );
+			}
+			/*tambah cheat buat travel*/
+			else ifCommand("travel"){
+				scanf("%s", &tmp);
+				player_travel(map,PA, &tmp);
+			}
+			else ifCommand("cheathost"){
+				cheat_block_host(&map,PA);
+			}
+			else ifCommand("host"){
+				if( search_player(map,PA)->type != WORLD_CUP){
+					printf("Anda tidak berada di world cup.\n");
+				}
+				else {
+					scanf("%s", &tmp);
+					block_host( &map,PA,tmp);
+				}
+			}
+			else ifCommand("whoami"){
+				printf("current player: %s\n",PA->name);
+			}
+			else ifCommand("endturn"){
+				if( reroll ){
+					printf("anda belum rolldice sehingga anda tidak bisa endturn\n");
+				} else {
+					endturn(&map);
+					break;
+				}
+			}
+			else ifCommand("bangkrut"){
+				PA->money = 1;
+				print_money(PA->money);
+			}
+			/*cheat langsung ke petak bayar pajak*/
+			else ifCommand("cheattax"){
+				bayar_pajak(&map,&PA);
+			}
+			else ifCommand("cheat_rolll_travel"){
+				strcpy(tmp, "KelDun");
+				here = search_block_by_name(map, tmp);
+				pindah_player_ke(&map, PA, here);
+			}
+			else ifCommand("cheatchance")
+			{
+				scanf("%d", &PA->save_chance);
+			}
+			else ifCommand("gotojail")
+			{
+				strcpy(tmp, "Deser.Isl.");
+				here = search_block_by_name(map, tmp);
+				pindah_player_ke(&map, PA, here);
+			}
+			else ifCommand("gototax")
+			{
+				strcpy(tmp, "Pajak");
+				here = search_block_by_name(map, tmp);
+				pindah_player_ke(&map, PA, here);
+			}
+			else ifCommand("maju")
+			{
+				pindah_player(&map, PA, 1);
+			}
+			else ifCommand("protect")
+			{
+				scanf("%s",tmp);
+				if(PA->save_chance==8)//kalau punya kartu perlindungan
+				{
+					here = search_block_by_name(map,tmp);
+					if(here==NULL)
+						printf("Kota tidak ada\n");
+					else
+						protect(here,&map,PA);
+				}
+				else
+				{
+					printf("Anda tidak punya kartu perlindungan.\n");
+				}
+
 			}
 			else {
-				save_game(f,map,roll,reroll,upgraded);
-				fclose(f);
-				printf("saved\n");
+				printf("perintah tidak diketahui\n");
 			}
-		}
-		else ifCommand("rolldice"){
-		    //jalanin player & lempar dadu
-		    if(roll || reroll)
-            {
-                roll = false;
 
-                lempar_Dadu(&dadu1,&dadu2);
-                pindah_player(&map, PA, dadu1+dadu2);
-                here = search_player(map, PA);
+			updateBlockStatus( map );
+		} while( true ); // endturn
 
-                reroll = dadu1 == dadu2;
-
-                if(reroll)
-                {
-                    printf("re-roll\n");
-                }
-            }
-            else
-            {
-                printf("sudah jalan\n");
-            }
-
-
-		}
-		else ifCommand("info"){
-            scanf("%s", tmp);
-            block_info_petak(map,tmp);
-		}
-		else ifCommand("buy"){
-            buy(map, PA, &upgraded);
-
-            here = search_player(map, PA);
-            if(here->owner == PA)
-            {
-                printf("kebeli\n");
-            }
-            else
-            {
-                printf("kaga kebeli\n");
-            }
-		}
-		else ifCommand("sell"){
-            char wa[50];
-            scanf("%s", &wa);
-            sell(&map, PA, wa);
-		}
-		else ifCommand("sellbank"){
-            scanf("%s", &tmp);
-            here = search_block_by_name(map, tmp);
-            sell_bank(PA, &here);
-		}
-		else ifCommand("showoffered"){
-            showoffered(&map);
-		}
-		else ifCommand("buyoffered"){
-            char wi[50];
-            scanf("%s", &wi);
-            buyoffered(&map, PA, wi,&upgraded);
-		}
-		else ifCommand("upgrade"){
-            if(!upgraded)
-            {
-                upgrade(map, &PA,&upgraded);
-            }
-            else
-            {
-                printf("Gaboleh tamak, anda sudah upgrade.\n");
-            }
-		}
-		else ifCommand("board"){
-            print_map(map);
-		}
-		else ifCommand("leaderboard"){
-			print_leaderboard( map );
-		}
-		/*tambah cheat buat travel*/
-		else ifCommand("travel"){
-            scanf("%s", &tmp);
-            player_travel(map,PA, &tmp);
-		}
-		else ifCommand("cheathost"){
-            cheat_block_host(&map,PA);
-        }
-        else ifCommand("host"){
-            if( search_player(map,PA)->type != WORLD_CUP){
-                printf("Anda tidak berada di world cup.\n");
-            }
-            else {
-                scanf("%s", &tmp);
-                block_host( &map,PA,tmp);
-            }
-        }
-        else ifCommand("whoami"){
-            printf("current player: %s\n",PA->name);
-        }
-        else ifCommand("endturn"){
-            if( roll || reroll ){
-                printf("anda belum rolldice sehingga anda tidak bisa endturn\n");
-            } else {
-                roll = true;
-                reroll = false;
-                upgraded = false;
-                endturn(&map);
-            }
-        }
-        else ifCommand("bangkrut"){
-            PA->money = 1;
-            print_money(PA->money);
-        }
-        /*cheat langsung ke petak bayar pajak*/
-        else ifCommand("cheattax"){
-            bayar_pajak(&map,&PA);
-        }
-        else ifCommand("cheat_rolll_travel"){
-            strcpy(tmp, "KelDun");
-            here = search_block_by_name(map, tmp);
-            pindah_player_ke(&map, PA, here);
-        }
-        else ifCommand("cheatchance")
-        {
-            scanf("%d", &PA->save_chance);
-        }
-        else ifCommand("gotojail")
-        {
-            strcpy(tmp, "Deser.Isl.");
-            here = search_block_by_name(map, tmp);
-            pindah_player_ke(&map, PA, here);
-        }
-        else ifCommand("gototax")
-        {
-            strcpy(tmp, "Pajak");
-            here = search_block_by_name(map, tmp);
-            pindah_player_ke(&map, PA, here);
-        }
-        else ifCommand("maju")
-        {
-            pindah_player(&map, PA, 1);
-        }
-        else ifCommand("protect")
-        {
-            scanf("%s",tmp);
-            if(PA->save_chance==8)//kalau punya kartu perlindungan
-            {
-                here = search_block_by_name(map,tmp);
-                if(here==NULL)
-					printf("Kota tidak ada\n");
-				else 
-					protect(here,&map,PA);
-            }
-            else
-            {
-                printf("Anda tidak punya kartu perlindungan.\n");
-            }
-
-        }
-		else {
-			printf("perintah tidak diketahui\n");
-		}
-
-		updateBlockStatus( map );
-		
 	} while( !is_game_finished(map) );
 
 
