@@ -691,21 +691,26 @@ void upgrade(MonopolyMap map, PlayerAddress *P)
 {
     BlockAddress B;
     B = search_player(map, *P);
-
-    if((*P)->money >= block_upgrade_cost(*B) && B->level <= 4 )
+    if((*P)->money >= block_upgrade_cost(*B))
     {
-        if(B->owner == *P)
+        if((((B->type == TANAH)&&(B->level <= 4))|| ((B->type == PARIWISATA)&&(B->level <= 0))))
         {
-            (*P)->money -= block_upgrade_cost(*B);
-            B->level++;
+            if(B->owner == *P)
+            {
+                (*P)->money -= block_upgrade_cost(*B);
+                B->level++;
 
-
-            printf("Selamat, bangunanmu di %s memiliki level %d!\n", B->name, B->level);
-            printf("sisa uangmu: ");print_money((*P)->money);printf("\n");
+                printf("Selamat, bangunanmu di %s memiliki level %d!\n", B->name, B->level);
+                printf("sisa uangmu: ");print_money((*P)->money);printf("\n");
+            }
+            else
+            {
+                printf("Bukan properti anda\n");
+            }
         }
         else
         {
-            printf("Bukan properti anda\n");
+            printf("Anda tidak bisa upgrade.\n");
         }
     }
     else
