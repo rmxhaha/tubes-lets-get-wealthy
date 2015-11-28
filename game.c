@@ -93,7 +93,7 @@ int main(){
             block_info_petak(map,tmp);
 		}
 		else ifCommand("buy"){
-            buy(map, PA);
+            buy(map, PA, &upgraded);
 
             here = search_player(map, PA);
             if(here->owner == PA)
@@ -121,7 +121,7 @@ int main(){
 		else ifCommand("buyoffered"){
             char wi[50];
             scanf("%s", &wi);
-            buyoffered(&map, PA, wi);
+            buyoffered(&map, PA, wi,&upgraded);
 		}
 		else ifCommand("upgrade"){
             if(!upgraded)
