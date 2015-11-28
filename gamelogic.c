@@ -289,19 +289,19 @@ void habispindah(MonopolyMap *map, BlockAddress here, PlayerAddress *player)
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     else if(here->type == DESERTED_ISLAND)
     {
-        printf("Kasian masuk penjara!");
+        printf("Kasian masuk penjara!\n");
         if ((*player)->save_chance == BEBAS_PENJARA)
         {
-            puts("tes masuk penjara");
+            puts("tes masuk penjara\n");
             do
             {
-                scanf("%s",perintah);
-                if(strcmp(perintah,"free_me")!=0)
+                scanf(" %[^\n]s",&perintah);
+                if(strcmp(perintah,"free me")!=0)
                 {
-                    printf("Anda punya kartu bebas penjara. Tulis 'free me'");
+                    printf("Anda punya kartu bebas penjara. Tulis 'free me'.\n");
                 }
 
-            }while(strcmp(perintah,"free_me")!=0);
+            }while(strcmp(perintah,"free me")!=0);
          (*player)->save_chance =0;
         }
         else if ((*player)->money >= 1000000)
