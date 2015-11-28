@@ -16,6 +16,11 @@ typedef struct TPlayer {
 	boolean world_cup_holder;
 }Player;
 
+
+#define MIN_PLAYER 2
+#define MAX_PLAYER 4
+
+
 void player_init(PlayerAddress *Padd);
 
 void player_alokasi(PlayerAddress *Padd);

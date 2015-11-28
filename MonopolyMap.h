@@ -5,6 +5,7 @@
 #include "stdio.h"
 #include "Block.h"
 #include "Player.h"
+
 typedef struct TBlock *BlockAddress;
 typedef struct TPlayer *PlayerAddress;
 
@@ -20,5 +21,9 @@ typedef struct {
 MonopolyMap load_map(FILE*);
 
 void print_map(MonopolyMap);
+
+void save_game(FILE*,MonopolyMap map, boolean roll, boolean reroll);
+
+void load_game(FILE*,MonopolyMap* map, boolean* roll, boolean* reroll);
 
 #endif
