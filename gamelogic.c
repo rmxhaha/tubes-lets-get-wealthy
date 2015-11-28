@@ -169,7 +169,7 @@ void pindah_player1(MonopolyMap map, PlayerAddress player)
     if(here->type == WORLD_CUP)
     {
 		map.world_cup_city = NULL;
-			
+
         //ubah jadi false parameter player pemegang worldcup
         //semua jadi false statusnya
         pemain = First(map.ListPlayer);
@@ -230,8 +230,8 @@ void habispindah(MonopolyMap *map, BlockAddress here, PlayerAddress *player)
                 }while(strcmp(perintah,"free_penalty")!=0);
                 (*player)->save_chance =0;
             }
-            else if ((*player)->money >= block_rent_cost(here)) { //bayar pajak
-                (*player)->money -= block_rent_cost(here);
+            else if ((*player)->money >= block_rent_cost(*here)) { //bayar pajak
+                (*player)->money -= block_rent_cost(*here);
             }
             else { //bangkrut
 				printf("bangkrut kasian\n");
@@ -721,56 +721,41 @@ void player_bangkrut(MonopolyMap *map, PlayerAddress *player)
     printf("Anda sudah bangkrut dan kalah dan menghilang\n");
 }
 
-void protect(BlockAddress *blackout, MonopolyMap *map, PlayerAddress player,char* tempat)
-{
 
-    Address P = First((*map).ListBlackout);
-    boolean stop = false;
-    BlockAddress tes = Info(P);
-    //tempat pasti ada karna di cek di game.c
-    while((P!=NULL)&&(!stop))
-    {
-        *blackout = Info(P);
-        if(strcmp((*blackout)->name,tempat)==0)
-        {
-            stop = true;
-        }
-        else
-        {
-            P = Next(P);
-        }
-    }
-    if(stop)
-    {
-        if((*blackout)->owner==player)
-        {
-            printf("Kota %s punya %s sudah normal\n",(*blackout)->name, (*blackout)->owner);
-        }
-    }
-    else
-    {
-        printf("Tidak bisa pakai protect\n");
-    }
+void protect(BlockAddress protect_target, MonopolyMap *map, PlayerAddress player)
+{
+	// protect terpakai
+	player->save_chance = 0;
+	if( protect_target->owner != player ){
+        printf("proteksi hanya bisa dipakai ke kota milik sendiri\n");
+	}
+	else {
+		printf("Player %s menggunakan kartu perlindungan. Biaya sewa di kota %s kembali normal.",
+			protect_target->owner->name,
+			protect_target->name
+		);
+		DeleteP(&map->ListBlackout,protect_target);
+	}
 }
 
 void updateBlockStatus(MonopolyMap map){
 	BlockAddress BA = map.first;
 	BlockAddress BB;
 	Address P;
-	
+
 	do {
 		BA->multiplier = 1;
-		
+
 		if( BA == map.world_cup_city ){
 			BA->multiplier = 2;
 		}
-		
+
 		loop_list(map.ListBlackout,P,
 			BB = Info(P);
 			if( BB == BA )
 				BA->multiplier = 0;
 		);
-		
+
 		BA = BA->map_next;
 	} while( BA != NULL );
 }

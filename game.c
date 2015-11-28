@@ -230,10 +230,10 @@ int main(){
             if(PA->save_chance==8)//kalau punya kartu perlindungan
             {
                 here = search_block_by_name(map,tmp);
-                if(here!=NULL)
-                {
-                    protect(&blackout,&map,PA,tmp);
-                }
+                if(here==NULL)
+					printf("Kota tidak ada\n");
+				else 
+					protect(here,&map,PA);
             }
             else
             {

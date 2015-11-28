@@ -125,7 +125,7 @@ void endturn (MonopolyMap* map);
 
 void dapet_Bonust(PlayerAddress player);
 
-void protect(BlockAddress *blackout, MonopolyMap *map, PlayerAddress player,char* tempat);
+void protect(BlockAddress protect_target, MonopolyMap *map, PlayerAddress player);
 
 void updateBlockStatus(MonopolyMap map);
 
