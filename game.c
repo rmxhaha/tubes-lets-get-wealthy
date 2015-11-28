@@ -15,8 +15,9 @@ int main(){
 	MonopolyMap map;
 	Block block;
 	BlockAddress here, there;
-	boolean roll,reroll;  //buat ngecek reroll, jadiin true pas ganti player
+	boolean reroll;  //buat ngecek reroll, jadiin true pas ganti player
 	boolean upgraded; //untuk cek sudah upgrade. jadi false pas ganti player
+	boolean afterload; // abis load game atau bukan
 	char command[100];
 	char tmp[100];
     PlayerAddress PA;
@@ -32,6 +33,7 @@ int main(){
 
     reroll = false;
     upgraded = false;
+    afterload = false;
 
     if( access("savedata.dat", F_OK ) == -1){
         tmp[0] = 'n'; // no save game by default
@@ -45,11 +47,13 @@ int main(){
             f = fopen("savedata.dat","r");
 			if( f == NULL ){
 				printf("fail to load\n");
+				tmp[0] == 'n';
 			}
 			else {
-				load_game(f,&map,&roll,&reroll,&upgraded);
+				load_game(f,&map,&reroll,&upgraded);
 				fclose(f);
 				printf("loaded\n");
+				afterload = true;
 			}
         }
     }
@@ -88,7 +92,11 @@ int main(){
 	do {
         PA = Info(map.cplayer);
 
-		rolldice_routine;
+        if( !afterload ){
+            rolldice_routine;
+            afterload = false;
+        }
+
 		do {
 			printf("> ");
 			scanf("%s", command );
@@ -98,7 +106,7 @@ int main(){
 					printf("fail to save\n");
 				}
 				else {
-					save_game(f,map,roll,reroll,upgraded);
+					save_game(f,map,reroll,upgraded);
 					fclose(f);
 					printf("saved\n");
 				}

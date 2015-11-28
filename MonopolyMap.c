@@ -233,7 +233,7 @@ typedef struct {
     }	
 
 // make sure permission file is w+
-void save_game(FILE* f,MonopolyMap map,boolean roll, boolean reroll, boolean upgraded){
+void save_game(FILE* f,MonopolyMap map,boolean reroll, boolean upgraded){
     Player arr[MAX_PLAYER];
     int kotaIds[50];
 	BlockGameData blocksData[50];
@@ -253,7 +253,6 @@ void save_game(FILE* f,MonopolyMap map,boolean roll, boolean reroll, boolean upg
     );
 
 
-    fwrite(&roll,sizeof(boolean),1,f);
     fwrite(&reroll,sizeof(boolean),1,f);
     //sudah upgrade?
     fwrite(&upgraded,sizeof(boolean),1,f);
@@ -330,7 +329,7 @@ void save_game(FILE* f,MonopolyMap map,boolean roll, boolean reroll, boolean upg
 
 
 // make sure permission file is w+
-void load_game(FILE* f,MonopolyMap* map,boolean *roll,  boolean *reroll, boolean *upgraded){
+void load_game(FILE* f,MonopolyMap* map,boolean *reroll, boolean *upgraded){
     Player *arr;
     int i,id, n,k, nPlayer;
     int kotaIds[50];
@@ -339,7 +338,6 @@ void load_game(FILE* f,MonopolyMap* map,boolean *roll,  boolean *reroll, boolean
 	BlockGameData blocksData[50];
 
 
-    fread(roll,sizeof(boolean),1,f);
     fread(reroll,sizeof(boolean),1,f);
     //sudah upgrade?
     fread(upgraded,sizeof(boolean),1,f);
