@@ -118,12 +118,12 @@ BlockAddress last_block(MonopolyMap map)
 
 //majuin player 1 petak
 //masih belom bisa, last masih salah
-void pindah_player1(MonopolyMap map, PlayerAddress player)
+void pindah_player1(MonopolyMap *map, PlayerAddress player)
 {
     BlockAddress here,blackout;
     Address pemain,P;
     PlayerAddress ip;
-    here = search_player(map, player);//hasilsearch
+    here = search_player(*map, player);//hasilsearch
     char kotahost[100];
 
     //menghilangkan keberadaan player di petak
@@ -133,7 +133,7 @@ void pindah_player1(MonopolyMap map, PlayerAddress player)
     //ngubah posisi
     if(here->map_next == NULL) // last block
     {
-        here = map.first;//startblock;
+        here = map->first;//startblock;
         place_player(here,player);
     }
     else
@@ -144,7 +144,7 @@ void pindah_player1(MonopolyMap map, PlayerAddress player)
 
 
     //cek udah muter
-    if(here == map.first)
+    if(here == map->first)
     {
         player->revolution_count++;
 
@@ -152,15 +152,13 @@ void pindah_player1(MonopolyMap map, PlayerAddress player)
         {
             player->money += BONUS_MONEY_PER_REVOLUTION;
         }
-        //turn_on_light(&blackout,&map,player);
-        P = First(map.ListBlackout);
+
+        P = First(map->ListBlackout);
         while(P!=NULL)
         {
 			blackout = Info(P);
 			if(blackout->owner == player)
-			{
-				printf("Kota %s punya %s sudah normal\n",blackout->name, blackout->owner);
-			}
+				heal_blackout_status(map,blackout);
 			P = Next(P);
         }
     }
@@ -168,11 +166,11 @@ void pindah_player1(MonopolyMap map, PlayerAddress player)
     //cek lewat worldcup
     if(here->type == WORLD_CUP)
     {
-		map.world_cup_city = NULL;
+		map->world_cup_city = NULL;
 
         //ubah jadi false parameter player pemegang worldcup
         //semua jadi false statusnya
-        pemain = First(map.ListPlayer);
+        pemain = First(map->ListPlayer);
         ip = Info(pemain);
         do
         {
@@ -192,7 +190,7 @@ void pindah_player(MonopolyMap *map, PlayerAddress player, int d )
 
     for(i=1; i<=d; i++)
     {
-        pindah_player1(*map, player );
+        pindah_player1(map, player );
     }
 
     //cek masuk worldcup
@@ -363,7 +361,7 @@ void pindah_player_ke(MonopolyMap *map,PlayerAddress player, BlockAddress bpinda
 
     while (here!=bpindah)
     {
-        pindah_player1(*map, player);
+        pindah_player1(map, player);
         here = search_player(*map, player);
     }
 
@@ -730,12 +728,13 @@ void protect(BlockAddress protect_target, MonopolyMap *map, PlayerAddress player
         printf("proteksi hanya bisa dipakai ke kota milik sendiri\n");
 	}
 	else {
-		printf("Player %s menggunakan kartu perlindungan. Biaya sewa di kota %s kembali normal.",
-			protect_target->owner->name,
-			protect_target->name
-		);
-		DeleteP(&map->ListBlackout,protect_target);
+		printf("Player %s menggunakan kartu perlindungan. \n",protect_target->owner->name);
 	}
+}
+
+void heal_blackout_status( MonopolyMap* map, BlockAddress target){
+	printf("Biaya sewa di kota %s kembali normal.\n",target->name);
+	DeleteP(&map->ListBlackout,target);
 }
 
 void updateBlockStatus(MonopolyMap map){

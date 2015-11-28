@@ -22,7 +22,7 @@ BlockAddress search_player(MonopolyMap map,PlayerAddress player);
 void place_player(BlockAddress B, PlayerAddress player);
 
 //majuin player 1 petak
-void pindah_player1(MonopolyMap map, PlayerAddress player );
+void pindah_player1(MonopolyMap *map, PlayerAddress player );
 
 
 /**
@@ -128,5 +128,7 @@ void dapet_Bonust(PlayerAddress player);
 void protect(BlockAddress protect_target, MonopolyMap *map, PlayerAddress player);
 
 void updateBlockStatus(MonopolyMap map);
+
+void heal_blackout_status( MonopolyMap* map, BlockAddress target);
 
 #endif
