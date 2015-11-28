@@ -230,7 +230,7 @@ int main(){
             if(PA->save_chance==8)//kalau punya kartu perlindungan
             {
                 here = search_block_by_name(map,tmp);
-                if(tmp!=NULL)
+                if(here!=NULL)
                 {
                     protect(&blackout,&map,PA,tmp);
                 }
