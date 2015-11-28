@@ -339,7 +339,10 @@ void habispindah(MonopolyMap *map, BlockAddress here, PlayerAddress *player)
             (*map).world_cup_city->multiplier = 1;
         }
         block_host(map,player,namatempat);
-        printf("Kota %s berhasil menjadi world cup\n",(*map).world_cup_city->name);
+        if((*map).world_cup_city!=NULL)
+        {
+            printf("Kota %s berhasil menjadi world cup\n",(*map).world_cup_city->name);
+        }
     }
 
 
