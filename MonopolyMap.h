@@ -11,10 +11,10 @@ typedef struct TPlayer *PlayerAddress;
 
 typedef struct {
 	BlockAddress first;
-	List ListPlayer; // giliran
-	List ListOffered; // list barang lelang
+	List ListPlayer; // giliran (List of Player)
+	List ListOffered; // list barang lelang (List of BlockAddr)
 	BlockAddress world_cup_city;
-	List ListBlackout;
+	List ListBlackout; // List of BlockAddr
 	Address cplayer;
 } MonopolyMap;
 
