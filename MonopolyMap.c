@@ -286,6 +286,10 @@ void save_game(FILE* f,MonopolyMap map,boolean roll, boolean reroll, boolean upg
     fwrite(&kotaIds,sizeof(int),n,f);
 	
 	// List Blackout
+	ListBlockToArrayOfId(map.ListBlackout,P,BA,kotaIds,i);
+
+    fwrite(&n,sizeof(int),1,f);
+    fwrite(&kotaIds,sizeof(int),n,f);
 
 
 	// data block
@@ -374,6 +378,11 @@ void load_game(FILE* f,MonopolyMap* map,boolean *roll,  boolean *reroll, boolean
     fread(&kotaIds,sizeof(int),n,f);
 
 	ArrayOfIdToListBlock(kotaIds,i,n,map,map->ListOffered,BA);
+
+	// ListBlackout
+	fread(&n,4,1,f);
+    fread(&kotaIds,sizeof(int),n,f);
+	ArrayOfIdToListBlock(kotaIds,i,n,map,map->ListBlackout,BA);
 
 
 	// data block
