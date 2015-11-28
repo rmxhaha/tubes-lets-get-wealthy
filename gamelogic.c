@@ -346,7 +346,7 @@ void habispindah(MonopolyMap *map, BlockAddress here, PlayerAddress *player)
                 printf("perintah salah, ulangi\n");
             }
             else {
-                scanf("%s",namatempat);
+                scanf("%s",&namatempat);
                 if (search_block_by_name(*map, namatempat) == NULL) {
                 printf("tidak ada block %s, ulangi\n", namatempat);
                 }
@@ -358,7 +358,7 @@ void habispindah(MonopolyMap *map, BlockAddress here, PlayerAddress *player)
             //harga kota dijadiin normal dulu
             (*map).world_cup_city->multiplier = 1;
         }
-        block_host(map,player,namatempat);
+        block_host(map,*player,namatempat);
         if((*map).world_cup_city!=NULL)
         {
             printf("Kota %s berhasil menjadi world cup\n",(*map).world_cup_city->name);
