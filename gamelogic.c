@@ -600,7 +600,7 @@ void sell(MonopolyMap* map,Player* cplayer, char *nama_petak){
         InsVFirst(&map->ListOffered,BA);
 }
 
-void buyoffered(MonopolyMap* map, Player* player, char* nama_petak){
+void buyoffered(MonopolyMap* map, Player* player, char* nama_petak, boolean *upgraded){
     Address PP;
     BlockAddress BA;
 
@@ -617,6 +617,7 @@ void buyoffered(MonopolyMap* map, Player* player, char* nama_petak){
         printf("> kota yang ingin anda beli adalah milik anda");
     else if( block_cost(*BA) <= player->money ){
             /*init upgrade jadi false supaya pas beli bisa upgrade sekali. kynya harus tambah parameter:(*/
+            *upgraded = false;
         (BA->owner)->money += block_cost(*BA);
         BA->owner = player;
         player->money -= block_cost(*BA);
@@ -649,7 +650,7 @@ void showoffered(MonopolyMap* map){
     );
 }
 
-void buy(MonopolyMap map, PlayerAddress P)
+void buy(MonopolyMap map, PlayerAddress P, boolean *upgraded)
 {
     BlockAddress B;
     B = search_player(map, P);
@@ -666,6 +667,7 @@ void buy(MonopolyMap map, PlayerAddress P)
                     P->money -= block_cost(*B);
                     B->owner = P;
                     /*init upgrade jadi false supaya pas beli bisa upgrade sekali. kynya harus tambah parameter:(*/
+                    *upgraded = false;
                     printf("Selamat, kota %s kini menjadi milikmu!\n", B->name);
                     printf("level bangunan %d\n", B->level);
                     printf("sisa uangmu: ");print_money(P->money);printf("\n");
