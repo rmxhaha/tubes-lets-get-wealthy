@@ -39,11 +39,12 @@ boolean is_semua_player_belum_punya_tanah (MonopolyMap map)
     Address P = First(map.ListPlayer);
     PlayerAddress player;
     boolean belum_punya = true;
-    while (player != NULL && belum_punya) {
+    while (P != NULL && belum_punya) {
         player = Info(P);
-        belum_punya = is_player_belum_punya_tanah(map, player);
+        belum_punya = belum_punya && is_player_belum_punya_tanah(map, player);
         P = Next(P);
     }
+    return belum_punya;
 }
 
 //true kalo semua pemain lainnya belum ada yang punya tanah
