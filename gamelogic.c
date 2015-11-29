@@ -14,6 +14,37 @@ boolean is_player_on(BlockAddress B)
         return false;
 }
 
+//mengembalikan true apabila seorang player belum punya tanah
+boolean is_player_belum_punya_tanah(MonopolyMap map, PlayerAddress player)
+{
+    BlockAddress B = map.first;
+    boolean belum_punya = true;
+    if(player->revolution_count > 0) { //Kalo belum muter sama sekali, udah pasti belum punya tanah
+        while (B != NULL && belum_punya) {
+            if (B->owner == player) {
+               belum_punya = false;
+            }
+            else {
+            B = B->map_next;
+            }
+        }
+
+    }
+        return belum_punya;
+}
+
+//true kalo semua pemain belum ada yang punya tanah
+boolean is_semua_player_belum_punya_tanah (MonopolyMap map)
+{
+    Address P = First(map.ListPlayer);
+    PlayerAddress player;
+    boolean belum_punya = true;
+    while (player != NULL && belum_punya) {
+        player = Info(P);
+        belum_punya = is_player_belum_punya_tanah(map, player);
+        P = Next(P);
+    }
+}
 //=====================================================================================
 //mengembalikan BlockAddress sesuai dengan nama input, atau NULL
 BlockAddress search_block_by_name(MonopolyMap map, char* namatempat)
@@ -288,27 +319,34 @@ void habispindah(MonopolyMap *map, BlockAddress here, PlayerAddress *player)
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     else if(here->type == WORLD_CUP)
    {
-        //ubah jadi true status pemegang world cup
+         //ubah jadi true status pemegang world cup
         (*player)->world_cup_holder = true;
         printf("Anda di world cup\n");
-        do {
-            printf("> ");
-            scanf("%s",perintah);
-            if (strcmp(perintah,"host")!=0) {
-                printf("perintah salah, ulangi\n");
-            }
-            else {
-                scanf("%s",&namatempat);
-                if (search_block_by_name(*map, namatempat) == NULL) {
-                printf("tidak ada block %s, ulangi\n", namatempat);
-                }
-            }
-        } while (strcmp(perintah,"host")!=0 || (search_block_by_name(*map, namatempat) == NULL));
-
-        block_host(map,*player,namatempat);
-        if((*map).world_cup_city!=NULL)
+        if (is_player_belum_punya_tanah(*map, *player))
         {
-            printf("Kota %s berhasil menjadi world cup\n",(*map).world_cup_city->name);
+            printf("Sayang sekali, belum punya kota untuk dipilih.\n");
+        }
+        else
+        {
+            do {
+                printf("> ");
+                scanf("%s",perintah);
+                if (strcmp(perintah,"host")!=0) {
+                    printf("perintah salah, ulangi\n");
+                }
+                else {
+                    scanf("%s",&namatempat);
+                    if (search_block_by_name(*map, namatempat) == NULL) {
+                    printf("tidak ada block %s, ulangi\n", namatempat);
+                    }
+                }
+            } while (strcmp(perintah,"host")!=0 || (search_block_by_name(*map, namatempat) == NULL));
+
+            block_host(map,*player,namatempat);
+            if((*map).world_cup_city!=NULL)
+            {
+                printf("Kota %s berhasil menjadi world cup\n",(*map).world_cup_city->name);
+            }
         }
     }
 
@@ -526,7 +564,7 @@ void print_leaderboard(MonopolyMap map){
 
 		PA = Info(PP);
 		printf("Player %s ", PA->name );
-		print_money(PA->money);
+		print_money(total_aset_player(map, PA));
 		printf("\n");
 	);
 }
@@ -759,3 +797,21 @@ void updateBlockStatus(MonopolyMap map){
 	} while( BA != NULL );
 }
 
+int total_aset_player(MonopolyMap map, PlayerAddress player)
+//Mengembalikan total aset player
+{
+
+    int i;
+    int aset_blok = 0;
+    BlockAddress B = map.first;
+
+    while (B != NULL) {
+        if (B->owner == player) {
+            for (i = 0; i <= (B->level); i++) {
+            aset_blok += B->tab_harga[i];
+            }
+        }
+        B = B->map_next;
+    }
+    return (player->money + aset_blok);
+}
