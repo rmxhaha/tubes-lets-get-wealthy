@@ -45,6 +45,22 @@ boolean is_semua_player_belum_punya_tanah (MonopolyMap map)
         P = Next(P);
     }
 }
+
+//true kalo semua pemain lainnya belum ada yang punya tanah
+boolean is_semua_player_lainnya_belum_punya_tanah (MonopolyMap map, PlayerAddress current_player)
+{
+    Address P = First(map.ListPlayer);
+    PlayerAddress player;
+    boolean belum_punya = true;
+    while (P != NULL && belum_punya) {
+        player = Info(P);
+        if (player != current_player) {
+            belum_punya = belum_punya && is_player_belum_punya_tanah(map, player);
+        }
+        P = Next(P);
+    }
+    return belum_punya;
+}
 //=====================================================================================
 //mengembalikan BlockAddress sesuai dengan nama input, atau NULL
 BlockAddress search_block_by_name(MonopolyMap map, char* namatempat)
@@ -416,12 +432,21 @@ void do_chance (MonopolyMap *map, PlayerAddress *P)
 	//BELUM SELESAI...
 	//KAMUS
 	Chance c;
-	char input[10];
+	char *states[11] = {
+        "Tidak ada kartu.", "Pergi ke kantor pajak.",
+        "Masuk penjara.", "Maju sampai start.",
+        "Tiket gratis keliling dunia", "Pilih kota mati lampu.",
+        "Bebas pajak.", "Kartu bebas penjara.",
+        "Kartu perlindungi.", "Kartu ambil paksa.",
+        "Kartu bebas sewa."
+	 };
+	char input[10], inputA[10];
 	BlockAddress B;
-
+    boolean check = false;
 	//ALGORITMA
+
 	c = get_chance();
-	printf("Kartu kesempatan : %d\n", c);
+	printf("Kartu kesempatan : %s\n", states[c]);
 	if (c==6 || c==7 || c==8 || c==9 || c==10) {
 		printf("Ingin simpan kartu?\n");
 		scanf(" %s", input);
@@ -453,25 +478,46 @@ void do_chance (MonopolyMap *map, PlayerAddress *P)
 				pindah_player_ke(&(*map), *P, B);
 				break;
 			case 5 : //MATI_LAMPU
-				do {
-					scanf("%s", input);
-					B = search_block_by_name( *map, input);
-					if (B == NULL) {
-						printf("Kota tidak ada, ulangi\n");
-					}
-					else if (B->owner ==NULL)
-                    {
-                        printf("Kota ini tidak ada yang punya, gimana sih\n");
-                    }
-					else {
-						//Set multiplier kota jadi 0 selama 3 turn
-                        InsVLast(&(*map).ListBlackout,B);
-                        if(((B->owner)->save_chance==PERLINDUNGAN))
-                        {
-                            printf("Player yang punya petak itu punya kartu perlindungan \n");
-                        }
-					}
-				} while (B == NULL);
+			    if (is_semua_player_lainnya_belum_punya_tanah(*map, *P))
+		                {
+		                    printf("Belum ada tanah untuk mati lampu, mungkin lain kali.\n");
+		                }
+		                else
+		                {
+		                    do {
+		                        printf(" >");
+		                        scanf("%s", inputA);
+		                        if (strcmp(inputA, "off") != 0) {
+		                            printf("Perintah salah, ulangi.\n");
+		                        }
+		                        else
+		                        {
+		                            scanf("%s", input);
+		                            B = search_block_by_name( *map, input);
+		                            if (B == NULL) {
+		                                printf("Tidak ada kota %s, ulangi.\n", input);
+		                            }
+		                            else if (B->owner ==NULL)
+		                            {
+		                                printf("Kota ini tidak ada yang punya, gimana sih, ulangi.\n");
+		                            }
+		                            else if (B->owner ==*P)
+		                            {
+		                                printf("Kota ini adalah milik anda sendiri! Pilih kota lain.\n");
+		                            }
+		                            else {
+		                                //Set multiplier kota jadi 0 sampai player lewat start
+		                                InsVLast(&(*map).ListBlackout,B);
+		                                if(((B->owner)->save_chance==PERLINDUNGAN))
+		                                {
+		                                    printf("Player yang punya petak itu punya kartu perlindungan \n");
+		                                }
+		                                check = true;
+		                            }
+		                        }
+		
+		                    } while (B == NULL || !check);
+		                }
 				break;
 			default :
 				break;
