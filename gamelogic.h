@@ -12,6 +12,12 @@
 //mengembalikan true apabila di block terdapat player(tidak spesifik player mana)
 boolean is_player_on(BlockAddress B);
 
+//mengembalikan true apabila seorang player belum punya tanah
+boolean is_player_belum_punya_tanah(MonopolyMap map, PlayerAddress player);
+
+//true kalo semua pemain belum ada yang punya tanah
+boolean is_semua_player_belum_punya_tanah (MonopolyMap map);
+
 //mengembalikan BlockAddress berdasarkan input nama block, atau NULL
 BlockAddress search_block_by_name(MonopolyMap map, char* namatempat);
 
@@ -131,4 +137,5 @@ void updateBlockStatus(MonopolyMap map);
 
 void heal_blackout_status( MonopolyMap* map, BlockAddress target);
 
+int total_aset_player(MonopolyMap map, PlayerAddress player);
 #endif
