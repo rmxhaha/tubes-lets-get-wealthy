@@ -18,6 +18,9 @@ boolean is_player_belum_punya_tanah(MonopolyMap map, PlayerAddress player);
 //true kalo semua pemain belum ada yang punya tanah
 boolean is_semua_player_belum_punya_tanah (MonopolyMap map);
 
+//true kalo semua pemain lainnya belum ada yang punya tanah
+boolean is_semua_player_lainnya_belum_punya_tanah (MonopolyMap map, PlayerAddress current_player);
+
 //mengembalikan BlockAddress berdasarkan input nama block, atau NULL
 BlockAddress search_block_by_name(MonopolyMap map, char* namatempat);
 
