@@ -556,15 +556,22 @@ void bayar_pajak(MonopolyMap *map,PlayerAddress *P)
 void sell_bank (PlayerAddress P, BlockAddress *B)
 /*Jual tanah ke bank*/
 {
-	if (P == (*B)->owner) {
-		(*B)->owner = NULL;
-		P->money += block_cost(**B);
-		printf("Tanah berhasil dijual\n");
-		printf("Uang anda ");print_money(P->money);printf("\n");
-	}
-	else {
-		printf("Tanah bukan milik anda, tidak bisa dijual.\n");
-	}
+	if (*B!=NULL)
+    {
+        if(P == (*B)->owner) {
+            (*B)->owner = NULL;
+            P->money += block_cost(**B);
+            printf("Tanah berhasil dijual\n");
+            printf("Uang anda ");print_money(P->money);printf("\n");
+        }
+        else {
+            printf("Tanah bukan milik anda, tidak bisa dijual.\n");
+        }
+    }
+    else
+    {
+        printf("Tidak ada petak dengan nama tersebut.\n");
+    }
 }
 
 void print_money( int money ){
