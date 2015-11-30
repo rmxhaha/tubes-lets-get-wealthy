@@ -433,13 +433,12 @@ void do_chance (MonopolyMap *map, PlayerAddress *P)
 	//BELUM SELESAI...
 	//KAMUS
 	Chance c;
-	char *states[11] = {
+	char *states[10] = {
         "Tidak ada kartu.", "Pergi ke kantor pajak.",
         "Masuk penjara.", "Maju sampai start.",
         "Tiket gratis keliling dunia", "Pilih kota mati lampu.",
         "Bebas pajak.", "Kartu bebas penjara.",
-        "Kartu perlindungi.", "Kartu ambil paksa.",
-        "Kartu bebas sewa."
+        "Kartu perlindungan.", "Kartu bebas sewa."
 	 };
 	char input[10], inputA[10];
 	BlockAddress B;
@@ -448,7 +447,7 @@ void do_chance (MonopolyMap *map, PlayerAddress *P)
 
 	c = get_chance();
 	printf("Kartu kesempatan : %s\n", states[c]);
-	if (c==6 || c==7 || c==8 || c==9 || c==10) {
+	if (c==6 || c==7 || c==8 || c==9) {
 		printf("Ingin simpan kartu?\n");
 		scanf(" %s", input);
 		if (strcmp(input, "simpan")== 0) {
@@ -557,15 +556,22 @@ void bayar_pajak(MonopolyMap *map,PlayerAddress *P)
 void sell_bank (PlayerAddress P, BlockAddress *B)
 /*Jual tanah ke bank*/
 {
-	if (P == (*B)->owner) {
-		(*B)->owner = NULL;
-		P->money += block_cost(**B);
-		printf("Tanah berhasil dijual\n");
-		printf("Uang anda ");print_money(P->money);printf("\n");
-	}
-	else {
-		printf("Tanah bukan milik anda, tidak bisa dijual.\n");
-	}
+	if (*B!=NULL)
+    {
+        if(P == (*B)->owner) {
+            (*B)->owner = NULL;
+            P->money += block_cost(**B);
+            printf("Tanah berhasil dijual\n");
+            printf("Uang anda ");print_money(P->money);printf("\n");
+        }
+        else {
+            printf("Tanah bukan milik anda, tidak bisa dijual.\n");
+        }
+    }
+    else
+    {
+        printf("Tidak ada petak dengan nama tersebut.\n");
+    }
 }
 
 void print_money( int money ){
@@ -630,6 +636,8 @@ void sell(MonopolyMap* map,Player* cplayer, char *nama_petak){
         printf("> Kota tidak ditemukan\n");
     else if( BA->owner != cplayer )
         printf("> Anda bukan pemilik kota tersebut\n");
+    else if (BA->type ==PARIWISATA)
+        printf("Tempat pariwisata tidak bisa dijual.\n");
     else if( Search(map->ListOffered,BA) == NULL )
         InsVFirst(&map->ListOffered,BA);
 }
@@ -655,6 +663,7 @@ void buyoffered(MonopolyMap* map, Player* player, char* nama_petak, boolean *upg
         (BA->owner)->money += block_cost(*BA);
         BA->owner = player;
         player->money -= block_cost(*BA);
+        DeleteP(&(map->ListOffered),BA);
         printf("> terbeli, sisa uang anda "); print_money(player->money);
     }
     else {
@@ -717,23 +726,31 @@ void buy(MonopolyMap map, PlayerAddress P, boolean *upgraded)
             }
             else
             {
-                printf("Anda akan membeli properti player lain.\n");
-                if(P->money >= block_cost(*B)*2 && (*B).level != 4)
+                if (B->type !=PARIWISATA)
                 {
-                    P->money -= block_cost(*B)*2;
-                    B->owner = P;
-
-                    printf("Selamat, kota %s kini menjadi milikmu!\n", B->name);
-                    printf("level bangunan %d\n", B->level);
-                    printf("Sisa uangmu: ");print_money(P->money);printf("\n");
-                }
-                else if((*B).level == 4)
-                {
-                    printf("Tidak dapat membeli kota landmark.");
+                    printf("Anda akan membeli properti player lain.\n");
+                    if(P->money >= block_cost(*B)*2 && (*B).level != 4)
+                    {
+                        P->money -= block_cost(*B)*2;
+                        B->owner = P;
+                        //DeleteP((map->ListOffered),B);
+                        printf("Selamat, kota %s kini menjadi milikmu!\n", B->name);
+                        printf("level bangunan %d\n", B->level);
+                        printf("Sisa uangmu: ");print_money(P->money);printf("\n");
+                    }
+                    else if((*B).level == 4)
+                    {
+                        printf("Tidak dapat membeli kota landmark.");
+                    }
+                    else
+                    {
+                        printf("Uangmu tidak cukup untuk membeli kota ini.\n");
+                    }
                 }
                 else
                 {
-                    printf("Uangmu tidak cukup untuk membeli kota ini.\n");
+                    //berarti tempat pariwisata
+                    printf("Anda tidak bisa membeli tempat pariwisata milik orang lain\n");
                 }
             }
         }
@@ -782,11 +799,14 @@ void upgrade(MonopolyMap map, PlayerAddress *P,boolean *upgraded)
 
 void endturn (MonopolyMap *map)
 {
+    PlayerAddress pa;
     map->cplayer = Next(map->cplayer);
     if (map->cplayer==NULL)
     {
         map->cplayer= First(map->ListPlayer);
     }
+    pa = Info(map->cplayer);
+    printf("Sekarang giliran %s :)\n",(pa->name));
 }
 
 void player_bangkrut(MonopolyMap *map, PlayerAddress *player)
@@ -862,9 +882,7 @@ int total_aset_player(MonopolyMap map, PlayerAddress player)
 
     while (B != NULL) {
         if (B->owner == player) {
-            for (i = 0; i <= (B->level); i++) {
-            aset_blok += B->tab_harga[i];
-            }
+            aset_blok += B->tab_harga[B->level];
         }
         B = B->map_next;
     }
