@@ -99,17 +99,18 @@ int main(){
 
 		do {
 			printf("> ");
+			strcpy(command,"");
 			scanf("%s", command);
 			ifCommand("save"){
-				f = fopen("savedata.dat","w+");
+				f = fopen("savedata.dat","w");
 				if( f == NULL ){
 					printf("fail to save\n");
 				}
 				else {
 					save_game(f,map,reroll,upgraded);
-					fclose(f);
 					printf("saved\n");
 				}
+				fclose(f);
 			}
 			else ifCommand("rolldice"){
 				//jalanin player & lempar dadu
