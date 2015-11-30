@@ -94,8 +94,8 @@ int main(){
 
         if( !afterload ){
             rolldice_routine;
-            afterload = false;
         }
+		afterload = false;
 
 		do {
 			printf("> ");
@@ -262,7 +262,7 @@ int main(){
     BlockAddress addr = map.first;
     addr = map.first->map_next;
 
-    do	 {
+    do {
 //        printf("%d\n", addr->id );
         printf("ad : %s\n", addr->name);
         addr = addr->map_next;

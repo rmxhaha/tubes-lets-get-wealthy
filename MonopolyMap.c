@@ -159,7 +159,7 @@ void print_map(MonopolyMap map ){
                 {
 					sprintf(s,"%d",P->level);
 				}
-				
+
 				printf("%10s", tmpstr);
 			}
 		}
@@ -185,21 +185,8 @@ void print_map(MonopolyMap map ){
 	}
 }
 
-
-List ListPlayer; // giliran
-List ListOffered; // list barang lelang
-BlockAddress world_cup_city;
-Address cplayer;
-
-
-
-#define idx_player(arr,i,n,name_)\
-	for( i = 0; i < n; ++ i )\
-		if( name_[0] == arr[i].name[0] ) \
-			break;
-
 #define loop_map(map,BA,todo)\
-	BA = map.first;\
+	BA = (map).first;\
 	do {\
 		todo;\
 		BA = BA->map_next;\
@@ -211,26 +198,25 @@ typedef struct {
 	int multiplier;
 } BlockGameData;
 
-#define ListBlockToArrayOfId(LB,P,BA,kotaIds,i)\
-    n = NbElmt(LB);\
-    i = 0;\
-    loop_list(LB,P,\
-        BA = Info(P);\
-        kotaIds[i++] = BA->id; \
-    );\
 
-#define ArrayOfIdToListBlock(kotaIds,i,n,map,LB,BA)\
-    CreateList(&(LB));\
-	\
-    for( i = 0; i < n; ++ i ){\
-        BA = map->first;\
-        do {\
-            if( BA->id == kotaIds[i] ) break;\
-            BA = BA->map_next;\
-        } while( BA != NULL );\
-		\
-        InsVLast(&LB,BA);\
-    }	
+char name[5];
+int money;
+int revolution_count;
+Chance save_chance;
+boolean world_cup_holder;
+
+#define PrintPlayer(f,PA)\
+    fprintf(f,"%c ",PA->name[0]);\
+    fprintf(f,"%d ",PA->money);\
+    fprintf(f,"%d ",PA->revolution_count);\
+    fprintf(f,"%d ",PA->save_chance);\
+    fprintf(f,"%u\n",PA->world_cup_holder);
+
+#define SearchBlockById(map,BA,idx)\
+	loop_map(map,BA, if( BA->id == idx ) break; );
+#define SearchPlayerById(map,P,PA,id, i)\
+	i = 0;\
+	loop_list((map).ListPlayer,P, PA = Info(P); if( i == id ) break; ++i );
 
 // make sure permission file is w+
 void save_game(FILE* f,MonopolyMap map,boolean reroll, boolean upgraded){
@@ -240,192 +226,188 @@ void save_game(FILE* f,MonopolyMap map,boolean reroll, boolean upgraded){
 
     int i,k;
     int n, nPlayer;
-    Address P;
+    Address P,Q;
     PlayerAddress PA;
     BlockAddress BA;
 
     nPlayer = NbElmt(map.ListPlayer);
     i = 0;
     loop_list(map.ListPlayer,P,
-        PA = Info(P);
-        if( map.cplayer == P ) k = i;
-        arr[i++] = *PA;
+        if( map.cplayer == P ){ k = i; break; }
+        ++ i;
     );
 
+    fprintf(f,"%u %u\n",reroll,upgraded);
+    fprintf(f,"%d\n",nPlayer);
 
-    fwrite(&reroll,sizeof(boolean),1,f);
-    //sudah upgrade?
-    fwrite(&upgraded,sizeof(boolean),1,f);
-	// num of player
-    fwrite(&nPlayer,sizeof(int),1,f);
-
-	// cplayer
-    fwrite(&k,sizeof(int),1,f);
+    fprintf(f,"%d\n",k);
 
 	// player data
-    fwrite(&arr,sizeof(Player),nPlayer,f); // player meta data
+	loop_list(map.ListPlayer,P,
+        PA = Info(P);
+        PrintPlayer(f,PA);
+    );
 
     // player locations
     BA = map.first;
     do {
-        if( !IsListEmpty(BA->list_player) ){
+        if( !IsListEmpty(BA->list_player) )
+        {
             loop_list(BA->list_player,P,
                 PA = Info(P);
-				idx_player(arr,i,nPlayer,PA->name);
+
+                i = 0;
+                loop_list(map.ListPlayer,Q,
+                    if(Info(P) == Info(Q)) break;
+                    ++i;
+                );
                 kotaIds[i] = BA->id;
             );
         }
         BA = BA->map_next;
     }while(BA!=NULL);
 
-
-    fwrite(&kotaIds,sizeof(int),nPlayer,f);
+    for( i = 0; i < nPlayer; ++ i ){
+        fprintf(f,"%d ",kotaIds[i]);
+    }
+    fprintf(f,"\n");
 
 
 	// ListOffered
+	fprintf(f,"%d\n",NbElmt(map.ListOffered));
+    loop_list(map.ListOffered,P,
+        BA = Info(P);
+        fprintf(f,"%d ",BA->id);
+    );
+	fprintf(f,"\n");
 
-	ListBlockToArrayOfId(map.ListOffered,P,BA,kotaIds,i);
 
-    fwrite(&n,sizeof(int),1,f);
-    fwrite(&kotaIds,sizeof(int),n,f);
-	
 	// List Blackout
-	ListBlockToArrayOfId(map.ListBlackout,P,BA,kotaIds,i);
-
-    fwrite(&n,sizeof(int),1,f);
-    fwrite(&kotaIds,sizeof(int),n,f);
+	fprintf(f,"%d\n",NbElmt(map.ListBlackout));
+    loop_list(map.ListBlackout,P,
+        BA = Info(P);
+        fprintf(f,"%d ",BA->id);
+    );
+	fprintf(f,"\n");
 
 
 	// data block
-	n = 0;
 	loop_map(map,BA,
-		blocksData[n].level = BA->level;
 		if( BA->owner != NULL ){
-            idx_player(arr,i,nPlayer,BA->owner->name);
-            blocksData[n].owner_idx = i;
+            loop_list(map.ListPlayer,Q,
+                if(BA->owner == Info(Q)) break;
+                ++i;
+            )
 		}
 		else {
-            blocksData[n].owner_idx = -1;
+            i = -1;
 		}
-		blocksData[n].multiplier = BA->multiplier;
+
+        fprintf(f,"%d %d %d\n",
+                i,
+                BA->level,
+                BA->multiplier
+            );
 		n++;
 	);
 
-	// num of block
-	fwrite(&n,sizeof(int),1,f);
-	fwrite(&blocksData, sizeof(BlockGameData),n,f);
 
-	
 	// world_cup_city
 	if( map.world_cup_city != NULL )
 		k = map.world_cup_city->id;
 	else
 		k = -1;
 
-	fwrite(&k, sizeof(int),1,f);
-
-    fflush(f);
+    fprintf(f,"%d\n",k);
 }
 
 
 // make sure permission file is w+
 void load_game(FILE* f,MonopolyMap* map,boolean *reroll, boolean *upgraded){
     Player *arr;
-    int i,id, n,k, nPlayer;
     int kotaIds[50];
-    BlockAddress BA;
-    Address P;
 	BlockGameData blocksData[50];
 
-
-    fread(reroll,sizeof(boolean),1,f);
-    //sudah upgrade?
-    fread(upgraded,sizeof(boolean),1,f);
-
-	// num of player
-    fread(&nPlayer,sizeof(int),1,f);
-
-	// cplayer
-    fread(&k,sizeof(int),1,f);
+    int i,k, j;
+    int n, nPlayer;
+    Address P,Q;
+    PlayerAddress PA;
+    BlockAddress BA;
 
 
-    // bulk allocate untuk players
-    arr = malloc( sizeof(Player)*nPlayer );
+    fscanf(f,"%u%u",reroll,upgraded);
+    fscanf(f,"%d",&nPlayer); // number of player
+    fscanf(f,"%d",&k); // cplayer
+	arr = malloc( nPlayer* sizeof(Player) );
 
 	// player data
-    fread(arr,sizeof(Player),nPlayer,f);
+	for( i = 0; i < nPlayer; ++ i ){
+		PA = arr+i;
 
-	// player locations
-    fread(kotaIds,sizeof(int),nPlayer,f);
+        fscanf(f,"%s",&PA->name);
+        fscanf(f,"%d",&PA->money);
+        fscanf(f,"%d",&PA->revolution_count);
+        fscanf(f,"%d",&PA->save_chance);
+        fscanf(f,"%u",&PA->world_cup_holder);
 
-    CreateList(&(map->ListPlayer));
-    for( i = 0; i < nPlayer; ++i )
-    {
-		// player data
-        InsVLast(&map->ListPlayer,&arr[i]);
+		InsVLast(&map->ListPlayer,arr + i);
 
-		// player location
-		BA = map->first;
-        do {
-            if( BA->id == kotaIds[i] )
-            {
-                InsVFirst(&BA->list_player,&arr[i]);
-                break;
-            }
+		if( i == k ){
+			map->cplayer = arr+i;
+		}
+	}
 
-            BA = BA->map_next;
-        } while( BA != NULL );
+    // player locations
+    for( i = 0; i < nPlayer; ++ i ){
+        fscanf(f,"%d",&j);
+
+		printf("%d\n",j);
+		SearchBlockById(*map,BA,j);
+		InsVFirst( &BA->list_player, arr+i );
     }
 
-	// cplayer
-    P = First(map->ListPlayer);
-    for( i = 0; i < k; ++ i ) P = Next(P);
-    map->cplayer = P;
-
-
-
 	// ListOffered
-    fread(&n,4,1,f);
-    fread(&kotaIds,sizeof(int),n,f);
+	fscanf(f,"%d",&n);
+    for( i = 0; i < n; ++ i ){
+        fscanf(f,"%d",&j);
+		SearchBlockById(*map,BA,j);
+		InsVFirst(&map->ListOffered,BA);
+    }
 
-	ArrayOfIdToListBlock(kotaIds,i,n,map,map->ListOffered,BA);
+	// List Blackout
+	fscanf(f,"%d",&n);
+    for( i = 0; i < n; ++ i ){
+        fscanf(f,"%d",&j);
+		SearchBlockById(*map,BA,j);
+		InsVFirst(&map->ListBlackout,BA);
+    }
 
-	// ListBlackout
-	fread(&n,4,1,f);
-    fread(&kotaIds,sizeof(int),n,f);
-	ArrayOfIdToListBlock(kotaIds,i,n,map,map->ListBlackout,BA);
+
 
 
 	// data block
-	fread(&n,sizeof(int),1,f);
-	fread(&blocksData, sizeof(BlockGameData),n,f);
-
-	i = 0;
-	loop_map((*map),BA,
-		BA->level = blocksData[i].level;
-		BA->multiplier = blocksData[i].multiplier;
-		if( blocksData[i].owner_idx != -1 )
-            BA->owner = &arr[ blocksData[i].owner_idx ];
-        else
-            BA->owner = NULL;
-		++i;
+	loop_map(*map,BA,
+		fscanf(f,"%d%d%d",&i,&BA->level,&BA->multiplier);
+		printf("%d %d %d\n", i, BA->level, BA->multiplier );
+		// i is id
+		if( i == -1 ){
+			BA->owner = NULL;
+		}
+		else {
+			SearchPlayerById(*map,P,PA,i,k);
+			BA->owner = PA;
+		}
 	);
-	
+
+
 	// world_cup_city
-	fread(&k,sizeof(int),1,f);
-	
-	map->world_cup_city = NULL;
-	if( k != -1 )
-	{
-		BA = map->first;
-		do {
-			if( BA->id == k ){
-				map->world_cup_city = BA;
-				break;
-			}
-			BA = BA->map_next;
-		} while( BA != NULL );
+	fscanf(f,"%d",&k);
+	if( k == -1 ){
+		map->world_cup_city = NULL;
+	}
+	else {
+		SearchBlockById(*map,BA,k);
+		map->world_cup_city = BA;
 	}
 
 }
-
