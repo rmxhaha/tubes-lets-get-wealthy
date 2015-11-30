@@ -127,14 +127,14 @@ int main(){
 				buy(map, PA, &upgraded);
 
 				here = search_player(map, PA);
-				if(here->owner == PA)
+				/*if(here->owner == PA)
 				{
 					printf("kebeli\n");
 				}
 				else
 				{
 					printf("kaga kebeli\n");
-				}
+				}*/
 			}
 			else ifCommand("sell"){
 				char wa[50];

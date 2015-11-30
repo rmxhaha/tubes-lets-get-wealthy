@@ -438,7 +438,7 @@ void do_chance (MonopolyMap *map, PlayerAddress *P)
         "Masuk penjara.", "Maju sampai start.",
         "Tiket gratis keliling dunia", "Pilih kota mati lampu.",
         "Bebas pajak.", "Kartu bebas penjara.",
-        "Kartu perlindungi.", "Kartu bebas sewa."
+        "Kartu perlindungan.", "Kartu bebas sewa."
 	 };
 	char input[10], inputA[10];
 	BlockAddress B;
@@ -636,6 +636,8 @@ void sell(MonopolyMap* map,Player* cplayer, char *nama_petak){
         printf("> Kota tidak ditemukan\n");
     else if( BA->owner != cplayer )
         printf("> Anda bukan pemilik kota tersebut\n");
+    else if (BA->type ==PARIWISATA)
+        printf("Tempat pariwisata tidak bisa dijual.\n");
     else if( Search(map->ListOffered,BA) == NULL )
         InsVFirst(&map->ListOffered,BA);
 }
@@ -723,23 +725,31 @@ void buy(MonopolyMap map, PlayerAddress P, boolean *upgraded)
             }
             else
             {
-                printf("Anda akan membeli properti player lain.\n");
-                if(P->money >= block_cost(*B)*2 && (*B).level != 4)
+                if (B->type !=PARIWISATA)
                 {
-                    P->money -= block_cost(*B)*2;
-                    B->owner = P;
+                    printf("Anda akan membeli properti player lain.\n");
+                    if(P->money >= block_cost(*B)*2 && (*B).level != 4)
+                    {
+                        P->money -= block_cost(*B)*2;
+                        B->owner = P;
 
-                    printf("Selamat, kota %s kini menjadi milikmu!\n", B->name);
-                    printf("level bangunan %d\n", B->level);
-                    printf("Sisa uangmu: ");print_money(P->money);printf("\n");
-                }
-                else if((*B).level == 4)
-                {
-                    printf("Tidak dapat membeli kota landmark.");
+                        printf("Selamat, kota %s kini menjadi milikmu!\n", B->name);
+                        printf("level bangunan %d\n", B->level);
+                        printf("Sisa uangmu: ");print_money(P->money);printf("\n");
+                    }
+                    else if((*B).level == 4)
+                    {
+                        printf("Tidak dapat membeli kota landmark.");
+                    }
+                    else
+                    {
+                        printf("Uangmu tidak cukup untuk membeli kota ini.\n");
+                    }
                 }
                 else
                 {
-                    printf("Uangmu tidak cukup untuk membeli kota ini.\n");
+                    //berarti tempat pariwisata
+                    printf("Anda tidak bisa membeli tempat pariwisata milik orang lain\n");
                 }
             }
         }
