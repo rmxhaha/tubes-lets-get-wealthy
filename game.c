@@ -126,7 +126,7 @@ int main(){
 			}
 			else ifCommand("buy"){
 
-				buy(map, PA, &upgraded);
+				buy(&map, PA, &upgraded);
 
 				here = search_player(map, PA);
 

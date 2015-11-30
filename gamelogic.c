@@ -733,10 +733,10 @@ void showoffered(MonopolyMap* map){
     );
 }
 
-void buy(MonopolyMap map, PlayerAddress P, boolean *upgraded)
+void buy(MonopolyMap *map, PlayerAddress P, boolean *upgraded)
 {
     BlockAddress B;
-    B = search_player(map, P);
+    B = search_player(*map, P);
 
     if((B->type == TANAH) || (B->type == PARIWISATA))
     {
@@ -773,7 +773,7 @@ void buy(MonopolyMap map, PlayerAddress P, boolean *upgraded)
                     {
                         P->money -= block_cost(*B)*2;
                         B->owner = P;
-                        //DeleteP((map->ListOffered),B);
+                        DeleteP(&(map->ListOffered),B);
                         printf("Selamat, kota %s kini menjadi milikmu!\n", B->name);
                         printf("level bangunan %d\n", B->level);
                         printf("Sisa uangmu: ");print_money(P->money);printf("\n");

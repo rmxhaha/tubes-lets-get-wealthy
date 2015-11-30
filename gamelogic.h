@@ -121,7 +121,7 @@ void showoffered(MonopolyMap*);
     2. tidak kosong, beli paksa dengan harga  kumulatif (tab_harga[level]) * 2
 
 */
-void buy(MonopolyMap map, PlayerAddress P,boolean *upgraded);
+void buy(MonopolyMap *map, PlayerAddress P,boolean *upgraded);
 
 /**
     upgrade gedung pada tanah
