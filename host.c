@@ -2,11 +2,11 @@
 void block_host (MonopolyMap *map, PlayerAddress player, char *namatempat)
 {
     BlockAddress here= search_block_by_name(*map,namatempat);
-    if (here->owner==player)
+    if ((here!=NULL)&&(here->owner==player))
     {
-       (*map).world_cup_city = here;
-    (*map).world_cup_city->multiplier = 2;
-    player->world_cup_holder = true;
+        (*map).world_cup_city = here;
+        (*map).world_cup_city->multiplier = 2;
+        player->world_cup_holder = true;
     }
     else
     {

@@ -99,7 +99,7 @@ int main(){
 
 		do {
 			printf("> ");
-			scanf("%s", command );
+			scanf("%s", command);
 			ifCommand("save"){
 				f = fopen("savedata.dat","w+");
 				if( f == NULL ){

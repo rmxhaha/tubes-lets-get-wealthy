@@ -1,8 +1,8 @@
-/* Nama/ NIM		: 
- * Nama file		: 
- * Topik		    : 
- * Tanggal		    : 
- * Deskripsi		: 
+/* Nama/ NIM		:
+ * Nama file		:
+ * Topik		    :
+ * Tanggal		    :
+ * Deskripsi		:
 */
 
 #ifndef LISTLINIER_H
@@ -13,7 +13,7 @@
 
 //Konstanta
 #define Nil NULL
- 
+
 typedef void* Infotype;
 typedef struct TElmtList *Address;
 
@@ -25,7 +25,7 @@ typedef struct TElmtList {
 typedef struct {
 	Address		first;
 } List;
- 
+
 #define First(L) (L).first
 #define Next(P) (P)->next
 #define Info(P) (P)->info
@@ -46,8 +46,7 @@ typedef struct {
 #define loop_list( L, P, todo )\
 	P = First( L ); \
 	while( P != Nil ){\
-		todo; \
-		P = P->next; \
+		todo; 	P = P->next; \
 	}
 
 /*
@@ -56,10 +55,10 @@ typedef struct {
 	BEBERAPA DEFINISI
 	1. List Kosong -> First(L) bernilai Nil
 	2. Elemen terakhir, bila Next(P) adalah Nil, maka P merupakan alamat elemen terakhir pada list
-	
+
 	CATATAN TEKNIS TENTANG EXECUTION FAULIRE
-	1. Autograder akan menangani stackoverflow. Stackoverflow maupun alokasi memori yang buruk akan menyebabkan execution failure. 
-	   Memori Limit adalah 16Mb. Test Case dijamin tidak akan melebihi 100 elemen, sehingga memori limit yang diberikan sudah SANGAT BERLEBIH untuk kondisi 
+	1. Autograder akan menangani stackoverflow. Stackoverflow maupun alokasi memori yang buruk akan menyebabkan execution failure.
+	   Memori Limit adalah 16Mb. Test Case dijamin tidak akan melebihi 100 elemen, sehingga memori limit yang diberikan sudah SANGAT BERLEBIH untuk kondisi
 	   tidak terjadi stackoverflow.
 	2. Hati-hati terhadap segmentation fault, akseslah memori yang benar.
 	3. Operasi terhadap pointer harus hati-hati, jangan mengakses pointer yang sudah di-free.
@@ -70,13 +69,13 @@ typedef struct {
 	1. Untuk penjelasan detail skema pemrosesan list serta fungsional list linear, silahkan melihat diktat/slide kuliah
 	2. Bila terdapat perbedaan versi header asisten dengan modul, ikuti versi asisten. Informasi perbedaan ada pada tiap fungsi/prosedur
 */
- 
+
 boolean IsListEmpty (List L);
 /* Mengirim true jika list kosong */
 
 void CreateList (List *L);
 /*	I.S. sembarang
-	F.S. Terbentuk list kosong 
+	F.S. Terbentuk list kosong
 */
 
 Address Alokasi (Infotype X);
@@ -204,7 +203,7 @@ void PrintInfo (List L);
 int NbElmt (List L);
 /*	Mengirimkan banyaknya elemen list; mengirimkan 0 jika list kosong */
 
-// Prekondisi untuk Max/Min/rata-rata : List tidak kosong 
+// Prekondisi untuk Max/Min/rata-rata : List tidak kosong
 Infotype Max (List L);
 /*	Mengirimkan nilai Info(P) yang maksimum */
 

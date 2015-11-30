@@ -500,7 +500,7 @@ void do_chance (MonopolyMap *map, PlayerAddress *P)
 		                            }
 		                            else if (B->owner ==NULL)
 		                            {
-		                                printf("Kota ini tidak ada yang punya, gimana sih, ulangi.\n");
+		                                printf("Petak ini tidak ada yang punya, gimana sih, ulangi.\n");
 		                            }
 		                            else if (B->owner ==*P)
 		                            {
@@ -516,7 +516,7 @@ void do_chance (MonopolyMap *map, PlayerAddress *P)
 		                                check = true;
 		                            }
 		                        }
-		
+
 		                    } while (B == NULL || !check);
 		                }
 				break;
@@ -597,11 +597,12 @@ void print_money( int money ){
 }
 
 void print_leaderboard(MonopolyMap map){
-	Address PP;
+    Address PP;
 	PlayerAddress PA;
 	boolean first = true;
-
-	loop_list( map.ListPlayer,PP,
+    List Ltemp;
+    sorting(map.ListPlayer, &Ltemp);
+	loop_list( Ltemp,PP,
 		if( first ){
 			printf("> ");
 			first = false;
@@ -610,9 +611,12 @@ void print_leaderboard(MonopolyMap map){
 			printf("  ");
 
 		PA = Info(PP);
-		printf("Player %s ", PA->name );
-		print_money(total_aset_player(map, PA));
-		printf("\n");
+
+		//sorting Ltemp + print
+		/**/
+        printf("Player %s ", PA->name );
+        print_money(total_aset_player(map, PA));
+        printf("\n");
 	);
 }
 
@@ -696,7 +700,7 @@ void buy(MonopolyMap map, PlayerAddress P, boolean *upgraded)
                 {
                     P->money -= block_cost(*B);
                     B->owner = P;
-                    /*init upgrade jadi false supaya pas beli bisa upgrade sekali. kynya harus tambah parameter:(*/
+                    /*init upgrade jadi falscanf("%s", command );se supaya pas beli bisa upgrade sekali. kynya harus tambah parameter:(*/
                     *upgraded = false;
                     printf("Selamat, kota %s kini menjadi milikmu!\n", B->name);
                     printf("level bangunan %d\n", B->level);
@@ -709,34 +713,38 @@ void buy(MonopolyMap map, PlayerAddress P, boolean *upgraded)
             }
             else if(B->owner == P)
             {
-                printf("properti anda\n");
+                printf("Properti anda\n");
             }
             else
             {
-                printf("Properti player lain\n");
-                if(P->money >= block_cost(*B)*2)
+                printf("Anda akan membeli properti player lain.\n");
+                if(P->money >= block_cost(*B)*2 && (*B).level != 4)
                 {
                     P->money -= block_cost(*B)*2;
                     B->owner = P;
 
                     printf("Selamat, kota %s kini menjadi milikmu!\n", B->name);
                     printf("level bangunan %d\n", B->level);
-                    printf("sisa uangmu: ");print_money(P->money);printf("\n");
+                    printf("Sisa uangmu: ");print_money(P->money);printf("\n");
+                }
+                else if((*B).level == 4)
+                {
+                    printf("Tidak dapat membeli kota landmark.");
                 }
                 else
                 {
-                    printf("Uangmu tidak cukup untuk membeli kota ini\n");
+                    printf("Uangmu tidak cukup untuk membeli kota ini.\n");
                 }
             }
         }
         else
         {
-            printf("Belum muter\n");
+            printf("Belum muter.\n");
         }
     }
     else
     {
-        printf("Petak tidak diperjualbelikan\n");
+        printf("Petak tidak diperjualbelikan.\n");
     }
 }
 
@@ -746,7 +754,7 @@ void upgrade(MonopolyMap map, PlayerAddress *P,boolean *upgraded)
     B = search_player(map, *P);
     if((*P)->money >= block_upgrade_cost(*B))
     {
-    if((((B->type == TANAH)&&(B->level <= 4))|| ((B->type == PARIWISATA)&&(B->level <= 0))))
+    if((B->type == TANAH)&&(B->level <= 4))
         {
             if(B->owner == *P)
             {
@@ -861,4 +869,32 @@ int total_aset_player(MonopolyMap map, PlayerAddress player)
         B = B->map_next;
     }
     return (player->money + aset_blok);
+}
+
+void sorting (List Lin, List*Lout)
+{
+    List Ltemp;
+    CpAlokList(Lin,&Ltemp);
+    CreateList(Lout);
+    Address Addmax, Addr;
+    PlayerAddress max,nx;
+
+    while (!IsListEmpty(Ltemp))
+    {
+        Addmax = First(Ltemp);
+
+        max = Info(Addmax);
+        Addr = Addmax->next;
+        while( Addr != NULL ){
+            nx = Info(Addr);
+            if (max->money < nx->money )
+            {
+                max = nx;
+            }
+            Addr = Addr->next;
+        }
+
+        InsVLast(Lout, max);
+        DeleteP(&Ltemp, max);
+    }
 }
