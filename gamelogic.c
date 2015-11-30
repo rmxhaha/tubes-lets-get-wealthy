@@ -788,11 +788,14 @@ void upgrade(MonopolyMap map, PlayerAddress *P,boolean *upgraded)
 
 void endturn (MonopolyMap *map)
 {
+    PlayerAddress pa;
     map->cplayer = Next(map->cplayer);
     if (map->cplayer==NULL)
     {
         map->cplayer= First(map->ListPlayer);
     }
+    pa = Info(map->cplayer);
+    printf("Sekarang giliran %s :)\n",(pa->name));
 }
 
 void player_bangkrut(MonopolyMap *map, PlayerAddress *player)
