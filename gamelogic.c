@@ -433,13 +433,12 @@ void do_chance (MonopolyMap *map, PlayerAddress *P)
 	//BELUM SELESAI...
 	//KAMUS
 	Chance c;
-	char *states[11] = {
+	char *states[10] = {
         "Tidak ada kartu.", "Pergi ke kantor pajak.",
         "Masuk penjara.", "Maju sampai start.",
         "Tiket gratis keliling dunia", "Pilih kota mati lampu.",
         "Bebas pajak.", "Kartu bebas penjara.",
-        "Kartu perlindungi.", "Kartu ambil paksa.",
-        "Kartu bebas sewa."
+        "Kartu perlindungi.", "Kartu bebas sewa."
 	 };
 	char input[10], inputA[10];
 	BlockAddress B;
@@ -448,7 +447,7 @@ void do_chance (MonopolyMap *map, PlayerAddress *P)
 
 	c = get_chance();
 	printf("Kartu kesempatan : %s\n", states[c]);
-	if (c==6 || c==7 || c==8 || c==9 || c==10) {
+	if (c==6 || c==7 || c==8 || c==9) {
 		printf("Ingin simpan kartu?\n");
 		scanf(" %s", input);
 		if (strcmp(input, "simpan")== 0) {
@@ -862,9 +861,7 @@ int total_aset_player(MonopolyMap map, PlayerAddress player)
 
     while (B != NULL) {
         if (B->owner == player) {
-            for (i = 0; i <= (B->level); i++) {
-            aset_blok += B->tab_harga[i];
-            }
+            aset_blok += B->tab_harga[B->level];
         }
         B = B->map_next;
     }
