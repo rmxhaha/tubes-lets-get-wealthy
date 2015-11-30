@@ -41,12 +41,22 @@ void block_info_petak(MonopolyMap map, char* namatempat)
         {
             printf("%d\n",(b->level));
         }
-        printf("Biaya sewa: %d\n",(b->multiplier)*(b->tab_denda[b->level]));
-        printf("Biaya ambil alih : %d\n",2*(b->tab_harga[b->level]));
+        printf("Biaya sewa: ");
+        print_money((b->multiplier)*(b->tab_denda[b->level]));
+        printf("\n");
+        printf("Biaya ambil alih : ");
+        print_money(2*b->tab_harga[b->level]);
+        printf("\n");
         if(b->level == 4)
+        {
             printf("Biaya upgrade bangunan : upgrade sudah maksimum\n");
+        }
         else
-            printf("Biaya upgrade bangunan : %d\n",b->tab_harga[b->level+1]);
+        {
+            printf("Biaya upgrade bangunan : ");
+            print_money(b->tab_harga[b->level+1]);
+            printf("\n");
+        }
     }
     else
     {

@@ -11,7 +11,6 @@ typedef enum {
 	BEBAS_PAJAK,
 	BEBAS_PENJARA,
 	PERLINDUNGAN,
-	AMBIL_PAKSA,
 	BEBAS_SEWA
 } Chance;
 
