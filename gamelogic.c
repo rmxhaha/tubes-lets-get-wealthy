@@ -663,6 +663,7 @@ void buyoffered(MonopolyMap* map, Player* player, char* nama_petak, boolean *upg
         (BA->owner)->money += block_cost(*BA);
         BA->owner = player;
         player->money -= block_cost(*BA);
+        DeleteP(&(map->ListOffered),BA);
         printf("> terbeli, sisa uang anda "); print_money(player->money);
     }
     else {
@@ -732,7 +733,7 @@ void buy(MonopolyMap map, PlayerAddress P, boolean *upgraded)
                     {
                         P->money -= block_cost(*B)*2;
                         B->owner = P;
-
+                        //DeleteP((map->ListOffered),B);
                         printf("Selamat, kota %s kini menjadi milikmu!\n", B->name);
                         printf("level bangunan %d\n", B->level);
                         printf("Sisa uangmu: ");print_money(P->money);printf("\n");
