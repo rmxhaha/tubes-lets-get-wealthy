@@ -94,22 +94,23 @@ int main(){
 
         if( !afterload ){
             rolldice_routine;
-            afterload = false;
         }
+		afterload = false;
 
 		do {
 			printf("> ");
+			strcpy(command,"");
 			scanf("%s", command);
 			ifCommand("save"){
-				f = fopen("savedata.dat","w+");
+				f = fopen("savedata.dat","w");
 				if( f == NULL ){
 					printf("fail to save\n");
 				}
 				else {
 					save_game(f,map,reroll,upgraded);
-					fclose(f);
 					printf("saved\n");
 				}
+				fclose(f);
 			}
 			else ifCommand("rolldice"){
 				//jalanin player & lempar dadu
@@ -263,7 +264,7 @@ int main(){
     BlockAddress addr = map.first;
     addr = map.first->map_next;
 
-    do	 {
+    do {
 //        printf("%d\n", addr->id );
         printf("ad : %s\n", addr->name);
         addr = addr->map_next;
