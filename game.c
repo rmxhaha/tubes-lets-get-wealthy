@@ -171,7 +171,7 @@ int main(){
 				print_leaderboard( map );
 			}
 			/*tambah cheat buat travel*/
-			else ifCommand("travel"){
+			else ifCommand("cheattravel"){
 				scanf("%s", &tmp);
 				player_travel(map,PA, &tmp);
 			}
