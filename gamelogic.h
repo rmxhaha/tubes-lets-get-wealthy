@@ -105,7 +105,7 @@ void sell(MonopolyMap* map,Player* cplayer, char *nama_petak);
     membeli dari list penjualan  (ListOffered)
     1. jika nama petak yang disebutkan tidak ada maka
 */
-void buyoffered(MonopolyMap*, Player* buyer, char* nama_petak,boolean *upgraded);
+void buyoffered(MonopolyMap*, Player* buyer, char* nama_petak);
 
 /**
 

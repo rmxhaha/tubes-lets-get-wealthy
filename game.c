@@ -153,9 +153,8 @@ int main(){
 				showoffered(&map);
 			}
 			else ifCommand("buyoffered"){
-				char wi[50];
-				scanf("%s", &wi);
-				buyoffered(&map, PA, wi,&upgraded);
+				scanf("%s", tmp);
+				buyoffered(&map, PA, tmp);
 			}
 			else ifCommand("upgrade"){
 				if(!upgraded)
