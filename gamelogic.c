@@ -1,8 +1,48 @@
 #include "gamelogic.h"
 
 boolean is_game_finished(MonopolyMap map ){
-    if( NbElmt(map.ListPlayer) == 1 ) return true;
-    return false;
+    BlockAddress B = map.first;
+    if(( NbElmt(map.ListPlayer) == 1 )||(is_tourism(map)))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+boolean is_tourism (MonopolyMap map)
+{
+    BlockAddress B = map.first;
+    PlayerAddress P = NULL;
+    boolean cek = true;
+    //search pariwisata pertama yang punya siapa
+    while (B!=NULL)
+    {
+        if(B->type==PARIWISATA)
+        {
+            P = B->owner;
+            break;
+        }
+        B= B->map_next;
+    }
+    if (P==NULL)
+    {
+        cek = false;
+    }
+    while ((B!=NULL)&&(cek))
+    {
+        if(B->type==PARIWISATA)
+        {
+
+            if (B->owner!=P)
+            {
+                cek =  false;
+            }
+        }
+        B=B->map_next;
+    }
+    return cek;
 }
 
 //mengembalikan true apabila di block terdapat player(tidak spesifik player mana)

@@ -9,6 +9,7 @@
 
 #define BONUS_MONEY_PER_REVOLUTION 150000
 
+boolean is_tourism (MonopolyMap map);
 //mengembalikan true apabila di block terdapat player(tidak spesifik player mana)
 boolean is_player_on(BlockAddress B);
 

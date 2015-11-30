@@ -124,9 +124,11 @@ int main(){
 				block_info_petak(map,tmp);
 			}
 			else ifCommand("buy"){
+
 				buy(map, PA, &upgraded);
 
 				here = search_player(map, PA);
+
 				/*if(here->owner == PA)
 				{
 					printf("kebeli\n");
@@ -253,7 +255,7 @@ int main(){
 			}
 
 			updateBlockStatus( map );
-		} while( true ); // endturn
+		} while(!is_game_finished(map)); // endturn
 
 	} while( !is_game_finished(map) );
 
