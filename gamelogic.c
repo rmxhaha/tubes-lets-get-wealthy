@@ -74,6 +74,8 @@ is_triple (MonopolyMap map)
             //Kalo 1 group pemiliknya sama, tambah ke count
             if (owned_group)
             {
+                i = 0;
+                found = false;
                 loop_list(map.ListPlayer, A,
                         if(BA->owner == Info(A))
                         {
@@ -96,6 +98,7 @@ is_triple (MonopolyMap map)
     }
     return triple;
 }
+
 //mengembalikan true apabila di block terdapat player(tidak spesifik player mana)
 boolean is_player_on(BlockAddress B)
 {
