@@ -328,7 +328,7 @@ void load_game(FILE* f,MonopolyMap* map,boolean *reroll, boolean *upgraded){
     int kotaIds[50];
 	BlockGameData blocksData[50];
 
-    int i,k, j;
+    int i, k, j;
     int n, nPlayer;
     Address P,Q;
     PlayerAddress PA;
@@ -353,7 +353,9 @@ void load_game(FILE* f,MonopolyMap* map,boolean *reroll, boolean *upgraded){
 		InsVLast(&map->ListPlayer,arr + i);
 
 		if( i == k ){
-			map->cplayer = arr+i;
+            P = First(map->ListPlayer);
+            while( Next(P) != Nil ) { P = Next(P); }
+			map->cplayer = P;
 		}
 	}
 
