@@ -95,7 +95,7 @@ is_triple (MonopolyMap map)
         B = B->map_next;
     }
     return triple;
-
+}
 //mengembalikan true apabila di block terdapat player(tidak spesifik player mana)
 boolean is_player_on(BlockAddress B)
 {
