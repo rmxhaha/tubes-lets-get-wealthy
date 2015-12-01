@@ -2,7 +2,7 @@
 
 boolean is_game_finished(MonopolyMap map ){
     BlockAddress B = map.first;
-    if(( NbElmt(map.ListPlayer) == 1 )||(is_tourism(map)))
+    if(( NbElmt(map.ListPlayer) == 1 )|| is_tourism(map) || is_triple(map))
     {
         return true;
     }
@@ -44,6 +44,57 @@ boolean is_tourism (MonopolyMap map)
     }
     return cek;
 }
+
+is_triple (MonopolyMap map)
+{
+    int i = 0;
+    int count[4] = {0,0,0,0};
+    BlockAddress B, BA;
+    boolean triple = false;
+    boolean owned_group = true;
+    boolean found = false;
+    Address A;
+    PlayerAddress P;
+
+    B = map.first;
+    while (B != NULL && !triple)
+    {
+        if ((B->owner != NULL) && (B->type == TANAH) && ((B->group_prev) == NULL))
+        {
+            BA = B;
+            while (BA->group_next != NULL && owned_group)
+            {
+                if (BA->owner != (BA->group_next)->owner)
+                {
+                    owned_group = false;
+                }
+                BA= BA ->group_next;
+            }
+
+            //Kalo 1 group pemiliknya sama, tambah ke count
+            if (owned_group)
+            {
+                loop_list(map.ListPlayer, A,
+                        if(BA->owner == Info(A))
+                        {
+                            found = true;
+                        }
+                        if (!found)
+                        {
+                            i++;
+                    }
+                );
+                count[i]++;
+                if (count[i]>=3)
+                {
+                    triple = true;
+                }
+            }
+            B = BA;
+        }
+        B = B->map_next;
+    }
+    return triple;
 
 //mengembalikan true apabila di block terdapat player(tidak spesifik player mana)
 boolean is_player_on(BlockAddress B)
