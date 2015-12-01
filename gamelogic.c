@@ -295,6 +295,7 @@ void habispindah(MonopolyMap *map, BlockAddress here, PlayerAddress *player)
 {
     char perintah[100];
     char namatempat[100];
+
     printf("player sekarang di petak %s\n", here->name);
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     if(here->type == TANAH || here->type == PARIWISATA)
@@ -339,8 +340,23 @@ void habispindah(MonopolyMap *map, BlockAddress here, PlayerAddress *player)
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     else if(here->type == KELILING_DUNIA)
     {
-        scanf("%s",&namatempat);
-        player_travel(*map,*player,&namatempat);
+        printf("Masukkan 'travel <nama kota>'\n");
+        do
+        {
+            printf("> ");
+            scanf("%s",perintah);
+            if(strcmp(perintah,"travel")==0)
+            {
+                scanf("%s",&namatempat);
+                player_travel(*map,*player,&namatempat);
+            }
+            else
+            {
+                printf("Perintah salah. Masukkan 'travel <nama kota>'\n");
+            }
+        }
+        while(strcmp(perintah,"travel")!=0);
+
     }
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     else if(here->type == BONUS)
@@ -352,16 +368,17 @@ void habispindah(MonopolyMap *map, BlockAddress here, PlayerAddress *player)
         printf("Kasian masuk penjara!\n");
         if ((*player)->save_chance == BEBAS_PENJARA)
         {
-            puts("tes masuk penjara\n");
-            do
+           printf("Anda punya kartu bebas penjara.Tulis 'free_me'\n");
+           do
             {
-                scanf(" %[^\n]s",&perintah);
-                if(strcmp(perintah,"free me")!=0)
+                printf("> ");
+                scanf(" %s",&perintah);
+                if(strcmp(perintah,"free_me")!=0)
                 {
-                    printf("Anda punya kartu bebas penjara. Tulis 'free me'.\n");
+                    printf("Anda punya kartu bebas penjara. Tulis 'free_me'.\n");
                 }
 
-            }while(strcmp(perintah,"free me")!=0);
+            }while(strcmp(perintah,"free_me")!=0);
          (*player)->save_chance =0;
         }
         else if ((*player)->money >= 1000000)
@@ -488,7 +505,8 @@ void do_chance (MonopolyMap *map, PlayerAddress *P)
 	c = get_chance();
 	printf("Kartu kesempatan : %s\n", states[c]);
 	if (c==6 || c==7 || c==8 || c==9) {
-		printf("Ingin simpan kartu?\n");
+		printf("Ingin simpan kartu? (bila iya, masukkan 'simpan')\n");
+		printf("> ");
 		scanf(" %s", input);
 		if (strcmp(input, "simpan")== 0) {
 			printf("Simpan kartu.\n");

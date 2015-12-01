@@ -174,8 +174,8 @@ int main(){
 			}
 			/*tambah cheat buat travel*/
 			else ifCommand("cheattravel"){
-				scanf("%s", &tmp);
-				player_travel(map,PA, &tmp);
+                 scanf("%s",tmp);
+                player_travel(map,PA,&tmp);
 			}
 			else ifCommand("cheathost"){
 				cheat_block_host(&map,PA);
