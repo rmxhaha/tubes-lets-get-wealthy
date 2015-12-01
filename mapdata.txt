@@ -34,7 +34,7 @@
 2 beijing jakarta
 3 taipei new_delhi seoul
 3 hawai tokyo sydney
-3 singapura sao_paolo
+2 singapura sao_paolo
 2 denmark berlin
 3 geneva moscow rome
 2 london paris
